@@ -1,0 +1,51 @@
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/drawer_edge_a">
+
+    <ImageView
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/drawer_edge_a_square"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+    <TextView
+            android:alpha=".5"
+            android:layout_marginTop="-6dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@+id/drawer_edge_a_square"
+            android:id="@+id/drawer_edge_a_lines"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"/>
+
+    <ImageView
+            android:layout_marginStart="15dp"
+            android:layout_toEndOf="@+id/drawer_edge_a_lines"
+            android:layout_alignParentTop="true"
+            android:id="@+id/drawer_edge_a_circle_1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+    <ImageView
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/drawer_edge_a_square"
+            android:layout_above="@+id/drawer_edge_a_circle_2"
+            android:layout_marginBottom="15dp"
+            android:layout_alignParentStart="true"
+            android:id="@+id/drawer_edge_a_line"
+            android:layout_width="5dp"
+            android:layout_height="match_parent"/>
+
+    <ImageView
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/drawer_edge_a_circle_2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+
+</RelativeLayout>

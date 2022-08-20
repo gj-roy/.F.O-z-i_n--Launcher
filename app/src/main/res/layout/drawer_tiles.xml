@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/drawer_tiles">
+
+    <RelativeLayout
+            android:id="@+id/drawer_tiles_frame_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <RelativeLayout
+                android:layout_marginStart="-5dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/drawer_tiles_frame_1"
+                android:layout_width="80dp"
+                android:layout_height="80dp">
+
+            <ImageView
+                    android:layout_centerInParent="true"
+                    android:id="@+id/drawer_tiles_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_marginStart="-5dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"
+                android:layout_below="@+id/drawer_tiles_frame_1"
+                android:id="@+id/drawer_tiles_frame_2"
+                android:layout_width="80dp"
+                android:layout_height="80dp">
+
+            <TextView
+                    android:layout_centerInParent="true"
+                    android:id="@+id/drawer_tiles_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="25sp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="10dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/drawer_tiles_frame_2"
+                android:gravity="center"
+                android:id="@+id/drawer_tiles_frame_3"
+                android:layout_width="50dp"
+                android:layout_height="100dp">
+
+            <ScrollView
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerInParent="true"
+                    android:overScrollMode="never"
+                    android:fadingEdgeLength="10dp"
+                    android:requiresFadingEdge="vertical"
+                    android:scrollbars="none"
+                    android:id="@+id/drawer_tiles_scroll_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                        android:id="@+id/drawer_tiles_alphabets"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"/>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
