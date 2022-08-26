@@ -67,6 +67,12 @@ public class Methods {
             return "(#, A..)";
         if(value == 15)
             return "••";
+        if(value == 16)
+            return "...";
+        if(value == 17)
+            return "⟩>";
+        if(value == 18)
+            return "<[]";
         return "";
     }
 
@@ -109,7 +115,6 @@ public class Methods {
                     " i wanna give it a shot. Anyways enough talking about me. I will appreciate it a lot if you can tell me any suggestions you have or" +
                     " if you experienced any problems while using this app. (^ ^) That's all for now. Oh!! right, also Thanks for using Fozin Launcher. So See you around" +
                     " until next time...";
-
         if(value == 14)
             return "App Name - Fozin";
         if(value == 15)
@@ -127,7 +132,7 @@ public class Methods {
         if(value == 21)
             return "Maintainer - ∆×••⟨[]⟩";
         if(value == 22)
-            return "So you want to know what are the things this app can do. Oh! well, that's a SECRET ;)";
+            return "So you want to know what are the things this app can do. Oh! well, that's a SECRET ;) Yup! not gonna tell.";
         if(value == 23)
             return "• Storage permission is needed for creating apk backups. So if" +
                     " you don't want to you can just disable the storage permissions. However in return you won't be" +
@@ -155,7 +160,7 @@ public class Methods {
         if(value == 34)
             return "What do you wanna do about navigation bar. Show or Hide.";
         if(value == 35)
-            return "Well then, what do you want to see first after opening the settings screen. [ Restart ] needed. ";
+            return "Well then, what do you want to see first after opening the settings screen. NOTE - Auto means the last opened tab will be shown. ";
         if(value == 36)
             return "Guess what! you can also change the list styles of settings tabs. Surprised right?.";
         if(value == 37)
@@ -224,9 +229,10 @@ public class Methods {
         if(value == 67)
             return "NOTE - Selecting this option will show the current device wallpaper on the wallpaper panel.";
         if(value == 68)
-            return "Your current options, take your pick...";
+            return "Your current options, take your pick... NOTE - To enable / disable a wallpaper just tap on it.";
         if(value == 69)
-            return "The device wallpaper mode has already been enabled so there is no need to enable it again.";
+            return "The device wallpaper mode has already been enabled so there is no need to enable it again. NOTE - You can disable it " +
+                    "from the wallpaper panel on home screen.";
         if(value == 70)
             return "As you can see folder is disabled ( Hidden ) right now, so adding and removing apps is not possible unless you enable it back on.";
         if(value == 71)
@@ -261,6 +267,18 @@ public class Methods {
             return "Ahem!, well i know it sounds weird but to see the device wallpaper you have to grant STORAGE permission first. And" +
                     " the reason you are seeing this message cause the app doesn't have that permission yet. So WHY? do you need that" +
                     " permission oh well i don't know either. Sigh* complicated stuff.";
+        if(value == 83)
+            return "U-um Hi! ... huh? no response? well that's no fun. Hehe. Alright i won't beat around the bush. So the thing is, as the" +
+                    " name suggests backup it means it will take the backup of the selected app in the apk format. And to do that the app needs" +
+                    " read and write STORAGE permission. If you won't grant the app that permission than you can't use this feature.";
+        if(value == 84)
+            return "simplicdeveloper2062@gmail.com";
+        if(value == 85)
+            return "(^o^)/ Over Here...";
+        if(value == 86)
+            return "Is something wrong (*.*)...";
+        if(value == 87)
+            return "https://github.com/SimpliC-Developer";
         return "";
     }
 
@@ -1253,11 +1271,11 @@ public class Methods {
         return "";
     }
 
-    public static void appIcon(Context context, ImageView imageView, String appPackage, int dimen){
+    public static Bitmap appIcon(Context context, String appPackage, int dimen){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            imageView.setImageBitmap(roundedBitmap(adaptiveIcon(context, appPackage, dimen)));
+            return roundedBitmap(adaptiveIcon(context, appPackage, dimen));
         } else {
-            imageView.setImageBitmap(roundedBitmap(drawableIcon(context, appPackage, dimen)));
+            return roundedBitmap(drawableIcon(context, appPackage, dimen));
         }
     }
 
@@ -1391,12 +1409,7 @@ public class Methods {
 
     public static void touchVibrate(Context context, View view){
         view.setAlpha(1.0f);
-        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-            vibrator.vibrate(100);
-        }
+        vibrate(context);
     }
 
     public static void touchStop(View view){
@@ -1412,6 +1425,15 @@ public class Methods {
             try {
                 onTouchHandler.removeCallbacks(onTouchRunnable);
             } catch (Exception e){}
+        }
+    }
+
+    public static void vibrate(Context context){
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(100);
         }
     }
 
@@ -1481,7 +1503,7 @@ public class Methods {
         return readValues;
     }
 
-    public static void create(Context context, String folderName, String fileName, String value){
+    public static void createA(Context context, String folderName, String fileName, String value){
         File folder = new File(context.getFilesDir(), folderName);
         File file = new File(context.getFilesDir(), folderName + fileName);
 
@@ -1491,6 +1513,18 @@ public class Methods {
             }
         }
 
+        try {
+            FileWriter writer = new FileWriter(file,true);
+            writer.write(value + "\r\n");
+            writer.flush();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void create(Context context, String fileName, String value){
+        File file = new File(context.getFilesDir(), fileName);
         try {
             FileWriter writer = new FileWriter(file,true);
             writer.write(value + "\r\n");

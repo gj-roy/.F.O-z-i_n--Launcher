@@ -124,13 +124,32 @@
                 android:layout_height="wrap_content"
                 android:textSize="15sp"/>
 
-        <ImageView
+        <ScrollView
+                android:overScrollMode="never"
+                android:layout_alignParentStart="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_below="@+id/settings_home_d_text_4"
-                android:id="@+id/settings_home_d_image"
-                android:layout_width="70dp"
-                android:layout_height="70dp"/>
+                android:layout_toStartOf="@+id/settings_home_d_frame_7"
+                android:layout_marginEnd="20dp"
+                android:id="@+id/settings_home_d_scroll_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+            <RelativeLayout
+                    android:id="@+id/settings_home_d_frame_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                <ImageView
+                        android:id="@+id/settings_home_d_image"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
 
         <RelativeLayout
                 android:layout_marginBottom="20dp"
@@ -148,19 +167,6 @@
                     android:layout_height="35dp"/>
 
         </RelativeLayout>
-
-        <TextView
-                android:alpha=".5"
-                android:maxLines="1"
-                android:layout_toStartOf="@+id/settings_home_d_frame_7"
-                android:layout_marginEnd="10dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_alignTop="@+id/settings_home_d_frame_7"
-                android:id="@+id/settings_home_d_lines"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"/>
 
     </RelativeLayout>
 

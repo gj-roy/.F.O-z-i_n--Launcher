@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/list_type_c"
+                android:id="@+id/list_style_b"
                 android:orientation="horizontal">
 
     <RelativeLayout
             android:layout_marginStart="-30dp"
-            android:layout_toEndOf="@+id/list_type_c_frame_1"
+            android:layout_toEndOf="@+id/list_style_b_frame_1"
             android:layout_alignParentTop="true"
-            android:id="@+id/list_type_c_frame_2"
+            android:id="@+id/list_style_b_frame_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -20,7 +20,7 @@
                 android:layout_marginEnd="25dp"
                 android:layout_marginTop="5dp"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/list_type_c_text_1"
+                android:id="@+id/list_style_b_text_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -32,10 +32,10 @@
                 android:layout_marginStart="35dp"
                 android:layout_marginEnd="25dp"
                 android:textAlignment="textEnd"
-                android:layout_below="@+id/list_type_c_text_1"
+                android:layout_below="@+id/list_style_b_text_1"
                 android:layout_marginBottom="10dp"
                 android:layout_alignParentEnd="true"
-                android:id="@+id/list_type_c_text_2"
+                android:id="@+id/list_style_b_text_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -45,13 +45,13 @@
     <RelativeLayout
             android:layout_centerInParent="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/list_type_c_frame_1"
+            android:id="@+id/list_style_b_frame_1"
             android:layout_width="50dp"
             android:layout_height="50dp">
 
         <ImageView
                 android:layout_centerInParent="true"
-                android:id="@+id/list_type_c_icon"
+                android:id="@+id/list_style_b_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"/>
 

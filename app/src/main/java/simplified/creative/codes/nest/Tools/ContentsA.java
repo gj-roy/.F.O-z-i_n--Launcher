@@ -19,14 +19,14 @@ import java.util.List;
 import static simplified.creative.codes.nest.TheNest.*;
 import static simplified.creative.codes.nest.Tools.Methods.*;
 
-public class ListTypeB extends ArrayAdapter {
+public class ContentsA extends ArrayAdapter {
     private Activity context;
     private int layout;
     private List<Bitmap> bitmap;
     private List<String> string_a;
     private List<String> string_b;
 
-    public ListTypeB(Activity context, int layout, List<Bitmap> bitmap, List<String> string_a, List<String> string_b, AdapterCallback adapterCallback) {
+    public ContentsA(Activity context, int layout, List<Bitmap> bitmap, List<String> string_a, List<String> string_b, AdapterCallback adapterCallback) {
         super(context, layout, string_a);
         this.layout = layout;
         this.context = context;
@@ -38,7 +38,7 @@ public class ListTypeB extends ArrayAdapter {
 
     AdapterCallback listTypeBCallback;
     public interface AdapterCallback{
-        void clicked(int mode);
+        void settingsMiscList(int mode);
     }
 
     public static ViewHolder holder;
@@ -49,36 +49,36 @@ public class ListTypeB extends ArrayAdapter {
             LayoutInflater inflater = context.getLayoutInflater();
             convertView = inflater.inflate(layout, null);
             holder = new ViewHolder();
-            if(layout == R.layout.list_type_b){
-                holder.icon = convertView.findViewById(R.id.list_type_b_icon);
-                holder.text_1 = convertView.findViewById(R.id.list_type_b_text_1);
-                holder.text_2 = convertView.findViewById(R.id.list_type_b_text_2);
-                holder.frame_1 = convertView.findViewById(R.id.list_type_b_frame_1);
-                holder.frame_2 = convertView.findViewById(R.id.list_type_b_frame_2);
+            if(layout == R.layout.list_style_a){
+                holder.icon = convertView.findViewById(R.id.list_style_a_icon);
+                holder.text_1 = convertView.findViewById(R.id.list_style_a_text_1);
+                holder.text_2 = convertView.findViewById(R.id.list_style_a_text_2);
+                holder.frame_1 = convertView.findViewById(R.id.list_style_a_frame_1);
+                holder.frame_2 = convertView.findViewById(R.id.list_style_a_frame_2);
                 backgroundTypeA(context, holder.frame_1, background(10), tintB, 3);
                 backgroundTypeC(context, holder.frame_2, background(3), tintB);
                 textType(context, holder.text_1, "", tintB, fontAStyle);
                 textType(context, holder.text_2, "", tintB, fontBStyle);
             }
-            if(layout == R.layout.list_type_c){
-                holder.icon = convertView.findViewById(R.id.list_type_c_icon);
-                holder.text_1 = convertView.findViewById(R.id.list_type_c_text_1);
-                holder.text_2 = convertView.findViewById(R.id.list_type_c_text_2);
-                holder.frame_1 = convertView.findViewById(R.id.list_type_c_frame_1);
-                holder.frame_2 = convertView.findViewById(R.id.list_type_c_frame_2);
+            if(layout == R.layout.list_style_b){
+                holder.icon = convertView.findViewById(R.id.list_style_b_icon);
+                holder.text_1 = convertView.findViewById(R.id.list_style_b_text_1);
+                holder.text_2 = convertView.findViewById(R.id.list_style_b_text_2);
+                holder.frame_1 = convertView.findViewById(R.id.list_style_b_frame_1);
+                holder.frame_2 = convertView.findViewById(R.id.list_style_b_frame_2);
                 backgroundTypeC(context, holder.frame_1, background(4), tintB);
                 backgroundTypeA(context, holder.frame_2, background(7), tintB, 3);
                 textType(context, holder.text_1, "", tintB, fontAStyle);
                 textType(context, holder.text_2, "", tintB, fontBStyle);
             }
-            if(layout == R.layout.list_type_d){
-                holder.icon = convertView.findViewById(R.id.list_type_d_icon);
-                holder.text_1 = convertView.findViewById(R.id.list_type_d_text_1);
-                holder.text_2 = convertView.findViewById(R.id.list_type_d_text_2);
-                holder.frame_1 = convertView.findViewById(R.id.list_type_d_frame);
-                holder.line_1 = convertView.findViewById(R.id.list_type_d_line_1);
-                holder.line_2 = convertView.findViewById(R.id.list_type_d_line_2);
-                holder.line_3 = convertView.findViewById(R.id.list_type_d_line_3);
+            if(layout == R.layout.list_style_c){
+                holder.icon = convertView.findViewById(R.id.list_style_c_icon);
+                holder.text_1 = convertView.findViewById(R.id.list_style_c_text_1);
+                holder.text_2 = convertView.findViewById(R.id.list_style_c_text_2);
+                holder.frame_1 = convertView.findViewById(R.id.list_style_c_frame);
+                holder.line_1 = convertView.findViewById(R.id.list_style_c_line_1);
+                holder.line_2 = convertView.findViewById(R.id.list_style_c_line_2);
+                holder.line_3 = convertView.findViewById(R.id.list_style_c_line_3);
                 backgroundTypeB(context, holder.frame_1, background(1), tintB, 70);
                 textType(context, holder.text_1, "", tintB, fontAStyle);
                 textType(context, holder.text_2, "", tintB, fontBStyle);
@@ -123,15 +123,15 @@ public class ListTypeB extends ArrayAdapter {
                             if(position == 1)
                                 restart(context);
                             if(position == 2)
-                                listTypeBCallback.clicked(0);
+                                listTypeBCallback.settingsMiscList(0);
                             if(position == 3)
-                                listTypeBCallback.clicked(1);
+                                listTypeBCallback.settingsMiscList(1);
                             if(position == 4)
-                                listTypeBCallback.clicked(2);
+                                listTypeBCallback.settingsMiscList(2);
                             if(position == 5)
-                                listTypeBCallback.clicked(3);
+                                listTypeBCallback.settingsMiscList(3);
                             if(position == 6)
-                                listTypeBCallback.clicked(4);
+                                listTypeBCallback.settingsMiscList(4);
                         }
                     }
                 }

@@ -31,82 +31,97 @@ import android.widget.*;
 import simplified.creative.codes.nest.Tools.*;
 
 import java.io.*;
-import java.text.Collator;
 import java.util.*;
 
 import static android.view.View.OnTouchListener;
 import static simplified.creative.codes.nest.Tools.Methods.*;
 
-public class TheNest extends Activity implements ListTypeA.AdapterCallback,
-        GridTypeA.AdapterCallback, ListTypeB.AdapterCallback, ListTypeC.AdapterCallback,
-        ListTypeD.AdapterCallback, ListTypeE.AdapterCallback, ListTypeF.AdapterCallback,
-        ListTypeG.AdapterCallback, ListTypeH.AdapterCallback {
+public class TheNest extends Activity implements ContentsA.AdapterCallback, ContentsB.AdapterCallback,
+        ListTypeF.AdapterCallback, ListTypeG.AdapterCallback, ListTypeH.AdapterCallback {
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    /*
+       ----------------------------
+       [                          ]
+       [     FOZIN - LAUNCHER     ]
+       [                          ]
+       ----------------------------
+    */
 
-    RelativeLayout theNestRootLayout;
-    LayoutInflater inflater;
-
-    View theNestHomeView;
-    RelativeLayout theNestHomeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.the_nest_root_layout);
-        inflater = LayoutInflater.from(TheNest.this);
-
-        theNestRootLayout = (RelativeLayout) findViewById(R.id.the_nest_root_layout);
-        setSize(this, theNestRootLayout, size(2), size(2));
-
-        fozinConfigurations();
-
-        if(theNestHomeView == null){
-            theNestHomeView = inflater.inflate(R.layout.the_nest_home_layout, null);
-            theNestHomeLayout = theNestHomeView.findViewById(R.id.the_nest_home_layout);
-        }
-        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) == null) {
-            theNestRootLayout.addView(theNestHomeView);
-            layoutParamsTypeA(this, theNestHomeLayout, new int[]{direction(2)});
-            setSize(this, theNestHomeLayout, size(2), size(2));
-
-            homeConfigurations();
-            homeEDGE();
-            homeWIDGET();
-            homeAPPLET(1);
-            homeTOOLTIP();
-            homeWALLPAPER();
-            homeFolder_Flower();
-            homeStatus();
-            homeCenterPositions();
-            homeDRAWER();
-            homeSHORTCUT();
-
-            homeScreenState = 1;
-        }
+        createCycle();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        homeScreenSTATE_A();
+        startCycle();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null) {
-            homeScreenSTATE_B();
+        stopCycle();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pauseCycle();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        resumeCycle();
+    }
+
+    @Override
+    public void onBackPressed() {
+        backClick();
+    }
+
+    /*
+       ------------------------
+       [                      ]
+       [     LIFE - CYCLE     ]
+       [                      ]
+       ------------------------
+    */
+
+    LayoutInflater inflater;
+    View theNestHomeView, theNestDrawerView,  theNestSettingsView;
+    RelativeLayout theNestRootLayout, theNestHomeLayout, theNestDrawerLayout, theNestSettingsLayout;
+    private void createCycle(){
+        setContentView(R.layout.the_nest_root_layout);
+        inflater = LayoutInflater.from(TheNest.this);
+        theNestRootLayout = findViewById(R.id.the_nest_root_layout);
+
+        if(!fileExist(this, "CREATED")){
+            // WELCOME SCREEN
+            create(TheNest.this, "CREATED", "# Setup Completed...");
+            initializeConfigurations();
+            restart(this);
+        } else {
+            configurationsA();
+            homeScreen();
         }
-        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null) {
-            drawerTooltipSTOPPED();
-        }
-        if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) != null) {
-            settingsTooltipSTOPPED();
-        }
+    }
+
+    private void startCycle(){
+        homeScreenStateA();
+    }
+
+    private void stopCycle(){
+        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
+            homeScreenStateB();
+
+        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null)
+            drawerTooltipReset();
+
+        if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) != null)
+            settingsTooltipReset();
 
         if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) == null) {
             theNestRootLayout.removeView(theNestSettingsView);
@@ -115,66 +130,105 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void pauseCycle(){
+        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
+            homeScreenStateB();
+    }
 
+    private void resumeCycle(){
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
+            homeScreenStateA();
 
-        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null) {
-            homeAppletRESUMED();
-        }
-        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null) {
-            drawerAppletRESUMED();
-        }
-        if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) != null) {
-
-        }
+        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null)
+            drawerScreenStateA(0);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null) {
-            homeScreenSTATE_A();
-        }
-        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null) {
-
-        }
-        if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) != null) {
-
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-
+    private void backClick(){
         if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null) {
             if(homeAppletLayout.findViewById(R.id.home_applet_a) == null){
-                homeAPPLET(1);
+                homeApplet(1);
             }
-        }
-
-        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null) {
+        } else {
             theNestRootLayout.addView(theNestHomeView);
+            homeScreenStateA();
             theNestRootLayout.removeView(theNestDrawerView);
-            homeScreenSTATE_A();
-        }
-
-        if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) != null) {
-            theNestRootLayout.addView(theNestHomeView);
             theNestRootLayout.removeView(theNestSettingsView);
-            homeScreenSTATE_A();
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    /*
+       --------------------------
+       [                        ]
+       [     CONFIGURATIONS     ]
+       [                        ]
+       --------------------------
+    */
+
+    private void initializeConfigurations(){
+        if(!fileExist(this, "Configurations - 01")){
+            create(this, "Configurations - 01", "# CONFIGURATIONS...");
+            create(this, "Configurations - 01", "-------------------");
+            create(this, "Configurations - 01", " ");
+            create(this, "Configurations - 01", "Status Bar - Enabled");
+            create(this, "Configurations - 01", "Navigation Bar - Enabled");
+            create(this, "Configurations - 01", "Background - " + R.color.origin);
+            create(this, "Configurations - 01", "UI - " + R.color.orange_3);
+            create(this, "Configurations - 01", "Tint A - " + R.color.white);
+            create(this, "Configurations - 01", "Tint B - " + R.color.black);
+            create(this, "Configurations - 01", "Font A Mode - SimpliC");
+            create(this, "Configurations - 01", "Font A Style - " + Typeface.BOLD);
+            create(this, "Configurations - 01", "Font B Style - " + Typeface.NORMAL);
+            create(this, "Configurations - 01", " ");
+            create(this, "Configurations - 01", "---------- > ---------- > ---------- >");
+        }
+        if(!fileExist(this, "Configurations - 02")){
+            create(this, "Configurations - 02", "# CONFIGURATIONS...");
+            create(this, "Configurations - 02", "-------------------");
+            create(this, "Configurations - 02", " ");
+            create(this, "Configurations - 02", "Widget State - Enabled");
+            create(this, "Configurations - 02", "Widget Mode - [ NONE ]");
+            create(this, "Configurations - 02", "Widget Component - [ NONE ]");
+            create(this, "Configurations - 02", "Widget ID - 0");
+            create(this, "Configurations - 02", "Widget Style - A");
+            create(this, "Configurations - 02", "Applet Text - ∆×••⟨[ ]⟩");
+            create(this, "Configurations - 02", "Wallpaper State - Enabled");
+            create(this, "Configurations - 02", "Wallpaper Mode - [ NONE ]");
+            create(this, "Configurations - 02", "Wallpaper Component - [ NONE ]");
+            create(this, "Configurations - 02", "Folder State - Enabled");
+            create(this, "Configurations - 02", "Folder Name - Folder");
+            create(this, "Configurations - 02", "Folder Sorting Order - Alphabetically");
+            create(this, "Configurations - 02", "Status State - Enabled");
+            create(this, "Configurations - 02", "Status Mode - [ NONE ]");
+            create(this, "Configurations - 02", "Drawer Mode - Icon");
+            create(this, "Configurations - 02", "Drawer Icon - BeeHive");
+            create(this, "Configurations - 02", "Drawer Size - C");
+            create(this, "Configurations - 02", "Drawer Alpha - 1.0f");
+            create(this, "Configurations - 02", "Shortcut State - Enabled");
+            create(this, "Configurations - 02", " ");
+            create(this, "Configurations - 02", "---------- > ---------- > ---------- >");
+        }
+        if(!fileExist(this, "Configurations - 03")) {
+            create(this, "Configurations - 03", "# CONFIGURATIONS...");
+            create(this, "Configurations - 03", "-------------------");
+            create(this, "Configurations - 03", " ");
+            create(this, "Configurations - 03", "Drawer Grid Style - Tiles");
+            create(this, "Configurations - 03", "Drawer Sorting Order - Alphabetically");
+            create(this, "Configurations - 03", "Drawer Browse Mode - Index");
+            create(this, "Configurations - 03", " ");
+            create(this, "Configurations - 03", "---------- > ---------- > ---------- >");
+        }
+        if(!fileExist(this, "Configurations - 04")){
+            create(this, "Configurations - 04", "# CONFIGURATIONS...");
+            create(this, "Configurations - 04", "-------------------");
+            create(this, "Configurations - 04", " ");
+            create(this, "Configurations - 04", "Settings Tab - Auto");
+            create(this, "Configurations - 04", "Misc List Style - Square");
+            create(this, "Configurations - 04", "Home List Style - Hexagon");
+            create(this, "Configurations - 04", " ");
+            create(this, "Configurations - 04", "---------- > ---------- > ---------- >");
+        }
+    }
 
     private static String statusBar;
     private static String navigationBar;
@@ -185,36 +239,170 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
     public static String fontAMode;
     public static int fontAStyle;
     public static int fontBStyle;
-    @SuppressLint("ClickableViewAccessibility")
-    private void fozinConfigurations(){
-        if(!fileExist(TheNest.this, "Fozin/Configurations")){
-            create(TheNest.this, "Fozin","/Configurations", "# Fozin Configurations...");
-            create(TheNest.this, "Fozin","/Configurations", "Status Bar - Enabled");
-            create(TheNest.this, "Fozin","/Configurations", "Navigation Bar - Enabled");
-            create(TheNest.this, "Fozin","/Configurations", "Background - " + R.color.origin);
-            create(TheNest.this, "Fozin","/Configurations", "UI - " + R.color.orange_3);
-            create(TheNest.this, "Fozin","/Configurations", "Tint A - " + R.color.white);
-            create(TheNest.this, "Fozin","/Configurations", "Tint B - " + R.color.black);
-            create(TheNest.this, "Fozin","/Configurations", "Font A Mode - SimpliC");
-            create(TheNest.this, "Fozin","/Configurations", "Font A Style - " + Typeface.BOLD);
-            create(TheNest.this, "Fozin","/Configurations", "Font B Style - " + Typeface.NORMAL);
-            create(TheNest.this, "Fozin","/Configurations", " ");
-            create(TheNest.this, "Fozin","/Configurations", "--------------------");
-            create(TheNest.this, "Fozin","/Configurations", " ");
+    private void configurationsA(){
+        List<String> readValues = read(this, "Configurations - 01");
+        statusBar = readValues.get(3).substring(13).trim();
+        navigationBar = readValues.get(4).substring(17).trim();
+        background = Integer.parseInt(readValues.get(5).substring(12).trim());
+        ui = Integer.parseInt(readValues.get(6).substring(4).trim());
+        tintA = Integer.parseInt(readValues.get(7).substring(8).trim());
+        tintB = Integer.parseInt(readValues.get(8).substring(8).trim());
+        fontAMode = readValues.get(9).substring(13).trim();
+        fontAStyle = Integer.parseInt(readValues.get(10).substring(14).trim());
+        fontBStyle = Integer.parseInt(readValues.get(11).substring(14).trim());
+
+        userInterfaceB();
+        userInterfaceA();
+    }
+
+    private String widgetState;
+    private String widgetMode;
+    private String widgetComponent;
+    private int widgetID;
+    private String widgetStyle;
+    private String appletText;
+    private String wallpaperState;
+    private String wallpaperMode;
+    private String wallpaperComponent;
+    private String folderState;
+    private String folderName;
+    private String folderSortingOrder;
+    private String statusState;
+    private String statusMode;
+    private String drawerMode;
+    private String drawerIcon;
+    private float drawerAlpha;
+    private String drawerSize;
+    private String shortcutState;
+    private void configurationsB(){
+        List<String> readValues = read(this, "Configurations - 02");
+        widgetState = readValues.get(3).substring(15).trim();
+        widgetMode = readValues.get(4).substring(14).trim();
+        widgetComponent = readValues.get(5).substring(19).trim();
+        widgetID = Integer.parseInt(readValues.get(6).substring(12).trim());
+        widgetStyle = readValues.get(7).substring(15).trim();
+        appletText = readValues.get(8).substring(14).trim();
+        wallpaperState = readValues.get(9).substring(17).trim();
+        wallpaperMode = readValues.get(10).substring(17).trim();
+        wallpaperComponent = readValues.get(11).substring(22).trim();
+        folderState = readValues.get(12).substring(15).trim();
+        folderName = readValues.get(13).substring(14).trim();
+        folderSortingOrder = readValues.get(14).substring(23).trim();
+        statusState = readValues.get(15).substring(15).trim();
+        statusMode = readValues.get(16).substring(14).trim();
+        drawerMode = readValues.get(17).substring(14).trim();
+        drawerIcon = readValues.get(18).substring(14).trim();
+        drawerSize = readValues.get(19).substring(14).trim();
+        drawerAlpha = Float.parseFloat(readValues.get(20).substring(15).trim());
+        shortcutState = readValues.get(21).substring(17).trim();
+    }
+
+    public static String drawerGridStyle;
+    private String drawerSortingOrder;
+    private String drawerBrowseMode;
+    private void configurationsC(){
+        List<String> readValues = read(TheNest.this, "Configurations - 03");
+        drawerGridStyle = readValues.get(3).substring(20).trim();
+        drawerSortingOrder = readValues.get(4).substring(23).trim();
+        drawerBrowseMode = readValues.get(5).substring(21).trim();
+    }
+
+    private String settingsTab;
+    private String miscListStyle;
+    private String homeListStyle;
+    private void configurationsD(){
+        List<String> readValues = read(this, "Configurations - 04");
+        settingsTab = readValues.get(3).substring(15).trim();
+        miscListStyle = readValues.get(4).substring(18).trim();
+        homeListStyle = readValues.get(5).substring(18).trim();
+    }
+
+    /*
+       ------------------------------
+       [                            ]
+       [     THE NEST - SCREENS     ]
+       [                            ]
+       ------------------------------
+    */
+
+    private void homeScreen(){
+        if(theNestHomeView == null){
+            theNestHomeView = inflater.inflate(R.layout.the_nest_home_layout, null);
+            theNestHomeLayout = theNestHomeView.findViewById(R.id.the_nest_home_layout);
         }
+        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) == null){
+            theNestRootLayout.addView(theNestHomeView);
+            setSize(this, theNestHomeLayout, size(2), size(2));
+        }
+        homeScreenState = 1;
+        configurationsB();
 
-        List<String> readValues = read(TheNest.this, "Fozin/Configurations");
-        statusBar = readValues.get(1).substring(13).trim();
-        navigationBar = readValues.get(2).substring(17).trim();
-        background = Integer.parseInt(readValues.get(3).substring(12).trim());
-        ui = Integer.parseInt(readValues.get(4).substring(4).trim());
-        tintA = Integer.parseInt(readValues.get(5).substring(8).trim());
-        tintB = Integer.parseInt(readValues.get(6).substring(8).trim());
-        fontAMode = readValues.get(7).substring(13).trim();
-        fontAStyle = Integer.parseInt(readValues.get(8).substring(14).trim());
-        fontBStyle = Integer.parseInt(readValues.get(9).substring(14).trim());
+        homeEdge();
+        homeWidget();
+        homeApplet(1);
+        homeTooltip();
+        homeWallpaper();
+        homeFolder();
+        homeStatus();
+        homeDrawer();
+        homeShortcut();
 
-        systemUiBars();
+        centerPositions();
+    }
+
+    private void drawerScreen(){
+        if(theNestDrawerView == null){
+            theNestDrawerView = inflater.inflate(R.layout.the_nest_drawer_layout, null);
+            theNestDrawerLayout = theNestDrawerView.findViewById(R.id.the_nest_drawer_layout);
+        }
+        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) == null){
+            theNestRootLayout.addView(theNestDrawerView);
+            setSize(this, theNestDrawerLayout, size(2), size(2));
+        }
+        configurationsC();
+
+        drawerEdge();
+        drawerTooltip();
+        drawerApps();
+        drawerTiles();
+
+        drawerEdgePositions();
+        drawerScreenStateA(1);
+    }
+
+    private void settingsScreen(){
+        if(theNestSettingsView == null){
+            theNestSettingsView = inflater.inflate(R.layout.the_nest_settings_layout, null);
+            theNestSettingsLayout = theNestSettingsView.findViewById(R.id.the_nest_settings_layout);
+        }
+        if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) == null){
+            theNestRootLayout.addView(theNestSettingsView);
+            setSize(this, theNestSettingsLayout, size(2), size(2));
+        }
+        configurationsD();
+
+        settingsButtons();
+        if(settingsTab.equals("Auto")){
+            if(settingsEdgeALayout == null)
+                settingsPanel();
+        } else {
+            settingsPanel();
+        }
+        settingsTooltip();
+
+        settingsScreenStateA();
+    }
+
+    /*
+       ------------------------------
+       [                            ]
+       [     THE NEST - METHODS     ]
+       [                            ]
+       ------------------------------
+    */
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void userInterfaceA(){
         getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, background));
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
@@ -222,7 +410,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                 theNestRootLayout.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
-                        systemUiBars();
+                        userInterfaceB();
                         return true;
                     }
                 });
@@ -231,8 +419,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             }
         }
     }
-
-    private void systemUiBars(){
+    private void userInterfaceB(){
         if(statusBar.equals("Enabled") && navigationBar.equals("Enabled")){
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
                 getWindow().setDecorFitsSystemWindows(true);
@@ -281,13 +468,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    private void customTouchModeA(View view, int hold, int press){
+    private void customTouchModeA(View view, String string, int hold, int press){
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent event) {
@@ -297,23 +478,29 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                         @Override
                         public void run() {
                             if(hold == 0){
-                                homeWidgetHold();
+                                homeAppletBString = string;
+                                homeFolderHold_1();
                             }
                             if(hold == 1){
-                                homeWallpaperHold();
+                                homeAppletBString = string;
+                                homeShortcutHold_1();
                             }
-                            if(hold == 2){
-                                homeFolderHold();
-                            }
+                            if(hold == 2)
+                                drawerTilesHold_0();
                             if(hold == 3){
+                                homeAppletBString = string;
+                                drawerAppsHold_0();
+                            }
+                            if(hold == 4)
+                                homeWidgetHold();
+                            if(hold == 5)
+                                homeWallpaperHold();
+                            if(hold == 6)
+                                homeFolderHold();
+                            if(hold == 7)
                                 homeStatusHold();
-                            }
-                            if(hold == 4){
+                            if(hold == 8)
                                 homeShortcutHold();
-                            }
-                            if(hold == 5){
-
-                            }
                             touchVibrate(TheNest.this, view);
                         }
                     };
@@ -323,13 +510,32 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                     touchStop(view);
                     if((System.currentTimeMillis() - time) < 200){
                         if(press == 0){
-
+                            homeAppletBString = string;
+                            homeFolderPress_4();
                         }
                         if(press == 1){
-                            settingsAboutPress_3();
+                            homeAppletBString = string;
+                            homeShortcutPress_0();
                         }
                         if(press == 2){
-                            settingsAboutPress_4();
+                            if(!drawerAlphabetsString.equals(string)){
+                                drawerAlphabetsString = string;
+                                drawerTilesPress_1();
+                            }
+                        }
+                        if(press == 3){
+                            homeAppletBString = string;
+                            drawerAppsPress_0();
+                        }
+                        if(press == 4)
+                            settingsMiscPress_14(Integer.parseInt(string));
+                        if(press == 5){
+                            settingsDrawerBString = string;
+                            settingsDrawerPress_8();
+                        }
+                        if(press == 6){
+                            settingsHomeBString = string;
+                            settingsHomePress_37();
                         }
                     }
                 }
@@ -367,6 +573,8 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                                     homeWidgetPress_1();
                                 if(count == 2)
                                     homeWidgetPress_2();
+                                if(count == 3)
+                                    homeWidgetPress_3();
                             }
                             if(type == 1){
                                 if(count == 0)
@@ -438,6 +646,8 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                                     drawerAppletPress_7();
                                 if(count == 8)
                                     drawerAppletPress_8();
+                                if(count == 9)
+                                    drawerAppletPress_9();
                             }
                         }
                         if(mode == 2){
@@ -492,8 +702,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                                     settingsMiscPress_12();
                                 if(count == 13)
                                     settingsMiscPress_13();
-                                if(count == 14)
-                                    settingsMiscPress_14();
+                                //------------------------
                                 if(count == 15)
                                     settingsMiscPress_15();
                                 if(count == 16)
@@ -604,6 +813,9 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                                     settingsHomePress_35();
                                 if (count == 36)
                                     settingsHomePress_36();
+                                //-----
+                                if (count == 38)
+                                    settingsHomePress_38();
                             }
                         }
                     }
@@ -614,130 +826,64 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         });
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    private String widgetState;
-    private String widgetMode;
-    private String widgetComponent;
-    private int widgetID;
-    private String widgetStyle;
-
-    private String appletText;
-
-    private String wallpaperState;
-    private String wallpaperMode;
-    private String wallpaperComponent;
-    private String wallpaperStyle;
-
-    private String folderState;
-    private String folderName;
-    private String folderSortingOrder;
-
-    private String statusState;
-    private String statusMode;
-
-    private String drawerMode;
-    private String drawerIcon;
-    private float drawerAlpha;
-    private String drawerSize;
-
-    private String shortcutState;
-
-    private void homeConfigurations(){
-        if(!fileExist(this, "Home/Configurations")){
-            create(this, "Home","/Configurations", "# Home Screen Widget Configurations...");
-            create(this, "Home","/Configurations", "Widget State - Enabled");
-            create(this, "Home","/Configurations", "Widget Mode - [ NONE ]");
-            create(this, "Home","/Configurations", "Widget Component - [ NONE ]");
-            create(this, "Home","/Configurations", "Widget ID - 0");
-            create(this, "Home","/Configurations", "Widget Style - A");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "--------------------");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "# Home Screen Applet Configurations...");
-            create(this, "Home","/Configurations", "Applet Text - ∆×••⟨[ ]⟩");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "--------------------");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "# Home Screen Wallpaper Configurations...");
-            create(this, "Home","/Configurations", "Wallpaper State - Enabled");
-            create(this, "Home","/Configurations", "Wallpaper Mode - [ NONE ]");
-            create(this, "Home","/Configurations", "Wallpaper Component - [ NONE ]");
-            create(this, "Home","/Configurations", "Wallpaper Style - A");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "--------------------");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "# Home Screen Folder Configurations...");
-            create(this, "Home","/Configurations", "Folder State - Enabled");
-            create(this, "Home","/Configurations", "Folder Name - Folder");
-            create(this, "Home","/Configurations", "Folder Sorting Order - Alphabetically");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "--------------------");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "# Home Screen Status Configurations...");
-            create(this, "Home","/Configurations", "Status State - Enabled");
-            create(this, "Home","/Configurations", "Status Mode - [ NONE ]");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "--------------------");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "# Home Screen Drawer Configurations...");
-            create(this, "Home","/Configurations", "Drawer Mode - Icon");
-            create(this, "Home","/Configurations", "Drawer Icon - BeeHive");
-            create(this, "Home","/Configurations", "Drawer Size - C");
-            create(this, "Home","/Configurations", "Drawer Alpha - 1.0f");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "--------------------");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "# Home Screen Shortcut Configurations...");
-            create(this, "Home","/Configurations", "Shortcut State - Enabled");
-            create(this, "Home","/Configurations", " ");
-            create(this, "Home","/Configurations", "--------------------");
-            create(this, "Home","/Configurations", " ");
+    private void centerPositions(){
+        if(wallpaperState.equals("Enabled")){
+            if(statusState.equals("Enabled")){
+                layoutParamsTypeC(this, homeWallpaperLayout, new int[]{direction(5)}, direction(8), R.id.home_tooltip, direction(9), R.id.home_status);
+            } else {
+                layoutParamsTypeB(this, homeWallpaperLayout, new int[]{direction(5)}, direction(8), R.id.home_tooltip);
+            }
         }
-
-        List<String> readValues = read(this, "Home/Configurations");
-        widgetState = readValues.get(1).substring(15).trim();
-        widgetMode = readValues.get(2).substring(14).trim();
-        widgetComponent = readValues.get(3).substring(19).trim();
-        widgetID = Integer.parseInt(readValues.get(4).substring(12).trim());
-        widgetStyle = readValues.get(5).substring(15).trim();
-
-        appletText = readValues.get(10).substring(14).trim();
-
-        wallpaperState = readValues.get(15).substring(17).trim();
-        wallpaperMode = readValues.get(16).substring(17).trim();
-        wallpaperComponent = readValues.get(17).substring(22).trim();
-        wallpaperStyle = readValues.get(18).substring(18).trim();
-
-        folderState = readValues.get(23).substring(15).trim();
-        folderName = readValues.get(24).substring(14).trim();
-        folderSortingOrder = readValues.get(25).substring(23).trim();
-
-        statusState = readValues.get(30).substring(15).trim();
-        statusMode = readValues.get(31).substring(14).trim();
-
-        drawerMode = readValues.get(36).substring(14).trim();
-        drawerIcon = readValues.get(37).substring(14).trim();
-        drawerSize = readValues.get(38).substring(14).trim();
-        drawerAlpha = Float.parseFloat(readValues.get(39).substring(15).trim());
-
-        shortcutState = readValues.get(44).substring(17).trim();
+        if(statusState.equals("Enabled")){
+            if(wallpaperState.equals("Enabled")){
+                layoutParamsTypeB(this, homeStatusLayout, new int[]{direction(6)}, direction(8), R.id.home_tooltip);
+            } else {
+                layoutParamsTypeB(this, homeStatusLayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
+            }
+        }
+        if(folderState.equals("Enabled")){
+            if(wallpaperState.equals("Enabled")){
+                layoutParamsTypeB(this, homeFolderALayout, new int[]{direction(5)}, direction(8), R.id.home_wallpaper);
+                homeFolderALayout.setBackground(null);
+                setMargins(this, homeFolderAIcon, 0, 0, 0, 0);
+            } else {
+                if(statusState.equals("Enabled")){
+                    layoutParamsTypeB(this, homeFolderALayout, new int[]{direction(1)}, direction(8), R.id.home_status);
+                    backgroundTypeA(this, homeFolderALayout,background(8), tintA, 3);
+                    setMargins(this, homeFolderAIcon, 20, 20, 20, 20);
+                } else {
+                    layoutParamsTypeB(this, homeFolderALayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
+                    backgroundTypeA(this, homeFolderALayout, background(5), tintA, 3);
+                    setMargins(this, homeFolderAIcon, 30, 30, 30, 30);
+                }
+            }
+        }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    private void emptyTouch(View view){
+        view.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return true;
+            }
+        });
+    }
+
+    /*
+       -------------------------
+       [                       ]
+       [     HOME - SCREEN     ]
+       [                       ]
+       -------------------------
+    */
 
     private int homeScreenState;
-    private void homeScreenSTATE_A(){
+    private void homeScreenStateA(){
         if(homeScreenState == 0){
             homeScreenState = 1;
+            if(widgetState.equals("Enabled") && widgetComponent.equals("Clock 2"))
+                homeWidgetClockB();
+
             if(widgetState.equals("Enabled") && widgetMode.equals("Device")){
                 if(settingsHomeBBoolean) {
                     homeWidgetEnable();
@@ -749,29 +895,26 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                     }
                 }
             }
-            if(homeAppletInt == 2){
-                if(!isAppInstalled(this, homeAppletBString)){
-                    homeAPPLET(1);
-                }
+            if(homeAppletMode == 2){
+                if(!isAppInstalled(this, homeAppletBString))
+                    homeApplet(1);
             }
-            if(homeAppletInt == 4){
+            if(homeAppletMode == 4){
                 if(homeAppletDInt == 1){
-                    if(widgetState.equals("Disabled") || widgetMode.equals("[ NONE ]")){
-                        homeAPPLET(1);
-                    }
+                    if(widgetState.equals("Disabled") || widgetMode.equals("[ NONE ]"))
+                        homeApplet(1);
                 }
                 if(homeAppletDInt == 2){
-                    if(wallpaperState.equals("Disabled") || widgetMode.equals("[ NONE ]")){
-                        homeAPPLET(1);
-                    }
+                    if(wallpaperState.equals("Disabled") || widgetMode.equals("[ NONE ]"))
+                        homeApplet(1);
                 }
             }
-            if(wallpaperState.equals("Enabled") && wallpaperMode.equals("Device")){
+            if(wallpaperState.equals("Enabled") && wallpaperMode.equals("Device"))
                 homeWallpaperDevice();
-            }
-            if(folderState.equals("Enabled") && theNestHomeLayout.findViewById(R.id.home_folder_b) != null){
-                homeFolder_Root();
-            }
+
+            if(folderState.equals("Enabled") && theNestHomeLayout.findViewById(R.id.home_folder_b) != null)
+                homeFolderInitialize(75);
+
             if(statusState.equals("Enabled") && statusMode.equals("Battery")){
                 if(homeStatusReceiver_1 != null && homeStatusIntent_1 != null){
                     unregisterReceiver(homeStatusReceiver_1);
@@ -780,13 +923,12 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                     registerReceiver(homeStatusReceiver_2, homeStatusIntent_2);
                 }
             }
-            if(shortcutState.equals("Enabled") && theNestHomeLayout.findViewById(R.id.home_shortcut_b) != null){
-                homeShortcutContents();
-            }
+            if(shortcutState.equals("Enabled") && theNestHomeLayout.findViewById(R.id.home_shortcut_b) != null)
+                homeShortcutInitialize(75);
         }
     }
 
-    private void homeScreenSTATE_B(){
+    private void homeScreenStateB(){
         homeScreenState = 0;
         if(widgetState.equals("Enabled") && widgetMode.equals("Device")){
             if(homeWidgetHost != null)
@@ -804,22 +946,21 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- HOME -------------------- []
+    //-------------------- EDGE -------------------- []
+    //``````````
 
-    private void homeEDGE(){
-        homeEdgeAView();
-        homeEdgeBView();
-        homeEdgeCView();
+    private void homeEdge(){
+        homeEdgeA();
+        homeEdgeB();
+        homeEdgeC();
     }
 
     View homeEdgeAView;
     RelativeLayout homeEdgeALayout;
     TextView homeEdgeAText1, homeEdgeAText2;
-    private void homeEdgeAView(){
+    private void homeEdgeA(){
         if(homeEdgeAView == null){
             homeEdgeAView = inflater.inflate(R.layout.home_edge_a, null);
             homeEdgeALayout = homeEdgeAView.findViewById(R.id.home_edge_a);
@@ -829,20 +970,13 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             textType(this, homeEdgeAText1, textA(13), tintA, Typeface.BOLD);
             textType(this, homeEdgeAText2, textA(13), tintA, Typeface.BOLD);
         }
-        if(theNestHomeLayout.findViewById(R.id.home_edge_a) == null){
-            theNestHomeLayout.addView(homeEdgeAView);
-
-            layoutParamsTypeA(this, homeEdgeALayout, new int[]{direction(3), direction(5)});
-            setSize(this, homeEdgeALayout, size(1), size(1));
-            setMargins(this, homeEdgeALayout, 0, 0, 0, 0);
-
-        }
+        homeEdgeCommon(R.id.home_edge_a, homeEdgeAView, homeEdgeALayout, 3, 5, 0);
     }
 
     View homeEdgeBView;
     RelativeLayout homeEdgeBLayout;
     TextView homeEdgeBText1, homeEdgeBText2;
-    private void homeEdgeBView(){
+    private void homeEdgeB(){
         if(homeEdgeBView == null){
             homeEdgeBView = inflater.inflate(R.layout.home_edge_b, null);
             homeEdgeBLayout = homeEdgeBView.findViewById(R.id.home_edge_b);
@@ -852,20 +986,13 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             textType(this, homeEdgeBText1, textA(13), tintA, Typeface.BOLD);
             textType(this, homeEdgeBText2, textA(13), tintA, Typeface.BOLD);
         }
-        if(theNestHomeLayout.findViewById(R.id.home_edge_b) == null){
-            theNestHomeLayout.addView(homeEdgeBView);
-
-            layoutParamsTypeA(this, homeEdgeBLayout, new int[]{direction(3), direction(6)});
-            setSize(this, homeEdgeBLayout, size(1), size(1));
-            setMargins(this, homeEdgeBLayout, 0, 0, 0, 10);
-
-        }
+        homeEdgeCommon(R.id.home_edge_b, homeEdgeBView, homeEdgeBLayout, 3, 6, 10);
     }
 
     View homeEdgeCView;
     RelativeLayout homeEdgeCLayout;
     TextView homeEdgeCText1, homeEdgeCText2, homeEdgeCText3;
-    private void homeEdgeCView(){
+    private void homeEdgeC(){
         if(homeEdgeCView == null){
             homeEdgeCView = inflater.inflate(R.layout.home_edge_c, null);
             homeEdgeCLayout = homeEdgeCView.findViewById(R.id.home_edge_c);
@@ -877,73 +1004,49 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             textType(this, homeEdgeCText2, textA(13), tintA, Typeface.BOLD);
             textType(this, homeEdgeCText3, textA(13), tintA, Typeface.BOLD);
         }
-        if(theNestHomeLayout.findViewById(R.id.home_edge_c) == null){
-            theNestHomeLayout.addView(homeEdgeCView);
+        homeEdgeCommon(R.id.home_edge_c, homeEdgeCView, homeEdgeCLayout, 4, 6, 10);
+    }
 
-            layoutParamsTypeA(this, homeEdgeCLayout, new int[]{direction(4), direction(6)});
-            setSize(this, homeEdgeCLayout, size(1), size(1));
-            setMargins(this, homeEdgeCLayout, 0, 0, 0, 10);
+    private void homeEdgeCommon(int id, View view, RelativeLayout layout, int a, int b, int end){
+        if(theNestHomeLayout.findViewById(id) == null){
+            theNestHomeLayout.addView(view);
+            layoutParamsTypeA(this, layout, new int[]{direction(a), direction(b)});
+            setSize(this, layout, size(1), size(1));
+            setMargins(this, layout, 0, 0, 0, end);
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- WIDGET ------------------- []
+    //``````````
 
-    public void homeWidgetHold(){
-        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null) {
-            homeAPPLET(3);
-        }
-        appletToggle(0);
-    }
-
-    private void homeWidgetPress_0(){
-        if(homeAppletLayout.findViewById(R.id.home_applet_d) == null){
-            homeAPPLET(4);
-        }
-        homeAppletCurrentTools(1);
-    }
-
-    private void homeWidgetPress_1(){
-        homeWidgetEFrame.setVisibility(View.GONE);
-        homeWidgetEText2.setVisibility(View.VISIBLE);
-    }
-
-    private void homeWidgetPress_2(){
-        homeWidgetEFrame.setVisibility(View.VISIBLE);
-        homeWidgetEText2.setVisibility(View.GONE);
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    private void homeWIDGET(){
-        if(widgetState.equals("Disabled"))
+    private void homeWidget(){
+        if(widgetState.equals("Disabled")){
             theNestHomeLayout.removeView(homeWidgetView);
-
-        if(widgetState.equals("Enabled")){
-            homeWidgetView();
+        } else {
+            homeWidget0();
             homeWidgetLayout.removeAllViews();
 
-            if(widgetMode.equals("[ NONE ]")){
+            if(widgetMode.equals("[ NONE ]"))
                 homeWidgetA();
-            } else if(widgetMode.equals("Device")){
+            if(widgetMode.equals("Device"))
                 homeWidgetB();
-            } else if(widgetMode.equals("SimpliC")){
+
+            if(widgetMode.equals("SimpliC")){
                 if(widgetComponent.equals("Clock 1"))
-                    homeWidgetView3();
+                    homeWidgetC();
                 if(widgetComponent.equals("Clock 2"))
-                    homeWidgetView4();
+                    homeWidgetD();
             }
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME WIDGET VIEWS ]----- //
 
     View homeWidgetView;
     RelativeLayout homeWidgetLayout;
-    private void homeWidgetView(){
+    private void homeWidget0(){
         if(homeWidgetView == null){
             homeWidgetView = inflater.inflate(R.layout.home_widget, null);
             homeWidgetLayout = homeWidgetView.findViewById(R.id.home_widget);
@@ -956,8 +1059,6 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             setMargins(this, homeWidgetLayout, 45, 0, 40, 50);
         }
     }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
 
     View homeWidgetAView;
     RelativeLayout homeWidgetALayout;
@@ -972,16 +1073,11 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             backgroundTypeA(this, homeWidgetAView, background(8), tintA, 3);
             textType(this, homeWidgetAText1, textA(0), tintA, Typeface.BOLD);
             textType(this, homeWidgetAText2, textC(0), tintA, fontAStyle);
-
-            customTouchModeA(homeWidgetALayout, 0, 100);
+            customTouchModeA(homeWidgetALayout, "", 4, -1);
         }
-        if(homeWidgetLayout.findViewById(R.id.home_widget_a) == null){
+        if(homeWidgetLayout.findViewById(R.id.home_widget_a) == null)
             homeWidgetLayout.addView(homeWidgetAView);
-            setSize(this, homeWidgetALayout, size(1), size(1));
-        }
     }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
 
     View homeWidgetBView;
     RelativeLayout homeWidgetBLayout, homeWidgetResource, homeWidgetBFrame;
@@ -996,9 +1092,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
 
             backgroundTypeA(this, homeWidgetBLayout, background(8), tintA, 3);
             backgroundTypeB(this, homeWidgetBFrame, drawable(2), background, 30);
-
             imageTypeA(this, homeWidgetBIcon, drawable(2), tintA, 30);
-
             customTouchModeB(homeWidgetBIcon, textC(9), 0, 0, 0);
         }
         if(homeWidgetLayout.findViewById(R.id.home_widget_b) == null){
@@ -1007,24 +1101,144 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
+    View homeWidgetCView;
+    RelativeLayout homeWidgetCLayout;
+    Analog homeWidgetClock;
+    TextClock homeWidgetCText1, homeWidgetCText2;
+    private void homeWidgetC(){
+        if(homeWidgetCView == null){
+            homeWidgetCView = inflater.inflate(R.layout.home_widget_c, null);
+            homeWidgetCLayout = homeWidgetCView.findViewById(R.id.home_widget_c);
+            homeWidgetClock = homeWidgetCView.findViewById(R.id.home_widget_clock);
+            homeWidgetCText1 = homeWidgetCView.findViewById(R.id.home_widget_c_text_1);
+            homeWidgetCText2 = homeWidgetCView.findViewById(R.id.home_widget_c_text_2);
+
+            backgroundTypeA(this, homeWidgetCLayout, background(8), tintA, 3);
+            textType(this, homeWidgetCText1, (String) homeWidgetCText1.getText(), tintA, fontBStyle);
+            textType(this, homeWidgetCText2, (String) homeWidgetCText1.getText(), tintA, fontBStyle);
+            customTouchModeB(homeWidgetCLayout, "", 0, 0, 3);
+        }
+        if(homeWidgetLayout.findViewById(R.id.home_widget_c) == null){
+            homeWidgetLayout.addView(homeWidgetCView);
+            setSize(this, homeWidgetCLayout, density(this, 185), density(this, 130));
+        }
+    }
+
+    View homeWidgetDView;
+    RelativeLayout homeWidgetDLayout;
+    TextView homeWidgetDText4;
+    TextClock homeWidgetDText1, homeWidgetDText2, homeWidgetDText3;
+    private void homeWidgetD(){
+        if(homeWidgetDView == null){
+            homeWidgetDView = inflater.inflate(R.layout.home_widget_d, null);
+            homeWidgetDLayout = homeWidgetDView.findViewById(R.id.home_widget_d);
+            homeWidgetDText1 = homeWidgetDView.findViewById(R.id.home_widget_d_text_1);
+            homeWidgetDText2 = homeWidgetDView.findViewById(R.id.home_widget_d_text_2);
+            homeWidgetDText3 = homeWidgetDView.findViewById(R.id.home_widget_d_text_3);
+            homeWidgetDText4 = homeWidgetDView.findViewById(R.id.home_widget_d_text_4);
+
+            backgroundTypeA(this, homeWidgetDLayout, background(8), tintA, 3);
+
+            textType(this, homeWidgetDText1, (String) homeWidgetDText1.getText(), tintA, fontAStyle);
+            textType(this, homeWidgetDText2, (String) homeWidgetDText2.getText(), tintA, fontBStyle);
+            textType(this, homeWidgetDText3, (String) homeWidgetDText3.getText(), tintA, fontBStyle);
+            textType(this, homeWidgetDText4, "", tintA, fontBStyle);
+
+            customTouchModeB(homeWidgetDLayout, "", 0, 0, 3);
+        }
+        if(homeWidgetLayout.findViewById(R.id.home_widget_d) == null){
+            homeWidgetLayout.addView(homeWidgetDView);
+            setSize(this, homeWidgetDLayout, density(this, 170), density(this, 130));
+            homeWidgetClockB();
+        }
+    }
+
+    View homeWidgetEView;
+    RelativeLayout homeWidgetELayout, homeWidgetEFrame;
+    TextView homeWidgetEText1, homeWidgetEText2, homeWidgetEText3;
+    ImageView homeWidgetEIcon;
+    private void homeWidgetE(){
+        if(homeWidgetEView == null){
+            homeWidgetEView = inflater.inflate(R.layout.home_widget_e, null);
+            homeWidgetELayout = homeWidgetEView.findViewById(R.id.home_widget_e);
+            homeWidgetEFrame = homeWidgetEView.findViewById(R.id.home_widget_e_frame);
+            homeWidgetEIcon = homeWidgetEView.findViewById(R.id.home_widget_e_icon);
+            homeWidgetEText1 = homeWidgetEView.findViewById(R.id.home_widget_e_text_1);
+            homeWidgetEText2 = homeWidgetEView.findViewById(R.id.home_widget_e_text_2);
+            homeWidgetEText3 = homeWidgetEView.findViewById(R.id.home_widget_e_text_3);
+
+            backgroundTypeA(this, homeWidgetELayout, background(8), tintA, 3);
+
+            textType(this, homeWidgetEText1, textC(67), tintA, fontAStyle);
+            textType(this, homeWidgetEText2, textB(61), tintA, fontBStyle);
+            textType(this, homeWidgetEText3, "", tintA, fontBStyle);
+
+            customTouchModeB(homeWidgetEFrame, "", 0, 0, 1);
+            customTouchModeB(homeWidgetEText2, "", 0, 0, 2);
+
+            homeWidgetEText2.setVisibility(View.GONE);
+        }
+        if(homeWidgetLayout.findViewById(R.id.home_widget_e) == null)
+            homeWidgetLayout.addView(homeWidgetEView);
+    }
+
+    // -----[ HOME WIDGET BUTTONS ]----- //
+
+    public void homeWidgetHold(){
+        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null)
+            homeApplet(3);
+        homeAppletToggle(0);
+    }
+
+    private void homeWidgetPress_0(){
+        if(homeAppletLayout.findViewById(R.id.home_applet_d) == null)
+            homeApplet(4);
+        homeAppletOptions(1);
+    }
+
+    private void homeWidgetPress_1(){
+        homeWidgetCommonA(homeWidgetEText2, homeWidgetEFrame);
+    }
+
+    private void homeWidgetPress_2(){
+        homeWidgetCommonA(homeWidgetEFrame, homeWidgetEText2);
+    }
+
+    private void homeWidgetPress_3(){
+        Intent i = new Intent(AlarmClock.ACTION_SHOW_ALARMS);
+        startActivity(i);
+    }
+
+    // -----[ HOME WIDGET COMMON METHODS ]----- //
+
+    private void homeWidgetCommonA(View view_1, View view_2){
+        view_1.setVisibility(View.VISIBLE);
+        view_2.setVisibility(View.GONE);
+    }
+
+    // -----[ HOME WIDGET RARE METHODS ]----- //
+
     private void homeWidgetEnable(){
         if(isAppInstalled(this, widgetComponent)){
             if(homeWidgetManager == null)
                 homeWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+
             if(homeWidgetHost == null)
                 homeWidgetHost = new AppWidgetHost(getApplicationContext(), 2062);
+
             homeWidgetHost.startListening();
             homeWidgetInfo = homeWidgetManager.getAppWidgetInfo(widgetID);
             if(homeWidgetInfo != null)
-                homeWidgetCommon(homeWidgetInfo);
+                homeWidgetInitiate(homeWidgetInfo);
         } else {
             homeWidgetRemove();
         }
     }
 
-    private void homeWidgetCommon(AppWidgetProviderInfo info){
+    private void homeWidgetInitiate(AppWidgetProviderInfo info){
         if(hostView != null && hostView.getChildCount() > 0)
             hostView.removeAllViews();
+
         if(hostView == null) {
             hostView = homeWidgetHost.createView(getApplicationContext(), widgetID, info);
             hostView.setAppWidget(widgetID, info);
@@ -1033,29 +1247,26 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         homeWidgetManager.bindAppWidgetIdIfAllowed(widgetID, info.provider);
     }
 
-    private int widgetWidth;
-    private int widgetHeight;
     private void widgetSize(){
+        int widgetWidth = 0;
+        int widgetHeight = 0;
         if(widgetStyle.equals("A")){
             widgetWidth = 180;
             widgetHeight = 100;
-            setSize(this, homeWidgetBView, density(this, widgetWidth), density(this, widgetHeight));
         }
         if(widgetStyle.equals("B")){
-            widgetWidth = 0;
+            widgetWidth = 400;
             widgetHeight = 100;
-            setSize(this, homeWidgetBView, size(2), density(this, widgetHeight));
         }
         if(widgetStyle.equals("C")){
             widgetWidth = 150;
             widgetHeight = 150;
-            setSize(this, homeWidgetBView, density(this, widgetWidth), density(this, widgetHeight));
         }
         if(widgetStyle.equals("D")){
-            widgetWidth = 0;
+            widgetWidth = 400;
             widgetHeight = 150;
-            setSize(this, homeWidgetBView, size(2), density(this, widgetHeight));
         }
+        setSize(this, homeWidgetBView, density(this, widgetWidth), density(this, widgetHeight));
 
         if(hostView != null && homeWidgetResource != null){
             int widgetW = 0;
@@ -1102,9 +1313,9 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
     AppWidgetHostView hostView;
     AppWidgetProviderInfo homeWidgetInfo;
     private void homeWidgetRemove(){
-        edit(this, "Home/Configurations", "Widget Mode - " + widgetMode, "Widget Mode - [ NONE ]");
-        edit(this, "Home/Configurations", "Widget Component - " + widgetComponent, "Widget Component - [ NONE ]");
-        edit(this, "Home/Configurations", "Widget ID - " + widgetID, "Widget ID - 0");
+        edit(this, "Configurations - 02", "Widget Mode - " + widgetMode, "Widget Mode - [ NONE ]");
+        edit(this, "Configurations - 02", "Widget Component - " + widgetComponent, "Widget Component - [ NONE ]");
+        edit(this, "Configurations - 02", "Widget ID - " + widgetID, "Widget ID - 0");
         if(homeWidgetHost != null){
             homeWidgetHost.stopListening();
             homeWidgetHost.deleteAppWidgetId(widgetID);
@@ -1117,356 +1328,106 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         if(homeWidgetResource != null)
             homeWidgetResource.removeAllViews();
         homeWidgetManager = null;
-        homeConfigurations();
-        homeWIDGET();
+        configurationsB();
+        homeWidget();
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeWidgetView3;
-    RelativeLayout homeWidgetC;
-    Analog homeWidgetClock;
-    TextClock homeWidgetCText1, homeWidgetCText2;
-    private void homeWidgetView3(){
-        if(homeWidgetView3 == null){
-            homeWidgetView3 = inflater.inflate(R.layout.home_widget_c, null);
-            homeWidgetC = homeWidgetView3.findViewById(R.id.home_widget_c);
-            homeWidgetClock = homeWidgetView3.findViewById(R.id.home_widget_clock);
-            homeWidgetCText1 = homeWidgetView3.findViewById(R.id.home_widget_c_text_1);
-            homeWidgetCText2 = homeWidgetView3.findViewById(R.id.home_widget_c_text_2);
-
-            backgroundTypeA(this, homeWidgetC, background(8), tintA, 3);
-
-            textType(this, homeWidgetCText1, (String) homeWidgetCText1.getText(), tintA, fontBStyle);
-            textType(this, homeWidgetCText2, (String) homeWidgetCText1.getText(), tintA, fontBStyle);
-
-            homeWidgetC.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(AlarmClock.ACTION_SHOW_ALARMS);
-                    startActivity(i);
-                }
-            });
-        }
-        if(homeWidgetLayout.findViewById(R.id.home_widget_c) == null){
-            homeWidgetLayout.addView(homeWidgetView3);
-            setSize(this, homeWidgetC, density(this, 185), density(this, 130));
-        }
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeWidgetView4;
-    RelativeLayout homeWidgetD;
-    TextView homeWidgetDText4;
-    TextClock homeWidgetDText1, homeWidgetDText2, homeWidgetDText3;
-    private void homeWidgetView4(){
-        if(homeWidgetView4 == null){
-            homeWidgetView4 = inflater.inflate(R.layout.home_widget_d, homeWidgetD);
-            homeWidgetD = homeWidgetView4.findViewById(R.id.home_widget_d);
-            homeWidgetDText1 = homeWidgetView4.findViewById(R.id.home_widget_d_text_1);
-            homeWidgetDText2 = homeWidgetView4.findViewById(R.id.home_widget_d_text_2);
-            homeWidgetDText3 = homeWidgetView4.findViewById(R.id.home_widget_d_text_3);
-            homeWidgetDText4 = homeWidgetView4.findViewById(R.id.home_widget_d_text_4);
-
-            backgroundTypeA(this, homeWidgetD, background(8), tintA, 3);
-
-            textType(this, homeWidgetDText1, (String) homeWidgetDText1.getText(), tintA, fontBStyle);
-            textType(this, homeWidgetDText2, (String) homeWidgetDText3.getText(), tintA, fontBStyle);
-            textType(this, homeWidgetDText3, (String) homeWidgetDText3.getText(), tintA, fontBStyle);
-
-            homeWidgetD.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent i = new Intent(AlarmClock.ACTION_SHOW_ALARMS);
-                    startActivity(i);
-                }
-            });
-        }
-        if(homeWidgetLayout.findViewById(R.id.home_widget_d) == null){
-            homeWidgetLayout.addView(homeWidgetView4);
-            setSize(this, homeWidgetD, density(this, 170), density(this, 130));
-        }
-        clock_B();
-    }
-
-    private void clock_B(){
-        Calendar c = Calendar.getInstance();
-        if(c.get(Calendar.AM_PM) == Calendar.AM){
-            if(c.get(Calendar.HOUR) <= 6){
-                textType(this, homeWidgetDText4, textB(0), tintA, fontBStyle);
+    private void homeWidgetClockB(){
+        Calendar calendar = Calendar.getInstance();
+        if(calendar.get(Calendar.AM_PM) == Calendar.AM){
+            if(calendar.get(Calendar.HOUR) <= 6){
+                homeWidgetDText4.setText(textB(0));
             } else {
-                textType(this, homeWidgetDText4, textB(1), tintA, fontBStyle);
+                homeWidgetDText4.setText(textB(1));
             }
         } else {
-            if(c.get(Calendar.HOUR) < 6){
-                textType(this, homeWidgetDText4, textB(2), tintA, fontBStyle);
+            if(calendar.get(Calendar.HOUR) < 6){
+                homeWidgetDText4.setText(textB(2));
             } else {
-                textType(this, homeWidgetDText4, textB(3), tintA, fontBStyle);
+                homeWidgetDText4.setText(textB(3));
             }
         }
     }
 
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- APPLET ------------------- []
+    //``````````
 
-    View homeWidgetEView;
-    RelativeLayout homeWidgetELayout, homeWidgetEFrame;
-    TextView homeWidgetEText1, homeWidgetEText2, homeWidgetEText3;
-    ImageView homeWidgetEIcon;
-    private void homeWidgetE(){
-        if(homeWidgetEView == null){
-            homeWidgetEView = inflater.inflate(R.layout.home_widget_e, null);
-            homeWidgetELayout = homeWidgetEView.findViewById(R.id.home_widget_e);
-            homeWidgetEFrame = homeWidgetEView.findViewById(R.id.home_widget_e_frame);
-            homeWidgetEIcon = homeWidgetEView.findViewById(R.id.home_widget_e_icon);
-            homeWidgetEText1 = homeWidgetEView.findViewById(R.id.home_widget_e_text_1);
-            homeWidgetEText2 = homeWidgetEView.findViewById(R.id.home_widget_e_text_2);
-            homeWidgetEText3 = homeWidgetEView.findViewById(R.id.home_widget_e_text_3);
-
-            backgroundTypeA(this, homeWidgetELayout, background(8), tintA, 3);
-
-            textType(this, homeWidgetEText1, textC(67), tintA, fontAStyle);
-            textType(this, homeWidgetEText2, textB(61), tintA, fontBStyle);
-            textType(this, homeWidgetEText3, "", tintA, fontBStyle);
-            homeWidgetEText2.setVisibility(View.GONE);
-
-            customTouchModeB(homeWidgetEFrame, "", 0, 0, 1);
-            customTouchModeB(homeWidgetEText2, "", 0, 0, 2);
-        }
-        if(homeWidgetLayout.findViewById(R.id.home_widget_e) == null){
-            homeWidgetLayout.addView(homeWidgetEView);
-        }
-    }
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    private int homeAppletInt;
-    private void homeAPPLET(int mode){
-        homeAppletView0();
+    private int homeAppletMode;
+    private void homeApplet(int mode){
+        homeApplet0();
         homeAppletLayout.removeAllViews();
-        if(mode == 1){
-            homeAppletView1();
-        }
-        if(mode == 2){
-            homeAppletView2();
-        }
-        if(mode == 3){
-            homeAppletView3();
-        }
-        if(mode == 4){
-            homeAppletView4();
-        }
-        homeAppletInt = mode;
+        homeAppletMode = mode;
+
+        if(mode == 1)
+            homeAppletA();
+
+        if(mode == 2)
+            homeAppletB();
+
+        if(mode == 3)
+            homeAppletC();
+
+        if(mode == 4)
+            homeAppletD();
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME APPLET VIEWS ]----- //
 
-    private void homeAppletPress_0(){
-        homeScreenSTATE_B();
-        theNestRootLayout.removeView(theNestHomeView);
-        if(theNestSettingsView == null){
-            theNestSettingsView = inflater.inflate(R.layout.the_nest_settings_layout, null);
-            theNestSettingsLayout = theNestSettingsView.findViewById(R.id.the_nest_settings_layout);
-        }
-        if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) == null){
-            theNestRootLayout.addView(theNestSettingsView);
-            setSize(this, theNestSettingsLayout, size(2), size(2));
-
-            settingsConfigurations();
-            settingsButtonsCREATED();
-            settingsTooltipCREATED();
-            if(settingsEdgeALayout == null){
-                settingsPanelCREATED();
-            }
-            settingsScreenSTATE_A();
-        }
-    }
-
-    private void homeAppletPress_1(){
-        if(isAppInstalled(this, homeAppletBString)){
-            Methods.startActivity(this, homeAppletBString, Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        } else {
-            homeAPPLET(1);
-        }
-    }
-
-    private void homeAppletPress_2(){
-        if(homeAppletBInt == 1){
-            homeFolder_Stem(homeAppletBString);
-        }
-        if(homeAppletBInt == 2){
-            homeShortcutRemove(homeAppletBString);
-        }
-        homeAPPLET(1);
-    }
-
-    private void homeAppletPress_3(){
-        if(homeAppletCString2.equals("Enabled")) {
-            edit(this,  "Home/Configurations", homeAppletCString1 + " State - Enabled", homeAppletCString1 + " State - Disabled");
-        } else {
-            edit(this, "Home/Configurations", homeAppletCString1 + " State - Disabled", homeAppletCString1 + " State - Enabled");
-        }
-        homeConfigurations();
-        if(homeAppletCInt == 0){
-            homeWIDGET();
-            homeAppletPositions();
-        }
-        if(homeAppletCInt == 1){
-            homeWALLPAPER();
-            homeCenterPositions();
-        }
-        if(homeAppletCInt == 2){
-            homeFolder_Flower();
-            homeWALLPAPER();
-            homeStatus();
-            homeCenterPositions();
-            InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-        }
-        if(homeAppletCInt == 3){
-            homeStatus();
-            homeCenterPositions();
-        }
-        if(homeAppletCInt == 4){
-            homeSHORTCUT();
-        }
-        appletToggle(homeAppletCInt);
-    }
-
-    private void homeAppletPress_4(){
-        if(homeAppletDInt == 1){
-            homeWidgetRemove();
-        }
-        if(homeAppletDInt == 2){
-            homeWallpaperRemove();
-        }
-        homeAPPLET(1);
-    }
-
-    private void homeAppletPress_5(){
-        if(homeAppletDInt == 1){
-            if(widgetStyle.equals("A")){
-                edit(this, "Home/Configurations",   "Widget Style - " + widgetStyle,  "Widget Style - B");
-            }
-            if(widgetStyle.equals("B")){
-                edit(this, "Home/Configurations",   "Widget Style - " + widgetStyle,  "Widget Style - C");
-            }
-            if(widgetStyle.equals("C")){
-                edit(this, "Home/Configurations",   "Widget Style - " + widgetStyle,  "Widget Style - D");
-            }
-            if(widgetStyle.equals("D")){
-                edit(this, "Home/Configurations",   "Widget Style - " + widgetStyle,  "Widget Style - A");
-            }
-            homeConfigurations();
-            widgetSize();
-        }
-    }
-
-    private void homeAppletPress_6(){
-        if(isAppInstalled(this, homeAppletBString)){
-            Methods.startActivity(this, homeAppletBString, Intent.ACTION_DELETE);
-        } else {
-            homeAPPLET(1);
-        }
-    }
-
-    private void homeAppletPress_7(){
-        if(homeAppletDInt == 2){
-            try {
-                homeWallpaperManager.forgetLoadedWallpaper();
-            } catch (Exception e){}
-            imageTypeD(this, homeWallpaperCView, homeWallpaperManager.getDrawable(), 200);
-        }
-    }
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    private void homeAppletRESUMED(){
-        if(homeAppletLayout.findViewById(R.id.home_applet_b) != null && !isAppInstalled(this, homeAppletBString)){
-            homeScreenSTATE_B();
-            homeScreenSTATE_A();
-        }
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeAppletView0;
+    View homeAppletView;
     RelativeLayout homeAppletLayout;
-    private void homeAppletView0(){
-        if(homeAppletView0 == null){
-            homeAppletView0 = inflater.inflate(R.layout.home_applet, null);
-            homeAppletLayout = homeAppletView0.findViewById(R.id.home_applet);
+    private void homeApplet0(){
+        if(homeAppletView == null){
+            homeAppletView = inflater.inflate(R.layout.home_applet, null);
+            homeAppletLayout = homeAppletView.findViewById(R.id.home_applet);
         }
         if(theNestHomeLayout.findViewById(R.id.home_applet) == null){
-            theNestHomeLayout.addView(homeAppletView0);
+            theNestHomeLayout.addView(homeAppletView);
             setSize(this, homeAppletLayout, size(1), size(1));
-        }
-        homeAppletPositions();
-    }
-
-    private void homeAppletPositions(){
-        if(theNestHomeLayout.findViewById(R.id.home_widget) == null) {
-            layoutParamsTypeA(this, homeAppletLayout, new int[]{direction(1), direction(3)});
-            setMargins(this, homeAppletLayout, 45, 0, 40, 60);
-        } else {
-            layoutParamsTypeB(this, homeAppletLayout, new int[]{direction(1)}, direction(8), R.id.home_widget);
-            setMargins(this, homeAppletLayout, 20, 0, 20, 20);
+            homeAppletPositions();
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeAppletView1;
-    RelativeLayout homeAppletA;
+    View homeAppletAView;
+    RelativeLayout homeAppletALayout;
     ImageView homeAppletAIcon;
     TextView homeAppletAText;
-    private void homeAppletView1(){
-        if(homeAppletView1 == null){
-            homeAppletView1 = inflater.inflate(R.layout.home_applet_a, null);
-            homeAppletA = homeAppletView1.findViewById(R.id.home_applet_a);
-            homeAppletAIcon = homeAppletView1.findViewById(R.id.home_applet_a_icon);
-            homeAppletAText = homeAppletView1.findViewById(R.id.home_applet_a_text);
+    private void homeAppletA(){
+        if(homeAppletAView == null){
+            homeAppletAView = inflater.inflate(R.layout.home_applet_a, null);
+            homeAppletALayout = homeAppletAView.findViewById(R.id.home_applet_a);
+            homeAppletAIcon = homeAppletAView.findViewById(R.id.home_applet_a_icon);
+            homeAppletAText = homeAppletAView.findViewById(R.id.home_applet_a_text);
 
-            backgroundTypeC(this, homeAppletA, background(3), tintA);
+            backgroundTypeC(this, homeAppletALayout, background(3), tintA);
             imageTypeA(this, homeAppletAIcon, icon(43), tintB, 75);
             textType(this, homeAppletAText, appletText, tintB, fontAStyle);
 
             customTouchModeB(homeAppletAIcon, textC(6), 0, 1, 0);
             homeAppletText();
         }
-        if(homeAppletLayout.findViewById(R.id.home_applet_a) == null){
-            homeAppletLayout.addView(homeAppletView1);
-        }
+        if(homeAppletLayout.findViewById(R.id.home_applet_a) == null)
+            homeAppletLayout.addView(homeAppletAView);
     }
 
-    private void homeAppletText(){
-        if(appletText.isEmpty()){
-            homeAppletAText.setVisibility(View.GONE);
-        } else {
-            homeAppletAText.setVisibility(View.VISIBLE);
-        }
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeAppletView2;
-    RelativeLayout homeAppletB, homeAppletBFrame1, homeAppletBFrame2, homeAppletBFrame3, homeAppletBFrame4;
+    View homeAppletBView;
+    RelativeLayout homeAppletBLayout, homeAppletBFrame1, homeAppletBFrame2, homeAppletBFrame3, homeAppletBFrame4;
     ImageView homeAppletBIcon1, homeAppletBIcon2, homeAppletBIcon3, homeAppletBIcon4;
     TextView homeAppletBText;
-    private void homeAppletView2(){
-        if(homeAppletView2 == null){
-            homeAppletView2 = inflater.inflate(R.layout.home_applet_b, null);
-            homeAppletB = homeAppletView2.findViewById(R.id.home_applet_b);
-            homeAppletBIcon1 = homeAppletView2.findViewById(R.id.home_applet_b_icon_1);
-            homeAppletBIcon2 = homeAppletView2.findViewById(R.id.home_applet_b_icon_2);
-            homeAppletBIcon3 = homeAppletView2.findViewById(R.id.home_applet_b_icon_3);
-            homeAppletBIcon4 = homeAppletView2.findViewById(R.id.home_applet_b_icon_4);
-            homeAppletBFrame1 = homeAppletView2.findViewById(R.id.home_applet_b_frame_1);
-            homeAppletBFrame2 = homeAppletView2.findViewById(R.id.home_applet_b_frame_2);
-            homeAppletBFrame3 = homeAppletView2.findViewById(R.id.home_applet_b_frame_3);
-            homeAppletBFrame4 = homeAppletView2.findViewById(R.id.home_applet_b_frame_4);
-            homeAppletBText = homeAppletView2.findViewById(R.id.home_applet_b_text);
+    private void homeAppletB(){
+        if(homeAppletBView == null){
+            homeAppletBView = inflater.inflate(R.layout.home_applet_b, null);
+            homeAppletBLayout = homeAppletBView.findViewById(R.id.home_applet_b);
+            homeAppletBIcon1 = homeAppletBView.findViewById(R.id.home_applet_b_icon_1);
+            homeAppletBIcon2 = homeAppletBView.findViewById(R.id.home_applet_b_icon_2);
+            homeAppletBIcon3 = homeAppletBView.findViewById(R.id.home_applet_b_icon_3);
+            homeAppletBIcon4 = homeAppletBView.findViewById(R.id.home_applet_b_icon_4);
+            homeAppletBFrame1 = homeAppletBView.findViewById(R.id.home_applet_b_frame_1);
+            homeAppletBFrame2 = homeAppletBView.findViewById(R.id.home_applet_b_frame_2);
+            homeAppletBFrame3 = homeAppletBView.findViewById(R.id.home_applet_b_frame_3);
+            homeAppletBFrame4 = homeAppletBView.findViewById(R.id.home_applet_b_frame_4);
+            homeAppletBText = homeAppletBView.findViewById(R.id.home_applet_b_text);
 
             backgroundTypeC(this, homeAppletBFrame4, background(3), tintA);
             backgroundTypeA(this, homeAppletBFrame1, background(5), tintB, 3);
@@ -1484,68 +1445,215 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             customTouchModeB(homeAppletBFrame3, textC(12), 0, 1,6);
         }
         if(homeAppletLayout.findViewById(R.id.home_applet_b) == null){
-            homeAppletLayout.addView(homeAppletView2);
-            layoutParamsTypeA(this, homeAppletB, new int[]{direction(2)});
-        }
-        if(!isAppInstalled(this, homeAppletBString)){
-            homeAPPLET(1);
+            homeAppletLayout.addView(homeAppletBView);
+            layoutParamsTypeA(this, homeAppletBLayout, new int[]{direction(2)});
         }
     }
 
-    private int homeAppletBInt = 0;
+    View homeAppletCView;
+    RelativeLayout homeAppletCLayout, homeAppletCFrame;
+    TextView homeAppletCText;
+    ImageView homeAppletCCircle;
+    private void homeAppletC(){
+        if(homeAppletCView == null){
+            homeAppletCView = inflater.inflate(R.layout.home_applet_c, null);
+            homeAppletCLayout = homeAppletCView.findViewById(R.id.home_applet_c);
+            homeAppletCText = homeAppletCView.findViewById(R.id.home_applet_c_text);
+            homeAppletCFrame = homeAppletCView.findViewById(R.id.home_applet_c_frame);
+            homeAppletCCircle = homeAppletCView.findViewById(R.id.home_applet_c_circle);
+
+            backgroundTypeC(this, homeAppletCLayout, background(3), tintA);
+            backgroundTypeA(this, homeAppletCFrame, background(7), ui, 3);
+            textType(this, homeAppletCText, "", tintB, fontBStyle);
+        }
+        if(homeAppletLayout.findViewById(R.id.home_applet_c) == null){
+            homeAppletLayout.addView(homeAppletCView);
+        }
+    }
+
+    View homeAppletDView;
+    RelativeLayout homeAppletDLayout, homeAppletDFrame1, homeAppletDFrame2, homeAppletDFrame3, homeAppletDFrame4,
+            homeAppletDFrame5, homeAppletDFrame6;
+    ImageView homeAppletDIcon1, homeAppletDIcon2, homeAppletDIcon3, homeAppletDIcon4;
+    TextView homeAppletDText;
+    private void homeAppletD(){
+        if(homeAppletDView == null){
+            homeAppletDView = inflater.inflate(R.layout.home_applet_d, null);
+            homeAppletDLayout = homeAppletDView.findViewById(R.id.home_applet_d);
+            homeAppletDFrame1 = homeAppletDView.findViewById(R.id.home_applet_d_frame_1);
+            homeAppletDFrame2 = homeAppletDView.findViewById(R.id.home_applet_d_frame_2);
+            homeAppletDFrame3 = homeAppletDView.findViewById(R.id.home_applet_d_frame_3);
+            homeAppletDFrame4 = homeAppletDView.findViewById(R.id.home_applet_d_frame_4);
+            homeAppletDFrame5 = homeAppletDView.findViewById(R.id.home_applet_d_frame_5);
+            homeAppletDFrame6 = homeAppletDView.findViewById(R.id.home_applet_d_frame_6);
+            homeAppletDIcon1 = homeAppletDView.findViewById(R.id.home_applet_d_icon_1);
+            homeAppletDIcon2 = homeAppletDView.findViewById(R.id.home_applet_d_icon_2);
+            homeAppletDIcon3 = homeAppletDView.findViewById(R.id.home_applet_d_icon_3);
+            homeAppletDIcon4 = homeAppletDView.findViewById(R.id.home_applet_d_icon_4);
+            homeAppletDText = homeAppletDView.findViewById(R.id.home_applet_d_text);
+
+            backgroundTypeA(this, homeAppletDFrame1, background(12), tintA, 3);
+            backgroundTypeC(this, homeAppletDFrame3, background(4), tintA);
+            backgroundTypeA(this, homeAppletDFrame4, background(5), tintA, 3);
+            backgroundTypeA(this, homeAppletDFrame5, background(5), tintA, 3);
+            backgroundTypeA(this, homeAppletDFrame6, background(5), tintA, 3);
+
+            imageTypeA(this, homeAppletDIcon2, icon(48), tintA, 40);
+            imageTypeA(this, homeAppletDIcon3, icon(49), tintA, 40);
+            imageTypeA(this, homeAppletDIcon4, icon(41), tintA, 40);
+
+            textType(this, homeAppletDText, "", tintA, fontAStyle);
+
+            customTouchModeB(homeAppletDFrame4, textC(10), 0, 1, 4);
+            customTouchModeB(homeAppletDFrame5, textC(16), 0, 1, 5);
+            customTouchModeB(homeAppletDFrame6, textC(19), 0, 1, 7);
+        }
+        if(homeAppletLayout.findViewById(R.id.home_applet_d) == null)
+            homeAppletLayout.addView(homeAppletDView);
+    }
+
+    // -----[ HOME APPLET BUTTONS ]----- //
+
+    private void homeAppletPress_0(){
+        homeScreenStateB();
+        theNestRootLayout.removeView(theNestHomeView);
+        settingsScreen();
+    }
+
+    private void homeAppletPress_1(){
+        if(isAppInstalled(this, homeAppletBString)){
+            Methods.startActivity(this, homeAppletBString, Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        } else {
+            homeApplet(1);
+        }
+    }
+
+    private void homeAppletPress_2(){
+        if(homeAppletBInt == 1)
+            homeFolderRemove(homeAppletBString);
+
+        if(homeAppletBInt == 2)
+            homeShortcutRemove(homeAppletBString);
+
+        homeApplet(1);
+    }
+
+    private void homeAppletPress_3(){
+        if(homeAppletCString2.equals("Enabled")) {
+            edit(this,  "Configurations - 02", homeAppletCString1 + " State - Enabled", homeAppletCString1 + " State - Disabled");
+        } else {
+            edit(this, "Configurations - 02", homeAppletCString1 + " State - Disabled", homeAppletCString1 + " State - Enabled");
+        }
+        configurationsB();
+        if(homeAppletCInt == 0){
+            homeWidget();
+            homeAppletPositions();
+        }
+        if(homeAppletCInt == 1){
+            homeWallpaper();
+            centerPositions();
+        }
+        if(homeAppletCInt == 2){
+            homeFolder();
+            homeWallpaper();
+            homeStatus();
+            centerPositions();
+            InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+        }
+        if(homeAppletCInt == 3){
+            homeStatus();
+            centerPositions();
+        }
+        if(homeAppletCInt == 4)
+            homeShortcut();
+
+        homeAppletToggle(homeAppletCInt);
+    }
+
+    private void homeAppletPress_4(){
+        if(homeAppletDInt == 1)
+            homeWidgetRemove();
+
+        if(homeAppletDInt == 2)
+            homeWallpaperRemove();
+
+        homeApplet(1);
+    }
+
+    private void homeAppletPress_5(){
+        if(homeAppletDInt == 1){
+            String style = "";
+            if(widgetStyle.equals("A"))
+                style = "B";
+            if(widgetStyle.equals("B"))
+                style = "C";
+            if(widgetStyle.equals("C"))
+                style = "D";
+            if(widgetStyle.equals("D"))
+                style = "A";
+
+            edit(this, "Configurations - 02",   "Widget Style - " + widgetStyle,  "Widget Style - " +  style);
+            configurationsB();
+            widgetSize();
+        }
+    }
+
+    private void homeAppletPress_6(){
+        if(isAppInstalled(this, homeAppletBString)){
+            Methods.startActivity(this, homeAppletBString, Intent.ACTION_DELETE);
+        } else {
+            homeApplet(1);
+        }
+    }
+
+    private void homeAppletPress_7(){
+        if(homeAppletDInt == 2){
+            try {
+                homeWallpaperManager.forgetLoadedWallpaper();
+            } catch (Exception e){}
+            imageTypeD(this, homeWallpaperCImage, homeWallpaperManager.getDrawable(), 200);
+        }
+    }
+
+    // -----[ HOME APPLET METHODS ]----- //
+
+    private void homeAppletPositions(){
+        if(theNestHomeLayout.findViewById(R.id.home_widget) == null) {
+            layoutParamsTypeA(this, homeAppletLayout, new int[]{direction(1), direction(3)});
+            setMargins(this, homeAppletLayout, 45, 0, 40, 60);
+        } else {
+            layoutParamsTypeB(this, homeAppletLayout, new int[]{direction(1)}, direction(8), R.id.home_widget);
+            setMargins(this, homeAppletLayout, 20, 0, 20, 20);
+        }
+    }
+
+    private void homeAppletText(){
+        if(appletText.isEmpty()){
+            homeAppletAText.setVisibility(View.GONE);
+        } else {
+            homeAppletAText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private int homeAppletBInt;
     private String homeAppletBString;
-    private void homeAppletBModule(String packageName, int focus){
+    private void homeAppletApp(String packageName, int focus){
         homeAppletBString = packageName;
         homeAppletBInt = focus;
-
         if(!systemApp(this, packageName)){
             homeAppletBFrame3.setVisibility(View.VISIBLE);
         } else {
             homeAppletBFrame3.setVisibility(View.GONE);
         }
-
-        String appLabel = "";
-        try {
-            appLabel = (String) getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0));
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        homeAppletBText.setText(appLabel);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            homeAppletBIcon1.setImageBitmap(roundedBitmap(adaptiveIcon(this, packageName, 50)));
-        } else {
-            homeAppletBIcon1.setImageBitmap(roundedBitmap(drawableIcon(this, packageName, 50)));
-        }
+        homeAppletBText.setText(appLabel(this, homeAppletBString));
+        homeAppletBIcon1.setImageBitmap(appIcon(this, homeAppletBString, 50));
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeAppletView3;
-    RelativeLayout homeAppletC, homeAppletCFrame;
-    TextView homeAppletCText;
-    ImageView homeAppletCCircle;
-    private void homeAppletView3(){
-        if(homeAppletView3 == null){
-            homeAppletView3 = inflater.inflate(R.layout.home_applet_c, null);
-            homeAppletC = homeAppletView3.findViewById(R.id.home_applet_c);
-            homeAppletCText = homeAppletView3.findViewById(R.id.home_applet_c_text);
-            homeAppletCFrame = homeAppletView3.findViewById(R.id.home_applet_c_frame);
-            homeAppletCCircle = homeAppletView3.findViewById(R.id.home_applet_c_circle);
-
-            backgroundTypeC(this, homeAppletC, background(3), tintA);
-            backgroundTypeA(this, homeAppletCFrame, background(7), ui, 3);
-            textType(this, homeAppletCText, "", tintB, fontBStyle);
-        }
-        if(homeAppletLayout.findViewById(R.id.home_applet_c) == null){
-            homeAppletLayout.addView(homeAppletView3);
-        }
-    }
-
-    private int homeAppletCInt = 0;
-    private String homeAppletCString1 = "";
-    private String homeAppletCString2 = "";
-    private void appletToggle(int mode){
+    private int homeAppletCInt;
+    private String homeAppletCString1;
+    private String homeAppletCString2;
+    private void homeAppletToggle(int mode){
         homeAppletCInt = mode;
         if(homeAppletCInt == 0){
             homeAppletCString1 = "Widget";
@@ -1581,52 +1689,8 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         customTouchModeB(homeAppletCFrame, "", 0, 1, 3);
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeAppletView4;
-    RelativeLayout homeAppletD, homeAppletDFrame1, homeAppletDFrame2, homeAppletDFrame3, homeAppletDFrame4,
-            homeAppletDFrame5, homeAppletDFrame6;
-    ImageView homeAppletDIcon1, homeAppletDIcon2, homeAppletDIcon3, homeAppletDIcon4;
-    TextView homeAppletDText;
-    private void homeAppletView4(){
-        if(homeAppletView4 == null){
-            homeAppletView4 = inflater.inflate(R.layout.home_applet_d, null);
-            homeAppletD = homeAppletView4.findViewById(R.id.home_applet_d);
-            homeAppletDFrame1 = homeAppletView4.findViewById(R.id.home_applet_d_frame_1);
-            homeAppletDFrame2 = homeAppletView4.findViewById(R.id.home_applet_d_frame_2);
-            homeAppletDFrame3 = homeAppletView4.findViewById(R.id.home_applet_d_frame_3);
-            homeAppletDFrame4 = homeAppletView4.findViewById(R.id.home_applet_d_frame_4);
-            homeAppletDFrame5 = homeAppletView4.findViewById(R.id.home_applet_d_frame_5);
-            homeAppletDFrame6 = homeAppletView4.findViewById(R.id.home_applet_d_frame_6);
-            homeAppletDIcon1 = homeAppletView4.findViewById(R.id.home_applet_d_icon_1);
-            homeAppletDIcon2 = homeAppletView4.findViewById(R.id.home_applet_d_icon_2);
-            homeAppletDIcon3 = homeAppletView4.findViewById(R.id.home_applet_d_icon_3);
-            homeAppletDIcon4 = homeAppletView4.findViewById(R.id.home_applet_d_icon_4);
-            homeAppletDText = homeAppletView4.findViewById(R.id.home_applet_d_text);
-
-            backgroundTypeA(this, homeAppletDFrame1, background(12), tintA, 3);
-            backgroundTypeC(this, homeAppletDFrame3, background(4), tintA);
-            backgroundTypeA(this, homeAppletDFrame4, background(5), tintA, 3);
-            backgroundTypeA(this, homeAppletDFrame5, background(5), tintA, 3);
-            backgroundTypeA(this, homeAppletDFrame6, background(5), tintA, 3);
-
-            imageTypeA(this, homeAppletDIcon2, icon(48), tintA, 40);
-            imageTypeA(this, homeAppletDIcon3, icon(49), tintA, 40);
-            imageTypeA(this, homeAppletDIcon4, icon(41), tintA, 40);
-
-            textType(this, homeAppletDText, "", tintA, fontAStyle);
-
-            customTouchModeB(homeAppletDFrame4, textC(10), 0, 1, 4);
-            customTouchModeB(homeAppletDFrame5, textC(16), 0, 1, 5);
-            customTouchModeB(homeAppletDFrame6, textC(19), 0, 1, 7);
-        }
-        if(homeAppletLayout.findViewById(R.id.home_applet_d) == null){
-            homeAppletLayout.addView(homeAppletView4);
-        }
-    }
-
-    private int homeAppletDInt = 0;
-    private void homeAppletCurrentTools(int mode){
+    private int homeAppletDInt;
+    private void homeAppletOptions(int mode){
         homeAppletDInt = mode;
         if(homeAppletDInt == 1){
             imageTypeA(this, homeAppletDIcon1, icon(46), tintB, 75);
@@ -1642,16 +1706,15 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- TOOLTIP ------------------ []
+    //``````````
 
     View homeTooltipView;
     static RelativeLayout homeTooltipLayout;
     static TextView homeTooltipText;
-    private void homeTOOLTIP(){
+    private void homeTooltip(){
         if(homeTooltipView == null){
             homeTooltipView = inflater.inflate(R.layout.home_tooltip, null);
             homeTooltipLayout = homeTooltipView.findViewById(R.id.home_tooltip);
@@ -1686,220 +1749,151 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     };
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------ WALLPAPER ----------------- []
+    //``````````
 
-    private void homeWALLPAPER(){
+    private void homeWallpaper(){
         if(wallpaperState.equals("Disabled")){
-            theNestHomeLayout.removeView(homeWallpaperView0);
+            theNestHomeLayout.removeView(homeWallpaperView);
         } else {
-            homeWallpaperView0();
+            homeWallpaper0();
             homeWallpaperLayout.removeAllViews();
-            if(wallpaperMode.equals("[ NONE ]")){
-                homeWallpaperView1();
-            }
-            if(wallpaperMode.equals("Device")){
+            if(wallpaperMode.equals("[ NONE ]"))
+                homeWallpaperA();
+
+            if(wallpaperMode.equals("Device"))
                 homeWallpaperDevice();
-            }
+
             if(wallpaperMode.equals("SimpliC")){
-                if(wallpaperComponent.equals("Blocks")){
-                    homeWallpaperView4();
-                }
+                if(wallpaperComponent.equals("Blocks"))
+                    homeWallpaperD();
             }
-            if(theNestHomeLayout.findViewById(R.id.home_folder_b) != null){
-                theNestHomeLayout.removeView(homeWallpaperView0);
-            }
+            if(theNestHomeLayout.findViewById(R.id.home_folder_b) != null)
+                theNestHomeLayout.removeView(homeWallpaperView);
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME WALLPAPER VIEWS ]----- //
 
-    private void homeWallpaperHold(){
-        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null) {
-            homeAPPLET(3);
-        }
-        appletToggle(1);
-    }
-
-    private void homeWallpaperPress_0(){
-        if(homeAppletLayout.findViewById(R.id.home_applet_d) == null){
-            homeAPPLET(4);
-        }
-        homeAppletCurrentTools(2);
-    }
-
-    private void homeWallpaperPress_1(){
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", getPackageName(), null));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeWallpaperView0;
+    View homeWallpaperView;
     RelativeLayout homeWallpaperLayout;
-    private void homeWallpaperView0(){
-        if(homeWallpaperView0 == null){
-            homeWallpaperView0 = inflater.inflate(R.layout.home_wallpaper, null);
-            homeWallpaperLayout = homeWallpaperView0.findViewById(R.id.home_wallpaper);
+    private void homeWallpaper0(){
+        if(homeWallpaperView == null){
+            homeWallpaperView = inflater.inflate(R.layout.home_wallpaper, null);
+            homeWallpaperLayout = homeWallpaperView.findViewById(R.id.home_wallpaper);
         }
         if(theNestHomeLayout.findViewById(R.id.home_wallpaper) == null){
-            theNestHomeLayout.addView(homeWallpaperView0);
+            theNestHomeLayout.addView(homeWallpaperView);
             setMargins(this, homeWallpaperLayout,20,0,20, 20);
             setSize(this, homeWallpaperLayout, size(1), size(1));
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeWallpaperView1;
-    RelativeLayout homeWallpaperA;
+    View homeWallpaperAView;
+    RelativeLayout homeWallpaperALayout;
     TextView homeWallpaperAText1, homeWallpaperAText2;
-    private void homeWallpaperView1(){
-        if(homeWallpaperView1 == null){
-            homeWallpaperView1 = inflater.inflate(R.layout.home_wallpaper_a, null);
-            homeWallpaperA = homeWallpaperView1.findViewById(R.id.home_wallpaper_a);
-            homeWallpaperAText1 = homeWallpaperView1.findViewById(R.id.home_wallpaper_a_text_1);
-            homeWallpaperAText2 = homeWallpaperView1.findViewById(R.id.home_wallpaper_a_text_2);
+    private void homeWallpaperA(){
+        if(homeWallpaperAView == null){
+            homeWallpaperAView = inflater.inflate(R.layout.home_wallpaper_a, null);
+            homeWallpaperALayout = homeWallpaperAView.findViewById(R.id.home_wallpaper_a);
+            homeWallpaperAText1 = homeWallpaperAView.findViewById(R.id.home_wallpaper_a_text_1);
+            homeWallpaperAText2 = homeWallpaperAView.findViewById(R.id.home_wallpaper_a_text_2);
 
-            backgroundTypeA(this, homeWallpaperA, background(8), tintA, 3);
+            backgroundTypeA(this, homeWallpaperALayout, background(8), tintA, 3);
             textType(this, homeWallpaperAText1, textA(11), tintA, Typeface.BOLD);
             textType(this, homeWallpaperAText2, textC(1), tintA, fontAStyle);
-
-            customTouchModeA(homeWallpaperA, 1, 1000);
+            customTouchModeA(homeWallpaperALayout, "", 5, -1);
         }
         if(homeWallpaperLayout.findViewById(R.id.home_wallpaper_a) == null){
-            homeWallpaperLayout.addView(homeWallpaperView1);
+            homeWallpaperLayout.addView(homeWallpaperAView);
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeWallpaperView2;
-    RelativeLayout homeWallpaperB;
+    View homeWallpaperBView;
+    RelativeLayout homeWallpaperBLayout;
     ImageView homeWallpaperBIcon;
     TextView homeWallpaperBText1, homeWallpaperBText2;
-    private void homeWallpaperView2(){
-        if(homeWallpaperView2 == null){
-            homeWallpaperView2 = inflater.inflate(R.layout.home_wallpaper_b, null);
-            homeWallpaperB = homeWallpaperView2.findViewById(R.id.home_wallpaper_b);
-            homeWallpaperBIcon = homeWallpaperView2.findViewById(R.id.home_wallpaper_b_icon);
-            homeWallpaperBText1 = homeWallpaperView2.findViewById(R.id.home_wallpaper_b_text_1);
-            homeWallpaperBText2 = homeWallpaperView2.findViewById(R.id.home_wallpaper_b_text_2);
+    private void homeWallpaperB(){
+        if(homeWallpaperBView == null){
+            homeWallpaperBView = inflater.inflate(R.layout.home_wallpaper_b, null);
+            homeWallpaperBLayout = homeWallpaperBView.findViewById(R.id.home_wallpaper_b);
+            homeWallpaperBIcon = homeWallpaperBView.findViewById(R.id.home_wallpaper_b_icon);
+            homeWallpaperBText1 = homeWallpaperBView.findViewById(R.id.home_wallpaper_b_text_1);
+            homeWallpaperBText2 = homeWallpaperBView.findViewById(R.id.home_wallpaper_b_text_2);
 
-            backgroundTypeA(this, homeWallpaperB, background(8), tintA, 3);
-
+            backgroundTypeA(this, homeWallpaperBLayout, background(8), tintA, 3);
             textType(this, homeWallpaperBText1, "", tintA, fontAStyle);
             textType(this, homeWallpaperBText2, textB(11), tintA, fontBStyle);
         }
         if(homeWallpaperLayout.findViewById(R.id.home_wallpaper_b) == null){
-            homeWallpaperLayout.addView(homeWallpaperView2);
-            setSize(this, homeWallpaperB, density(this, 200), size(1));
+            homeWallpaperLayout.addView(homeWallpaperBView);
+            setSize(this, homeWallpaperBLayout, density(this, 200), size(1));
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            homeWallpaperBIcon.setImageBitmap(roundedBitmap(adaptiveIcon(this, homeWallpaperInfo.getPackageName(),50)));
-        } else {
-            homeWallpaperBIcon.setImageBitmap(roundedBitmap(drawableIcon(this, homeWallpaperInfo.getPackageName(),50)));
-        }
+        homeWallpaperBIcon.setImageBitmap(appIcon(this, homeWallpaperInfo.getPackageName(), 50));
         homeWallpaperBText1.setText(homeWallpaperInfo.loadLabel(getPackageManager()));
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    View homeWallpaperCView;
+    RelativeLayout homeWallpaperCLayout, homeWallpaperCFrame;
+    ImageView homeWallpaperCIcon, homeWallpaperCImage;
+    private void homeWallpaperC(){
+        if(homeWallpaperCView == null){
+            homeWallpaperCView = inflater.inflate(R.layout.home_wallpaper_c, null);
+            homeWallpaperCLayout = homeWallpaperCView.findViewById(R.id.home_wallpaper_c);
+            homeWallpaperCImage = homeWallpaperCView.findViewById(R.id.home_wallpaper_c_image);
+            homeWallpaperCIcon = homeWallpaperCView.findViewById(R.id.home_wallpaper_c_icon);
+            homeWallpaperCFrame = homeWallpaperCView.findViewById(R.id.home_wallpaper_c_frame);
 
-    View homeWallpaperView3;
-    RelativeLayout homeWallpaperC, homeWallpaperCFrame;
-    ImageView homeWallpaperCIcon, homeWallpaperCView;
-    private void homeWallpaperView3(){
-        if(homeWallpaperView3 == null){
-            homeWallpaperView3 = inflater.inflate(R.layout.home_wallpaper_c, null);
-            homeWallpaperC = homeWallpaperView3.findViewById(R.id.home_wallpaper_c);
-            homeWallpaperCView = homeWallpaperView3.findViewById(R.id.home_wallpaper_c_view);
-            homeWallpaperCIcon = homeWallpaperView3.findViewById(R.id.home_wallpaper_c_icon);
-            homeWallpaperCFrame = homeWallpaperView3.findViewById(R.id.home_wallpaper_c_frame);
-
-            backgroundTypeA(this, homeWallpaperC, background(8), tintA, 3);
+            backgroundTypeA(this, homeWallpaperCLayout, background(8), tintA, 3);
 
             backgroundTypeB(this, homeWallpaperCFrame, drawable(2), background, 30);
             imageTypeA(this, homeWallpaperCIcon, drawable(2), tintA, 30);
-            imageTypeD(this, homeWallpaperCView, homeWallpaperManager.getDrawable(),200);
+            imageTypeD(this, homeWallpaperCImage, homeWallpaperManager.getDrawable(),200);
 
             customTouchModeB(homeWallpaperCIcon, textC(9), 0, 2, 0);
         }
         if(homeWallpaperLayout.findViewById(R.id.home_wallpaper_c) == null){
-            homeWallpaperLayout.addView(homeWallpaperView3);
-            setSize(this, homeWallpaperCView, density(this, 200), density(this, 200));
+            homeWallpaperLayout.addView(homeWallpaperCView);
+            setSize(this, homeWallpaperCImage, density(this, 200), density(this, 200));
         }
     }
 
-    WallpaperManager homeWallpaperManager;
-    WallpaperInfo homeWallpaperInfo;
-    private void homeWallpaperDevice(){
-        if(homeWallpaperManager == null)
-            homeWallpaperManager = WallpaperManager.getInstance(this);
-        homeWallpaperInfo = homeWallpaperManager.getWallpaperInfo();
-        if (homeWallpaperInfo == null) {
-            if(permission(this, "android.permission.READ_EXTERNAL_STORAGE")){
-                if (homeWallpaperManager.getDrawable() != null) {
-                    homeWallpaperView3();
-                } else {
-                    homeWallpaperRemove();
-                }
-            } else {
-                homeWallpaperView5();
-            }
-        } else {
-            homeWallpaperView2();
-        }
-    }
+    View homeWallpaperDView;
+    RelativeLayout homeWallpaperDLayout;
+    ImageView homeWallpaperDImage;
+    private void homeWallpaperD(){
+        if(homeWallpaperDView == null){
+            homeWallpaperDView = inflater.inflate(R.layout.home_wallpaper_d, null);
+            homeWallpaperDLayout = homeWallpaperDView.findViewById(R.id.home_wallpaper_d);
+            homeWallpaperDImage = homeWallpaperDView.findViewById(R.id.home_wallpaper_d_image);
 
-    private void homeWallpaperRemove(){
-        edit(this, "Home/Configurations", "Wallpaper Mode - " + wallpaperMode, "Wallpaper Mode - [ NONE ]");
-        edit(this, "Home/Configurations", "Wallpaper Component - " + wallpaperComponent, "Wallpaper Component - [ NONE ]");
-        homeConfigurations();
-        homeWALLPAPER();
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeWallpaperView4;
-    RelativeLayout homeWallpaperD;
-    ImageView homeWallpaperDView;
-    private void homeWallpaperView4(){
-        if(homeWallpaperView4 == null){
-            homeWallpaperView4 = inflater.inflate(R.layout.home_wallpaper_d, null);
-            homeWallpaperD = homeWallpaperView4.findViewById(R.id.home_wallpaper_d);
-            homeWallpaperDView = homeWallpaperView4.findViewById(R.id.home_wallpaper_d_view);
-
-            backgroundTypeA(this, homeWallpaperD, background(8), tintA, 3);
-            imageTypeA(this, homeWallpaperDView, drawable(1), R.color.transparent, 200);
+            backgroundTypeA(this, homeWallpaperDLayout, background(8), tintA, 3);
+            imageTypeA(this, homeWallpaperDImage, drawable(1), R.color.transparent, 200);
         }
         if(homeWallpaperLayout.findViewById(R.id.home_wallpaper_d) == null){
-            homeWallpaperLayout.addView(homeWallpaperView4);
-            setSize(this, homeWallpaperDView, density(this, 200), density(this, 200));
+            homeWallpaperLayout.addView(homeWallpaperDView);
+            setSize(this, homeWallpaperDImage, density(this, 200), density(this, 200));
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeWallpaperView5;
-    RelativeLayout homeWallpaperE, homeWallpaperEFrame;
+    View homeWallpaperEView;
+    RelativeLayout homeWallpaperELayout, homeWallpaperEFrame;
     ImageView homeWallpaperEIcon;
     ScrollView homeWallpaperEScrollView;
     TextView homeWallpaperEText1, homeWallpaperEText2;
-    private void homeWallpaperView5(){
-        if(homeWallpaperView5 == null){
-            homeWallpaperView5 = inflater.inflate(R.layout.home_wallpaper_e, null);
-            homeWallpaperE = homeWallpaperView5.findViewById(R.id.home_wallpaper_e);
-            homeWallpaperEIcon = homeWallpaperView5.findViewById(R.id.home_wallpaper_e_icon);
-            homeWallpaperEText1 = homeWallpaperView5.findViewById(R.id.home_wallpaper_e_text_1);
-            homeWallpaperEText2 = homeWallpaperView5.findViewById(R.id.home_wallpaper_e_text_2);
-            homeWallpaperEFrame = homeWallpaperView5.findViewById(R.id.home_wallpaper_e_frame);
-            homeWallpaperEScrollView = homeWallpaperView5.findViewById(R.id.home_wallpaper_e_scroll_view);
+    private void homeWallpaperE(){
+        if(homeWallpaperEView == null){
+            homeWallpaperEView = inflater.inflate(R.layout.home_wallpaper_e, null);
+            homeWallpaperELayout = homeWallpaperEView.findViewById(R.id.home_wallpaper_e);
+            homeWallpaperEIcon = homeWallpaperEView.findViewById(R.id.home_wallpaper_e_icon);
+            homeWallpaperEText1 = homeWallpaperEView.findViewById(R.id.home_wallpaper_e_text_1);
+            homeWallpaperEText2 = homeWallpaperEView.findViewById(R.id.home_wallpaper_e_text_2);
+            homeWallpaperEFrame = homeWallpaperEView.findViewById(R.id.home_wallpaper_e_frame);
+            homeWallpaperEScrollView = homeWallpaperEView.findViewById(R.id.home_wallpaper_e_scroll_view);
 
-            backgroundTypeA(this, homeWallpaperE, background(8), tintA, 3);
+            backgroundTypeA(this, homeWallpaperELayout, background(8), tintA, 3);
             backgroundTypeA(this, homeWallpaperEFrame, background(9), tintA, 3);
 
             imageTypeA(this, homeWallpaperEIcon, icon(20), tintA, 40);
@@ -1910,65 +1904,111 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             customTouchModeB(homeWallpaperEFrame, textC(75), 0, 2, 1);
         }
         if(homeWallpaperLayout.findViewById(R.id.home_wallpaper_e) == null){
-            homeWallpaperLayout.addView(homeWallpaperView5);
-            setSize(this, homeWallpaperE, density(this, 200), density(this, 200));
+            homeWallpaperLayout.addView(homeWallpaperEView);
+            setSize(this, homeWallpaperELayout, density(this, 200), density(this, 200));
         }
     }
 
-    /*
-       -------------------------
-       [                       ]
-       [     HOME - FOLDER     ]
-       [                       ]
-       -------------------------
-     */
+    // -----[ HOME WALLPAPER BUTTONS ]----- //
 
-    private void homeFolder_Flower(){
-        if(folderState.equals("Disabled")){
-            theNestHomeLayout.removeView(homeFolderView1);
-            theNestHomeLayout.removeView(homeFolderView2);
+    private void homeWallpaperHold(){
+        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null)
+            homeApplet(3);
+        homeAppletToggle(1);
+    }
+
+    private void homeWallpaperPress_0(){
+        if(homeAppletLayout.findViewById(R.id.home_applet_d) == null)
+            homeApplet(4);
+        homeAppletOptions(2);
+    }
+
+    private void homeWallpaperPress_1(){
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", getPackageName(), null));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    // -----[ HOME WALLPAPER METHODS ]----- //
+
+    WallpaperManager homeWallpaperManager;
+    WallpaperInfo homeWallpaperInfo;
+    private void homeWallpaperDevice(){
+        if(homeWallpaperManager == null)
+            homeWallpaperManager = WallpaperManager.getInstance(this);
+        homeWallpaperInfo = homeWallpaperManager.getWallpaperInfo();
+        if (homeWallpaperInfo == null) {
+            if(permission(this, "android.permission.READ_EXTERNAL_STORAGE")){
+                if (homeWallpaperManager.getDrawable() != null) {
+                    homeWallpaperC();
+                } else {
+                    homeWallpaperRemove();
+                }
+            } else {
+                homeWallpaperE();
+            }
         } else {
-            homeFolder_FruitA();
+            homeWallpaperB();
         }
     }
 
-    View homeFolderView1;
-    RelativeLayout homeFolderA;
+    private void homeWallpaperRemove(){
+        edit(this, "Configurations - 02", "Wallpaper Mode - " + wallpaperMode, "Wallpaper Mode - [ NONE ]");
+        edit(this, "Configurations - 02", "Wallpaper Component - " + wallpaperComponent, "Wallpaper Component - [ NONE ]");
+        configurationsB();
+        homeWallpaper();
+    }
+
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- FOLDER ------------------- []
+    //``````````
+
+    private void homeFolder(){
+        if(folderState.equals("Disabled")){
+            theNestHomeLayout.removeView(homeFolderAView);
+            theNestHomeLayout.removeView(homeFolderBView);
+        } else {
+            homeFolderA();
+        }
+    }
+
+    // -----[ HOME FOLDER VIEWS ]----- //
+
+    View homeFolderAView;
+    RelativeLayout homeFolderALayout;
     ImageView homeFolderAIcon;
-    private void homeFolder_FruitA(){
-        if(homeFolderView1 == null){
-            homeFolderView1 = inflater.inflate(R.layout.home_folder_a, null);
-            homeFolderA = homeFolderView1.findViewById(R.id.home_folder_a);
-            homeFolderAIcon = homeFolderView1.findViewById(R.id.home_folder_a_icon);
+    private void homeFolderA(){
+        if(homeFolderAView == null){
+            homeFolderAView = inflater.inflate(R.layout.home_folder_a, null);
+            homeFolderALayout = homeFolderAView.findViewById(R.id.home_folder_a);
+            homeFolderAIcon = homeFolderAView.findViewById(R.id.home_folder_a_icon);
 
             imageTypeA(this, homeFolderAIcon, icon(37), tintA, 65);
-
-            customTouchModeB(homeFolderA, textC(2), 0, 3, 0);
+            customTouchModeB(homeFolderALayout, textC(2), 0, 3, 0);
         }
         if(theNestHomeLayout.findViewById(R.id.home_folder_a) == null){
-            theNestHomeLayout.addView(homeFolderView1);
-            setMargins(this, homeFolderA, 20, 0, 20, 0);
+            theNestHomeLayout.addView(homeFolderAView);
+            setMargins(this, homeFolderALayout, 20, 0, 20, 0);
         }
     }
 
-    View homeFolderView2;
-    RelativeLayout homeFolderB, homeFolderBFrame1, homeFolderBFrame2;
+    View homeFolderBView;
+    RelativeLayout homeFolderBLayout, homeFolderBFrame1, homeFolderBFrame2;
     TextView homeFolderBText1, homeFolderBText2;
     EditText homeFolderBEditText;
     ImageView homeFolderBIcon1, homeFolderBIcon2;
-    private void homeFolder_FruitB(){
-        if(homeFolderView2 == null){
-            homeFolderView2 = inflater.inflate(R.layout.home_folder_b, null);
-            homeFolderB = homeFolderView2.findViewById(R.id.home_folder_b);
-            homeFolderBFrame1 = homeFolderView2.findViewById(R.id.home_folder_b_frame_1);
-            homeFolderBFrame2 = homeFolderView2.findViewById(R.id.home_folder_b_frame_2);
-            homeFolderBText1 = homeFolderView2.findViewById(R.id.home_folder_b_text_1);
-            homeFolderBText2 = homeFolderView2.findViewById(R.id.home_folder_b_text_2);
-            homeFolderBEditText = homeFolderView2.findViewById(R.id.home_folder_b_edittext);
-            homeFolderBIcon1 = homeFolderView2.findViewById(R.id.home_folder_b_icon_1);
-            homeFolderBIcon2 = homeFolderView2.findViewById(R.id.home_folder_b_icon_2);
-
-            homeFolderBEditText.setVisibility(View.GONE);
+    private void homeFolderB(){
+        if(homeFolderBView == null){
+            homeFolderBView = inflater.inflate(R.layout.home_folder_b, null);
+            homeFolderBLayout = homeFolderBView.findViewById(R.id.home_folder_b);
+            homeFolderBFrame1 = homeFolderBView.findViewById(R.id.home_folder_b_frame_1);
+            homeFolderBFrame2 = homeFolderBView.findViewById(R.id.home_folder_b_frame_2);
+            homeFolderBText1 = homeFolderBView.findViewById(R.id.home_folder_b_text_1);
+            homeFolderBText2 = homeFolderBView.findViewById(R.id.home_folder_b_text_2);
+            homeFolderBEditText = homeFolderBView.findViewById(R.id.home_folder_b_edittext);
+            homeFolderBIcon1 = homeFolderBView.findViewById(R.id.home_folder_b_icon_1);
+            homeFolderBIcon2 = homeFolderBView.findViewById(R.id.home_folder_b_icon_2);
 
             backgroundTypeC(this, homeFolderBFrame1, background(6), tintA);
             backgroundTypeC(this, homeFolderBFrame2, background(4), tintA);
@@ -1984,85 +2024,94 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             customTouchModeB(homeFolderBIcon2, textC(15), 0, 3,1);
             customTouchModeB(homeFolderBFrame2, textC(14), 0, 3,2);
 
-            homeFolder_LeafA();
+            homeFolderBEditText.setVisibility(View.GONE);
+            homeFolderCommonA();
         }
         if(theNestHomeLayout.findViewById(R.id.home_folder_b) == null){
-            theNestHomeLayout.addView(homeFolderView2);
-            layoutParamsTypeB(this, homeFolderB, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
-            setMargins(this, homeFolderB, 20, 0, 40, 40);
-            setSize(this, homeFolderB, size(1), size(1));
+            theNestHomeLayout.addView(homeFolderBView);
+            layoutParamsTypeB(this, homeFolderBLayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
+            setMargins(this, homeFolderBLayout, 20, 0, 40, 40);
+            setSize(this, homeFolderBLayout, size(1), size(1));
         }
     }
 
-    View homeFolderView3;
-    RelativeLayout homeFolderC, homeFolderCFrame;
+    View homeFolderCView;
+    RelativeLayout homeFolderCLayout, homeFolderCFrame;
     TextView homeFolderCText1, homeFolderCText2;
-    private void homeFolder_FruitC(){
-        if(homeFolderView3 == null){
-            homeFolderView3 = inflater.inflate(R.layout.home_folder_c, null);
-            homeFolderC = homeFolderView3.findViewById(R.id.home_folder_c);
-            homeFolderCFrame = homeFolderView3.findViewById(R.id.home_folder_c_frame);
-            homeFolderCText1 = homeFolderView3.findViewById(R.id.home_folder_c_text_1);
-            homeFolderCText2 = homeFolderView3.findViewById(R.id.home_folder_c_text_2);
+    private void homeFolderC(){
+        if(homeFolderCView == null){
+            homeFolderCView = inflater.inflate(R.layout.home_folder_c, null);
+            homeFolderCLayout = homeFolderCView.findViewById(R.id.home_folder_c);
+            homeFolderCFrame = homeFolderCView.findViewById(R.id.home_folder_c_frame);
+            homeFolderCText1 = homeFolderCView.findViewById(R.id.home_folder_c_text_1);
+            homeFolderCText2 = homeFolderCView.findViewById(R.id.home_folder_c_text_2);
 
-            backgroundTypeC(this, homeFolderC, background(13), tintA);
-
+            backgroundTypeC(this, homeFolderCLayout, background(13), tintA);
             textType(this, homeFolderCText1, textA(5), tintB, Typeface.BOLD);
             textType(this, homeFolderCText2, textC(8), tintB, fontAStyle);
-
-            customTouchModeA(homeFolderCFrame, 2, 1000);
+            customTouchModeA(homeFolderCFrame, "", 6, -1);
         }
-        if(homeFolderB.findViewById(R.id.home_folder_c) == null) {
-            homeFolderB.addView(homeFolderView3);
-            homeFolderB.removeView(homeFolderView4);
-            layoutParamsTypeB(this, homeFolderC, new int[]{direction(5)}, direction(8), R.id.home_folder_b_icon_2);
-            setMargins(this, homeFolderC, 10, 0, 0, 0);
-            setSize(this, homeFolderC, size(1), size(1));
-        }
-    }
-
-    View homeFolderView4;
-    RelativeLayout homeFolderD;
-    ListView homeFolderDListView;
-    private void homeFolder_FruitD(){
-        if(homeFolderView4 == null){
-            homeFolderView4 = inflater.inflate(R.layout.home_folder_d, null);
-            homeFolderD = homeFolderView4.findViewById(R.id.home_folder_d);
-            homeFolderDListView = homeFolderView4.findViewById(R.id.home_folder_d_list_view);
-            backgroundTypeC(this, homeFolderD, background(13), tintA);
-        }
-        if(homeFolderB.findViewById(R.id.home_folder_d) == null) {
-            homeFolderB.removeView(homeFolderView3);
-            homeFolderB.addView(homeFolderView4);
-            layoutParamsTypeB(this, homeFolderD, new int[]{direction(5)}, direction(8), R.id.home_folder_b_icon_2);
-            setMargins(this, homeFolderD, 10, 0, 0, 0);
-            setSize(this, homeFolderD, size(1), size(1));
+        if(homeFolderBLayout.findViewById(R.id.home_folder_c) == null) {
+            homeFolderBLayout.addView(homeFolderCView);
+            homeFolderBLayout.removeView(homeFolderDView);
+            layoutParamsTypeB(this, homeFolderCLayout, new int[]{direction(5)}, direction(8), R.id.home_folder_b_icon_2);
+            setMargins(this, homeFolderCLayout, 10, 0, 0, 0);
+            setSize(this, homeFolderCLayout, size(1), size(1));
         }
     }
 
-    //
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [ PART - 1 ]
-    //
+    View homeFolderDView;
+    RelativeLayout homeFolderDLayout;
+    LinearLayout homeFolderDListView;
+    ScrollView homeFolderDScrollView;
+    private void homeFolderD(){
+        if(homeFolderDView == null){
+            homeFolderDView = inflater.inflate(R.layout.home_folder_d, null);
+            homeFolderDLayout = homeFolderDView.findViewById(R.id.home_folder_d);
+            homeFolderDScrollView = homeFolderDView.findViewById(R.id.home_folder_d_scroll_view);
+            homeFolderDListView = homeFolderDView.findViewById(R.id.home_folder_d_list_view);
+
+            backgroundTypeC(this, homeFolderDLayout, background(13), tintA);
+        }
+        if(homeFolderBLayout.findViewById(R.id.home_folder_d) == null) {
+            homeFolderBLayout.removeView(homeFolderCView);
+            homeFolderBLayout.addView(homeFolderDView);
+            layoutParamsTypeB(this, homeFolderDLayout, new int[]{direction(5)}, direction(8), R.id.home_folder_b_icon_2);
+            setMargins(this, homeFolderDLayout, 10, 0, 0, 0);
+            setSize(this, homeFolderDLayout, size(1), size(1));
+        }
+    }
+
+    // -----[ HOME FOLDER BUTTONS ]----- //
 
     private void homeFolderHold(){
-        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null) {
-            homeAPPLET(3);
+        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null)
+            homeApplet(3);
+        homeAppletToggle(2);
+    }
+
+    private void homeFolderHold_1(){
+        if(isAppInstalled(TheNest.this, homeAppletBString)){
+            if(homeAppletLayout.findViewById(R.id.home_applet_b) == null)
+                homeApplet(2);
+            homeAppletApp(homeAppletBString, 1);
+        } else {
+            homeShortcutRemove(homeAppletBString);
         }
-        appletToggle(2);
     }
 
     private void homeFolderPress_0(){
-        theNestHomeLayout.removeView(homeWallpaperView0);
-        theNestHomeLayout.removeView(homeStatusView0);
-        theNestHomeLayout.removeView(homeFolderView1);
-        homeFolder_FruitB();
-        homeFolder_Root();
+        theNestHomeLayout.removeView(homeWallpaperView);
+        theNestHomeLayout.removeView(homeStatusView);
+        theNestHomeLayout.removeView(homeFolderAView);
+        homeFolderB();
+        homeFolderInitialize(75);
     }
 
     private void homeFolderPress_1(){
-        theNestHomeLayout.removeView(homeFolderView2);
-        homeWALLPAPER();
-        homeFolder_Flower();
+        theNestHomeLayout.removeView(homeFolderBView);
+        homeWallpaper();
+        homeFolder();
         homeStatus();
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
@@ -2075,7 +2124,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
 
         homeFolderBEditText.setVisibility(View.VISIBLE);
         homeFolderBText1.setVisibility(View.GONE);
-        homeFolder_LeafA();
+        homeFolderCommonA();
     }
 
     private void homeFolderPress_3(){
@@ -2083,7 +2132,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
 
-            edit(TheNest.this, "Home/Configurations", "Folder Name - " + folderName, "Folder Name - " + homeFolderBEditText.getText().toString().trim());
+            edit(this, "Configurations - 02", "Folder Name - " + folderName, "Folder Name - " + homeFolderBEditText.getText().toString().trim());
             folderName = homeFolderBEditText.getText().toString().trim();
 
             backgroundTypeC(this, homeFolderBFrame2, background(4), tintA);
@@ -2092,74 +2141,59 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
 
             homeFolderBEditText.setVisibility(View.GONE);
             homeFolderBText1.setVisibility(View.VISIBLE);
-            homeFolder_LeafA();
+            homeFolderCommonA();
         }
     }
 
-    //
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [ PART - 2 ]
-    //
+    private void homeFolderPress_4(){
+        if(isAppInstalled(TheNest.this, homeAppletBString)){
+            try {
+                Intent intent = getPackageManager().getLaunchIntentForPackage(homeAppletBString);
+                startActivity(intent);
+            } catch (Exception e){}
+        } else {
+            homeShortcutRemove(homeAppletBString);
+        }
+    }
 
-    private void homeFolder_LeafA(){
+    // -----[ HOME FOLDER COMMON METHODS ]----- //
+
+    private void homeFolderCommonA(){
         homeFolderBText1.setText(folderName);
         homeFolderBEditText.setText(folderName);
     }
 
-    private void homeFolder_LeafB(){
-        homeFolder_FruitC();
+    private void homeFolderCommonB(){
+        homeFolderC();
         homeFolderBText2.setText("");
     }
 
-    private void homeFolder_LeafC(){
-        if(folderListArray.size() >= 10){
-            homeFolderBText2.setText(textA(8) + " " + folderListArray.size());
-        } else {
-            homeFolderBText2.setText(textA(15) + " " + folderListArray.size());
-        }
-    }
+    // -----[ HOME FOLDER RARE METHODS ]----- //
 
-    //
-    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [ PART - 3 ]
-    //
-
-    ListTypeA folderListItems;
     ArrayList<String> folderListArray;
-    private void homeFolder_Root(){
-        if(fileExist(this, "List/Array - 01")){
+    private void homeFolderInitialize(int delay){
+        if(fileExist(this, "Array - 01")){
             Handler homeFolderHandler = new Handler();
             Runnable homeFolderRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    folderListArray = (ArrayList<String>) read(TheNest.this, "List/Array - 01");
+                    folderListArray = (ArrayList<String>) read(TheNest.this, "Array - 01");
                     for (Iterator<String> iterator = folderListArray.iterator(); iterator.hasNext();) {
                         String value = iterator.next();
                         if (value.equals("REMOVED") || !isAppInstalled(TheNest.this, value))
                             iterator.remove();
                     }
                     if(folderListArray.size() == 0){
-                        homeFolder_LeafB();
+                        homeFolderCommonB();
                     } else {
-                        homeFolder_FruitD();
-                        homeFolder_LeafC();
-
-                        if(folderListItems != null){
-                            if(folderListItems.getCount() < folderListArray.size()){
-                                for(String string : folderListArray){
-                                    if(!folderListItems.arrayItems().contains(string))
-                                        folderListItems.add(string);
-                                }
-                                folderListItems.notifyDataSetChanged();
-                            }
-                            if(folderListItems.getCount() > folderListArray.size()){
-                                for(Object string : folderListItems.arrayItems().toArray()){
-                                    if(!folderListArray.contains(string)){
-                                        folderListItems.remove(string);
-                                    }
-                                }
-                                //Because it makes it slow
-                                //folderListItems.notifyDataSetChanged();
-                            }
+                        homeFolderD();
+                        if(folderListArray.size() >= 10){
+                            homeFolderBText2.setText(textA(8) + " " + folderListArray.size());
                         } else {
+                            homeFolderBText2.setText(textA(15) + " " + folderListArray.size());
+                        }
+
+                        if(homeFolderDListView.getChildCount() != folderListArray.size()){
                             if(folderSortingOrder.equals("Alphabetically")){
                                 Collections.sort(folderListArray, new Comparator<String>() {
                                     @Override
@@ -2170,75 +2204,137 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                             } else {
                                 Collections.sort(folderListArray);
                             }
-
-                            folderListItems = new ListTypeA(TheNest.this, folderListArray, TheNest.this);
-                            if(homeFolderDListView.getAdapter() == null)
-                                homeFolderDListView.setAdapter(folderListItems);
+                            homeFolderDListView.removeAllViews();
+                            homeFolderInitialize(folderListArray, homeFolderDListView);
                         }
                     }
                 }
             };
-            homeFolderHandler.postDelayed(homeFolderRunnable, 75);
+            homeFolderHandler.postDelayed(homeFolderRunnable, delay);
         } else {
-            homeFolder_LeafB();
+            homeFolderCommonB();
         }
     }
 
-    private void homeFolder_Stem(String appletAppPackage){
-        edit(this, "List/Array - 01",  appletAppPackage,"REMOVED");
-        homeFolder_Root();
-        /*folderListArray.remove(appletAppPackage);
-        folderListItems.remove(appletAppPackage);
-        //folderListItems.notifyDataSetChanged();
-        homeFolder_LeafC();
-        if(folderListArray.size() == 0)
-            homeFolder_Root();*/
+    private void homeFolderRemove(String appletAppPackage){
+        edit(this, "Array - 01",  appletAppPackage,"REMOVED");
+        homeFolderInitialize(25);
         settingsHomeEBoolean = true;
     }
 
-    @Override
-    public void homeFolder_Pores(String current) {
-        if(isAppInstalled(this, current)){
-            homeAppletBString = current;
-            if(homeAppletLayout.findViewById(R.id.home_applet_b) == null){
-                homeAPPLET(2);
-            }
-            homeAppletBModule(current, 1);
-        } else {
-            //error app not instaalled msg
+    View folderListView;
+    RelativeLayout folderListFrame;
+    ImageView folderListIcon;
+    TextView folderListText;
+    @SuppressLint("ClickableViewAccessibility")
+    private void homeFolderInitialize(ArrayList<String> list, LinearLayout layout){
+        for (int i = 0; i < list.size(); i++) {
+            folderListView = inflater.inflate(R.layout.linear_type_g, layout, false);
+            folderListFrame = folderListView.findViewById(R.id.linear_type_g_frame);
+            folderListIcon = folderListView.findViewById(R.id.linear_type_g_icon);
+            folderListText = folderListView.findViewById(R.id.linear_type_g_text);
+
+            folderListIcon.setImageBitmap(appIcon(this, list.get(i), 40));
+            textType(this, folderListText, appLabel(this, list.get(i)), tintB, fontBStyle);
+
+            customTouchModeA(folderListView, list.get(i), 0, 0);
+            layout.addView(folderListView);
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- STATUS ------------------- []
+    //``````````
 
     private void homeStatus(){
         if(statusState.equals("Disabled")){
-            theNestHomeLayout.removeView(homeStatusView0);
+            theNestHomeLayout.removeView(homeStatusView);
         } else {
-            homeStatusView0();
-
+            homeStatus0();
             homeStatusLayout.removeAllViews();
 
-            if(statusMode.equals("[ NONE ]")){
-                homeStatusView1();
-            }
-            if(statusMode.equals("Battery Status")){
-                homeStatusView2();
-            }
+            if(statusMode.equals("[ NONE ]"))
+                homeStatusA();
+
+            if(statusMode.equals("Battery Status"))
+                homeStatusB();
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME STATUS VIEWS ]----- //
+
+    View homeStatusView;
+    RelativeLayout homeStatusLayout;
+    private void homeStatus0(){
+        if(homeStatusView == null){
+            homeStatusView = inflater.inflate(R.layout.home_status,null);
+            homeStatusLayout = homeStatusView.findViewById(R.id.home_status);
+        }
+        if(theNestHomeLayout.findViewById(R.id.home_status) == null){
+            theNestHomeLayout.addView(homeStatusView);
+            setSize(this, homeStatusLayout, size(1), size(1));
+            setMargins(this, homeStatusLayout, 20, 0, 0, 20);
+        }
+    }
+
+    View homeStatusAView;
+    RelativeLayout homeStatusALayout;
+    TextView homeStatusAText1, homeStatusAText2;
+    private void homeStatusA(){
+        if(homeStatusAView == null){
+            homeStatusAView = inflater.inflate(R.layout.home_status_a, null);
+            homeStatusALayout = homeStatusAView.findViewById(R.id.home_status_a);
+            homeStatusAText1 = homeStatusAView.findViewById(R.id.home_status_a_text_1);
+            homeStatusAText2 = homeStatusAView.findViewById(R.id.home_status_a_text_2);
+
+            textType(this, homeStatusAText1, textA(12), tintA, fontAStyle);
+            textType(this, homeStatusAText2, textC(3), tintA, fontAStyle);
+            customTouchModeA(homeStatusALayout, "", 7, -1);
+        }
+        if(homeStatusLayout.findViewById(R.id.home_status_a) == null){
+            homeStatusLayout.addView(homeStatusAView);
+            setSize(this, homeStatusALayout, density(this, 100), size(1));
+        }
+    }
+
+    View homeStatusBView;
+    RelativeLayout homeStatusBLayout;
+    ImageView homeStatusBIcon;
+    TextView homeStatusBText1, homeStatusBText2;
+    private void homeStatusB(){
+        if(homeStatusBView == null){
+            homeStatusBView = inflater.inflate(R.layout.home_status_b, null);
+            homeStatusBLayout = homeStatusBView.findViewById(R.id.home_status_b);
+            homeStatusBIcon = homeStatusBView.findViewById(R.id.home_status_b_icon);
+            homeStatusBText1 = homeStatusBView.findViewById(R.id.home_status_b_text_1);
+            homeStatusBText2 = homeStatusBView.findViewById(R.id.home_status_b_text_2);
+
+            textType(this, homeStatusBText1, "", tintA, Typeface.BOLD);
+            textType(this, homeStatusBText2, textB(12), tintA, fontBStyle);
+            customTouchModeB(homeStatusLayout, textC(18), 0, 4, 0);
+            homeStatusBText2.setVisibility(View.GONE);
+
+            homeStatusIntent_1 = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+            registerReceiver(homeStatusReceiver_1, homeStatusIntent_1);
+
+            homeStatusIntent_2 = new IntentFilter();
+            homeStatusIntent_2.addAction(Intent.ACTION_POWER_CONNECTED);
+            homeStatusIntent_2.addAction(Intent.ACTION_POWER_DISCONNECTED);
+            registerReceiver(homeStatusReceiver_2, homeStatusIntent_2);
+        }
+        if(homeStatusLayout.findViewById(R.id.home_status_b) == null){
+            homeStatusLayout.addView(homeStatusBView);
+            homeStatusBatteryState();
+        }
+    }
+
+    // -----[ HOME STATUS BUTTONS ]----- //
 
     private void homeStatusHold(){
-        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null) {
-            homeAPPLET(3);
-        }
-        appletToggle(3);
+        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null)
+            homeApplet(3);
+        homeAppletToggle(3);
     }
 
     private void homeStatusPress_0(){
@@ -2252,78 +2348,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeStatusView0;
-    RelativeLayout homeStatusLayout;
-    private void homeStatusView0(){
-        if(homeStatusView0 == null){
-            homeStatusView0 = inflater.inflate(R.layout.home_status,null);
-            homeStatusLayout = homeStatusView0.findViewById(R.id.home_status);
-        }
-        if(theNestHomeLayout.findViewById(R.id.home_status) == null){
-            theNestHomeLayout.addView(homeStatusView0);
-            setSize(this, homeStatusLayout, size(1), size(1));
-            setMargins(this, homeStatusLayout, 20, 0, 0, 20);
-        }
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeStatusView1;
-    RelativeLayout homeStatusA;
-    TextView homeStatusAText1, homeStatusAText2;
-    private void homeStatusView1(){
-        if(homeStatusView1 == null){
-            homeStatusView1 = inflater.inflate(R.layout.home_status_a, null);
-            homeStatusA = homeStatusView1.findViewById(R.id.home_status_a);
-            homeStatusAText1 = homeStatusView1.findViewById(R.id.home_status_a_text_1);
-            homeStatusAText2 = homeStatusView1.findViewById(R.id.home_status_a_text_2);
-
-            textType(this, homeStatusAText1, textA(12), tintA, fontAStyle);
-            textType(this, homeStatusAText2, textC(3), tintA, fontAStyle);
-
-            customTouchModeA(homeStatusA, 3, 1000);
-        }
-        if(homeStatusLayout.findViewById(R.id.home_status_a) == null){
-            homeStatusLayout.addView(homeStatusView1);
-            setSize(this, homeStatusA, density(this, 100), size(1));
-        }
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeStatusView2;
-    RelativeLayout homeStatusB;
-    ImageView homeStatusBIcon;
-    TextView homeStatusBText1, homeStatusBText2;
-    private void homeStatusView2(){
-        if(homeStatusView2 == null){
-            homeStatusView2 = inflater.inflate(R.layout.home_status_b, null);
-            homeStatusB = homeStatusView2.findViewById(R.id.home_status_b);
-            homeStatusBIcon = homeStatusView2.findViewById(R.id.home_status_b_icon);
-            homeStatusBText1 = homeStatusView2.findViewById(R.id.home_status_b_text_1);
-            homeStatusBText2 = homeStatusView2.findViewById(R.id.home_status_b_text_2);
-
-            textType(this, homeStatusBText1, "", tintA, Typeface.BOLD);
-            textType(this, homeStatusBText2, textB(12), tintA, fontBStyle);
-            homeStatusBText2.setVisibility(View.GONE);
-
-            customTouchModeB(homeStatusLayout, textC(18), 0, 4, 0);
-
-            homeStatusIntent_1 = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-            registerReceiver(homeStatusReceiver_1, homeStatusIntent_1);
-
-            homeStatusIntent_2 = new IntentFilter();
-            homeStatusIntent_2.addAction(Intent.ACTION_POWER_CONNECTED);
-            homeStatusIntent_2.addAction(Intent.ACTION_POWER_DISCONNECTED);
-            registerReceiver(homeStatusReceiver_2, homeStatusIntent_2);
-        }
-        if(homeStatusLayout.findViewById(R.id.home_status_b) == null){
-            homeStatusLayout.addView(homeStatusView2);
-            homeStatusBatteryState();
-        }
-    }
+    // -----[ HOME STATUS METHODS ]----- //
 
     IntentFilter homeStatusIntent_1;
     BroadcastReceiver homeStatusReceiver_1 = new BroadcastReceiver() {
@@ -2349,28 +2374,27 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
         int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, 100);
         int percent = (level * 100) / scale;
+        int icon = 0;
+        if(percent >= 0 && percent <= 5)
+            icon = icon(21);
 
-        if(percent >= 0 && percent <= 5){
-            imageTypeC(this, homeStatusBIcon, icon(21), R.color.transparent, 150, 100);
-        }
-        if(percent >= 5 && percent <= 20){
-            imageTypeC(this, homeStatusBIcon, icon(26), R.color.transparent, 150, 100);
-        }
-        if(percent >= 21 && percent <= 40){
-            imageTypeC(this, homeStatusBIcon, icon(25), R.color.transparent, 150, 100);
-        }
-        if(percent >= 41 && percent <= 60){
-            imageTypeC(this, homeStatusBIcon, icon(24), R.color.transparent, 150, 100);
-        }
-        if(percent >= 61 && percent <= 80){
-            imageTypeC(this, homeStatusBIcon, icon(23), R.color.transparent, 150, 100);
-        }
-        if(percent >= 81 && percent <= 100){
-            imageTypeC(this, homeStatusBIcon, icon(22), R.color.transparent, 150, 100);
-        }
+        if(percent >= 5 && percent <= 20)
+            icon = icon(26);
 
+        if(percent >= 21 && percent <= 40)
+            icon = icon(25);
+
+        if(percent >= 41 && percent <= 60)
+            icon = icon(24);
+
+        if(percent >= 61 && percent <= 80)
+            icon = icon(23);
+
+        if(percent >= 81 && percent <= 100)
+            icon = icon(22);
+
+        imageTypeC(this, homeStatusBIcon, icon, R.color.transparent, 150, 100);
         homeStatusBText1.setText(percent + "%");
-
         int homeStatus = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
         if(homeStatus == BatteryManager.BATTERY_STATUS_CHARGING || homeStatus == BatteryManager.BATTERY_STATUS_FULL){
             homeStatusBText2.setVisibility(View.VISIBLE);
@@ -2379,115 +2403,61 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- DRAWER ------------------- []
+    //``````````
 
-    private void homeCenterPositions(){
-        if(wallpaperState.equals("Enabled")){
-            if(statusState.equals("Enabled")){
-                layoutParamsTypeC(this, homeWallpaperLayout, new int[]{direction(5)}, direction(8), R.id.home_tooltip, direction(9), R.id.home_status);
-            } else {
-                layoutParamsTypeB(this, homeWallpaperLayout, new int[]{direction(5)}, direction(8), R.id.home_tooltip);
-            }
-        }
-        if(statusState.equals("Enabled")){
-            if(wallpaperState.equals("Enabled")){
-                layoutParamsTypeB(this, homeStatusLayout, new int[]{direction(6)}, direction(8), R.id.home_tooltip);
-            } else {
-                layoutParamsTypeB(this, homeStatusLayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
-            }
-        }
-        if(folderState.equals("Enabled")){
-            if(wallpaperState.equals("Enabled")){
-                layoutParamsTypeB(this, homeFolderA, new int[]{direction(5)}, direction(8), R.id.home_wallpaper);
-                homeFolderA.setBackground(null);
-                setMargins(this, homeFolderAIcon, 0, 0, 0, 0);
-            } else {
-                if(statusState.equals("Enabled")){
-                    layoutParamsTypeB(this, homeFolderA, new int[]{direction(1)}, direction(8), R.id.home_status);
-                    backgroundTypeA(this, homeFolderA,background(8), tintA, 3);
-                    setMargins(this, homeFolderAIcon, 20, 20, 20, 20);
-                } else {
-                    layoutParamsTypeB(this, homeFolderA, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
-                    backgroundTypeA(this, homeFolderA, background(5), tintA, 3);
-                    setMargins(this, homeFolderAIcon, 30, 30, 30, 30);
-                }
-            }
-        }
-    }
-
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    private void homeDrawerPress_0(){
-        homeScreenSTATE_B();
-        theNestRootLayout.removeView(theNestHomeView);
-        if(theNestDrawerView == null){
-            theNestDrawerView = inflater.inflate(R.layout.the_nest_drawer_layout, null);
-            theNestDrawerLayout = theNestDrawerView.findViewById(R.id.the_nest_drawer_layout);
-        }
-        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) == null){
-            theNestRootLayout.addView(theNestDrawerView);
-            setSize(this, theNestDrawerLayout, size(2), size(2));
-
-            drawerConfigurations();
-            drawerEdgeCREATED();
-            drawerTooltipCREATED();
-            drawerTilesView();
-            drawerAppsView();
-        }
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    private void homeDRAWER(){
-        homeDrawerView0();
+    private void homeDrawer(){
+        homeDrawer0();
         homeDrawerLayout.removeAllViews();
-        if(drawerMode.equals("Icon")){
-            homeDrawerView1();
-        }
+
+        if(drawerMode.equals("Icon"))
+            homeDrawerA();
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME DRAWER VIEWS ]----- //
 
-    View homeDrawerView0;
+    View homeDrawerView;
     RelativeLayout homeDrawerLayout;
-    private void homeDrawerView0(){
-        if(homeDrawerView0 == null){
-            homeDrawerView0 = inflater.inflate(R.layout.home_drawer, null);
-            homeDrawerLayout = homeDrawerView0.findViewById(R.id.home_drawer);
+    private void homeDrawer0(){
+        if(homeDrawerView == null){
+            homeDrawerView = inflater.inflate(R.layout.home_drawer, null);
+            homeDrawerLayout = homeDrawerView.findViewById(R.id.home_drawer);
         }
         if(theNestHomeLayout.findViewById(R.id.home_drawer) == null){
-            theNestHomeLayout.addView(homeDrawerView0);
+            theNestHomeLayout.addView(homeDrawerView);
             layoutParamsTypeB(this, homeDrawerLayout, new int[]{direction(6)}, direction(7),  R.id.home_edge_c);
             setSize(this, homeDrawerLayout, size(1), size(1));
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeDrawerView1;
-    RelativeLayout homeDrawerA;
+    View homeDrawerAView;
+    RelativeLayout homeDrawerALayout;
     ImageView homeDrawerAIcon;
-    private void homeDrawerView1(){
-        if(homeDrawerView1 == null){
-            homeDrawerView1 = inflater.inflate(R.layout.home_drawer_a, null);
-            homeDrawerA = homeDrawerView1.findViewById(R.id.home_drawer_a);
-            homeDrawerAIcon = homeDrawerView1.findViewById(R.id.home_drawer_a_icon);
-            customTouchModeB(homeDrawerA, textC(5), 0, 5, 0);
+    private void homeDrawerA(){
+        if(homeDrawerAView == null){
+            homeDrawerAView = inflater.inflate(R.layout.home_drawer_a, null);
+            homeDrawerALayout = homeDrawerAView.findViewById(R.id.home_drawer_a);
+            homeDrawerAIcon = homeDrawerAView.findViewById(R.id.home_drawer_a_icon);
+            customTouchModeB(homeDrawerALayout, textC(5), 0, 5, 0);
             homeDrawerPresets(homeDrawerAIcon);
         }
         if(homeDrawerLayout.findViewById(R.id.home_drawer_a) == null){
-            homeDrawerLayout.addView(homeDrawerView1);
-            layoutParamsTypeA(this, homeDrawerA, new int[]{direction(3)});
+            homeDrawerLayout.addView(homeDrawerAView);
+            layoutParamsTypeA(this, homeDrawerALayout, new int[]{direction(3)});
         }
     }
+
+    // -----[ HOME DRAWER BUTTONS ]----- //
+
+    private void homeDrawerPress_0(){
+        homeScreenStateB();
+        theNestRootLayout.removeView(theNestHomeView);
+        drawerScreen();
+    }
+
+    // -----[ HOME DRAWER METHODS ]----- //
 
     private void homeDrawerPresets(ImageView imageView){
         int dimen = 0;
@@ -2539,289 +2509,226 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------ SHORTCUT ------------------ []
+    //``````````
 
-    private void homeShortcutHold(){
-        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null) {
-            homeAPPLET(3);
-        }
-        appletToggle(4);
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    private void homeSHORTCUT() {
+    private void homeShortcut() {
         if (shortcutState.equals("Disabled")) {
-            theNestHomeLayout.removeView(homeShortcutView0);
+            theNestHomeLayout.removeView(homeShortcutView);
         } else {
-            homeShortcutView0();
+            homeShortcut0();
             homeShortcutLayout.removeAllViews();
-            homeShortcutContents();
+            homeShortcutInitialize(100);
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME SHORTCUT VIEWS ]----- //
 
-    View homeShortcutView0;
+    View homeShortcutView;
     RelativeLayout homeShortcutLayout;
-    private void homeShortcutView0(){
-        if(homeShortcutView0 == null){
-            homeShortcutView0 = inflater.inflate(R.layout.home_shortcut, null);
-            homeShortcutLayout = homeShortcutView0.findViewById(R.id.home_shortcut);
+    private void homeShortcut0(){
+        if(homeShortcutView == null){
+            homeShortcutView = inflater.inflate(R.layout.home_shortcut, null);
+            homeShortcutLayout = homeShortcutView.findViewById(R.id.home_shortcut);
         }
         if(theNestHomeLayout.findViewById(R.id.home_shortcut) == null){
-            theNestHomeLayout.addView(homeShortcutView0);
+            theNestHomeLayout.addView(homeShortcutView);
             layoutParamsTypeC(this, homeShortcutLayout, new int[]{direction(5)}, direction(9), R.id.home_edge_c, direction(7), R.id.home_edge_c);
             setSize(this, homeShortcutLayout, size(1), size(1));
             setMargins(this, homeShortcutLayout, 0, -57, 20, -100);
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeShortcutView1;
-    RelativeLayout homeShortcutA, homeShortcutAFrame;
+    View homeShortcutAView;
+    RelativeLayout homeShortcutALayout, homeShortcutAFrame;
     TextView homeShortcutAText1, homeShortcutAText2;
-    private void homeShortcutView1(){
-        if(homeShortcutView1 == null){
-            homeShortcutView1 = inflater.inflate(R.layout.home_shortcut_a, null);
-            homeShortcutA = homeShortcutView1.findViewById(R.id.home_shortcut_a);
-            homeShortcutAFrame = homeShortcutView1.findViewById(R.id.home_shortcut_a_frame);
-            homeShortcutAText1 = homeShortcutView1.findViewById(R.id.home_shortcut_a_text_1);
-            homeShortcutAText2 = homeShortcutView1.findViewById(R.id.home_shortcut_a_text_2);
+    private void homeShortcutA(){
+        if(homeShortcutAView == null){
+            homeShortcutAView = inflater.inflate(R.layout.home_shortcut_a, null);
+            homeShortcutALayout = homeShortcutAView.findViewById(R.id.home_shortcut_a);
+            homeShortcutAFrame = homeShortcutAView.findViewById(R.id.home_shortcut_a_frame);
+            homeShortcutAText1 = homeShortcutAView.findViewById(R.id.home_shortcut_a_text_1);
+            homeShortcutAText2 = homeShortcutAView.findViewById(R.id.home_shortcut_a_text_2);
 
             backgroundTypeA(this, homeShortcutAFrame, background(7), tintA, 3);
             textType(this, homeShortcutAText1, textA(4), tintA, fontAStyle);
             textType(this, homeShortcutAText2, textC(4), tintA, fontAStyle);
-
-            customTouchModeA(homeShortcutAFrame, 4, 1000);
+            customTouchModeA(homeShortcutAFrame, "", 8, -1);
         }
-        if(homeShortcutLayout.findViewById(R.id.home_shortcut_a) == null){
-            homeShortcutLayout.addView(homeShortcutView1);
-        }
+        if(homeShortcutLayout.findViewById(R.id.home_shortcut_a) == null)
+            homeShortcutLayout.addView(homeShortcutAView);
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View homeShortcutView2;
-    RelativeLayout homeShortcutB, homeShortcutBFrame1, homeShortcutBFrame2;
+    View homeShortcutBView;
+    RelativeLayout homeShortcutBLayout, homeShortcutBFrame1, homeShortcutBFrame2;
     HorizontalScrollView homeShortcutBAppView;
     LinearLayout homeShortcutBAppLayout;
     TextView homeShortcutBText;
-    private void homeShortcutView2(){
-        if(homeShortcutView2 == null){
-            homeShortcutView2 = inflater.inflate(R.layout.home_shortcut_b, null);
-            homeShortcutB = homeShortcutView2.findViewById(R.id.home_shortcut_b);
-            homeShortcutBFrame1 = homeShortcutView2.findViewById(R.id.home_shortcut_b_frame_1);
-            homeShortcutBFrame2 = homeShortcutView2.findViewById(R.id.home_shortcut_b_frame_2);
-            homeShortcutBAppView = homeShortcutView2.findViewById(R.id.home_shortcut_b_app_view);
-            homeShortcutBAppLayout = homeShortcutView2.findViewById(R.id.home_shortcut_b_app_layout);
-            homeShortcutBText = homeShortcutView2.findViewById(R.id.home_shortcut_b_text);
+    private void homeShortcutB(){
+        if(homeShortcutBView == null){
+            homeShortcutBView = inflater.inflate(R.layout.home_shortcut_b, null);
+            homeShortcutBLayout = homeShortcutBView.findViewById(R.id.home_shortcut_b);
+            homeShortcutBFrame1 = homeShortcutBView.findViewById(R.id.home_shortcut_b_frame_1);
+            homeShortcutBFrame2 = homeShortcutBView.findViewById(R.id.home_shortcut_b_frame_2);
+            homeShortcutBAppView = homeShortcutBView.findViewById(R.id.home_shortcut_b_app_view);
+            homeShortcutBAppLayout = homeShortcutBView.findViewById(R.id.home_shortcut_b_app_layout);
+            homeShortcutBText = homeShortcutBView.findViewById(R.id.home_shortcut_b_text);
 
             backgroundTypeC(this, homeShortcutBFrame1, background(4), tintA);
             backgroundTypeA(this, homeShortcutBFrame2, background(7), tintA, 3);
             textType(this, homeShortcutBText, "", tintB, Typeface.BOLD);
         }
-        if(homeShortcutLayout.findViewById(R.id.home_shortcut_b) == null){
-            homeShortcutLayout.addView(homeShortcutView2);
+        if(homeShortcutLayout.findViewById(R.id.home_shortcut_b) == null)
+            homeShortcutLayout.addView(homeShortcutBView);
+    }
+
+    // -----[ HOME SHORTCUT BUTTONS ]----- //
+
+    private void homeShortcutHold(){
+        if(theNestHomeLayout.findViewById(R.id.home_applet_c) == null)
+            homeApplet(3);
+        homeAppletToggle(4);
+    }
+
+    private void homeShortcutHold_1(){
+        if(isAppInstalled(TheNest.this, homeAppletBString)){
+            if(homeAppletLayout.findViewById(R.id.home_applet_b) == null){
+                homeApplet(2);
+            }
+            homeAppletApp(homeAppletBString, 2);
+        } else {
+            homeShortcutRemove(homeAppletBString);
         }
     }
 
-    List<String> shortcutListArray;
-    private void homeShortcutContents(){
-        if(fileExist(this, "List/Array - 02")){
+    private void homeShortcutPress_0(){
+        if(isAppInstalled(TheNest.this, homeAppletBString)){
+            try {
+                Intent intent = getPackageManager().getLaunchIntentForPackage(homeAppletBString);
+                startActivity(intent);
+            } catch (Exception e){}
+        } else {
+            homeShortcutRemove(homeAppletBString);
+        }
+    }
+
+    // -----[ HOME SHORTCUT METHODS ]----- //
+
+    ArrayList<String> shortcutListArray;
+    private void homeShortcutInitialize(int delay){
+        if(fileExist(this, "Array - 02")){
             Handler homeFolderHandler = new Handler();
             Runnable homeFolderRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    shortcutListArray = (ArrayList<String>) read(TheNest.this, "List/Array - 02");
+                    shortcutListArray = (ArrayList<String>) read(TheNest.this, "Array - 02");
                     for (Iterator<String> iterator = shortcutListArray.iterator(); iterator.hasNext();) {
                         String value = iterator.next();
                         if (value.equals("REMOVED") || !isAppInstalled(TheNest.this, value))
                             iterator.remove();
                     }
                     if(shortcutListArray.size() == 0){
-                        homeShortcutView1();
+                        homeShortcutLayout.removeAllViews();
+                        homeShortcutA();
                     } else {
-                        homeShortcutView2();
+                        homeShortcutB();
                         homeShortcutBText.setText(String.valueOf(shortcutListArray.size()));
 
-                        if(homeShortcutBAppLayout.getChildCount() < shortcutListArray.size()){
+                        if(homeShortcutBAppLayout.getChildCount() != shortcutListArray.size()){
                             homeShortcutBAppLayout.removeAllViews();
-                            homeShortcutInitialize((ArrayList<String>) shortcutListArray, homeShortcutBAppLayout);
-                        } else {
-                            for(String packageName : shortcutListArray){
-                                if(!isAppInstalled(TheNest.this, packageName))
-                                    homeShortcutRemove(packageName);
-                            }
-                            if(shortcutListArray.size() == 0)
-                                homeShortcutContents();
+                            homeShortcutInitialize(shortcutListArray, homeShortcutBAppLayout);
                         }
                     }
                 }
             };
-            homeFolderHandler.postDelayed(homeFolderRunnable, 100);
+            homeFolderHandler.postDelayed(homeFolderRunnable, delay);
         } else {
-            homeShortcutView1();
+            homeShortcutA();
         }
     }
 
-    View homeShortcutView;
-    RelativeLayout homeShortcutFrame;
-    ImageView homeShortcutIcon;
-    TextView homeShortcutText;
+    private void homeShortcutRemove(String appletAppPackage){
+        edit(this, "Array - 02",  appletAppPackage,"REMOVED");
+        homeShortcutInitialize(5);
+        settingsHomeHBoolean = true;
+    }
+
+    View shortcutListView;
+    RelativeLayout shortcutListFrame;
+    ImageView shortcutListIcon;
+    TextView shortcutListText;
     @SuppressLint("ClickableViewAccessibility")
     private void homeShortcutInitialize(ArrayList<String> list, LinearLayout layout){
         for (int i = 0; i < list.size(); i++) {
-            homeShortcutView = inflater.inflate(R.layout.linear_type_a, layout, false);
-            homeShortcutFrame = homeShortcutView.findViewById(R.id.linear_type_a_frame);
-            homeShortcutIcon = homeShortcutView.findViewById(R.id.linear_type_a_icon);
-            homeShortcutText = homeShortcutView.findViewById(R.id.linear_type_a_text);
+            shortcutListView = inflater.inflate(R.layout.linear_type_a, layout, false);
+            shortcutListFrame = shortcutListView.findViewById(R.id.linear_type_a_frame);
+            shortcutListIcon = shortcutListView.findViewById(R.id.linear_type_a_icon);
+            shortcutListText = shortcutListView.findViewById(R.id.linear_type_a_text);
 
+            shortcutListIcon.setImageBitmap(appIcon(this, list.get(i), 40));
             if(list.size() >= 5){
                 setSize(this, homeShortcutBFrame2, density(this, 270), size(1));
             } else {
                 setSize(this, homeShortcutBFrame2, size(1), size(1));
             }
-
             if(list.size() >= 3){
                 homeShortcutBFrame1.setVisibility(View.VISIBLE);
             } else {
                 homeShortcutBFrame1.setVisibility(View.GONE);
             }
-
             if(list.size() == 1){
-                homeShortcutText.setVisibility(View.VISIBLE);
-                String appLabel = "";
-                try {
-                    appLabel = (String) getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(list.get(i), 0));
-                } catch (PackageManager.NameNotFoundException e) {
-                    e.printStackTrace();
-                }
-                textType(this, homeShortcutText, "  " + appLabel, tintA, fontBStyle);
+                shortcutListText.setVisibility(View.VISIBLE);
+                textType(this, shortcutListText, "  " + appLabel(this, list.get(i)), tintA, fontBStyle);
             } else {
-                homeShortcutText.setVisibility(View.GONE);
+                shortcutListText.setVisibility(View.GONE);
             }
 
-            appIcon(this, homeShortcutIcon, list.get(i), 40);
-
-            int finalI = i;
-            homeShortcutFrame.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN){
-                        touchStart(view);
-                        onTouchRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                homeAppletBString = list.get(finalI);
-                                if(isAppInstalled(TheNest.this, homeAppletBString)){
-                                    if(homeAppletLayout.findViewById(R.id.home_applet_b) == null){
-                                        homeAPPLET(2);
-                                    }
-                                    homeAppletBModule(homeAppletBString, 2);
-                                } else {
-                                    homeShortcutRemove(homeAppletBString);
-                                }
-                                touchVibrate(TheNest.this, view);
-                            }
-                        };
-                        onTouchHandler.postDelayed(onTouchRunnable, 300);
-                    }
-                    if(event.getAction() == MotionEvent.ACTION_UP){
-                        touchStop(view);
-                        if((System.currentTimeMillis() - time) < 200){
-                            homeAppletBString = list.get(finalI);
-                            if(isAppInstalled(TheNest.this, homeAppletBString)){
-                                try {
-                                    Intent intent = getPackageManager().getLaunchIntentForPackage(homeAppletBString);
-                                    startActivity(intent);
-                                } catch (Exception e){}
-                            } else {
-                                homeShortcutRemove(homeAppletBString);
-                            }
-                        }
-                    }
-                    touchEnd(event, view);
-                    return true;
-                }
-            });
-            layout.addView(homeShortcutView);
+            customTouchModeA(shortcutListFrame, list.get(i), 1, 1);
+            layout.addView(shortcutListView);
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    /*
+       ---------------------------
+       [                         ]
+       [     DRAWER - SCREEN     ]
+       [                         ]
+       ---------------------------
+    */
 
-    private void homeShortcutRemove(String appletAppPackage){
-        edit(this, "List/Array - 02",  appletAppPackage,"REMOVED");
-        shortcutListArray.remove(appletAppPackage);
-        homeShortcutBAppLayout.removeAllViews();
-        homeShortcutInitialize((ArrayList<String>) shortcutListArray, homeShortcutBAppLayout);
-        homeShortcutBText.setText(String.valueOf(shortcutListArray.size()));
-        if(shortcutListArray.size() == 0){
-            homeShortcutLayout.removeAllViews();
-            homeShortcutContents();
+    private void drawerScreenStateA(int mode){
+        if (theNestDrawerLayout.findViewById(R.id.drawer_applet) != null && !isAppInstalled(this, drawerAppletString)) {
+            if(mode == 0)
+                drawerRefresh(false);
+            drawerAppletClose();
         }
-        settingsHomeHBoolean = true;
+        if (theNestDrawerLayout.findViewById(R.id.drawer_applet) != null && (drawerAppletCFrame6 != null
+                && drawerAppletCFrame6.getVisibility() == View.VISIBLE)) {
+            if(drawerAppletPermission())
+                drawerAppOptions();
+        }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- DRAWER -------------------- []
+    //--------------------- EDGE --------------------- []
+    //``````````
 
-    View theNestDrawerView;
-    RelativeLayout theNestDrawerLayout;
-
-    public static String drawerGridStyle;
-    private String drawerSortingOrder;
-    private String drawerBrowseMode;
-    private void drawerConfigurations(){
-        if(!fileExist(TheNest.this, "Drawer/Configurations")) {
-            create(TheNest.this, "Drawer","/Configurations", "# Drawer Screen Configurations...");
-            create(TheNest.this, "Drawer","/Configurations", "Drawer Grid Style - Tiles");
-            create(TheNest.this, "Drawer","/Configurations", "Drawer Sorting Order - Alphabetically");
-            create(TheNest.this, "Drawer","/Configurations", "Drawer Browse Mode - Index");
-            create(TheNest.this, "Drawer","/Configurations", " ");
-            create(TheNest.this, "Drawer","/Configurations", "--------------------");
-            create(TheNest.this, "Drawer","/Configurations", " ");
-        }
-
-        List<String> readValues = read(TheNest.this, "Drawer/Configurations");
-        drawerGridStyle = readValues.get(1).substring(20).trim();
-        drawerSortingOrder = readValues.get(2).substring(23).trim();
-        drawerBrowseMode = readValues.get(3).substring(21).trim();
-    }
-
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    private void drawerEdgeCREATED(){
+    private void drawerEdge(){
         drawerEdgeA();
         drawerEdgeB();
     }
 
     View drawerEdgeAView;
-    RelativeLayout drawerEdgeA;
+    RelativeLayout drawerEdgeALayout;
     ImageView drawerEdgeASquare, drawerEdgeACircle1, drawerEdgeACircle2, drawerEdgeALine;
     TextView drawerEdgeALines;
     private void drawerEdgeA(){
         if(drawerEdgeAView == null){
             drawerEdgeAView = inflater.inflate(R.layout.drawer_edge_a, null);
-            drawerEdgeA = drawerEdgeAView.findViewById(R.id.drawer_edge_a);
+            drawerEdgeALayout = drawerEdgeAView.findViewById(R.id.drawer_edge_a);
             drawerEdgeASquare = drawerEdgeAView.findViewById(R.id.drawer_edge_a_square);
             drawerEdgeACircle1 = drawerEdgeAView.findViewById(R.id.drawer_edge_a_circle_1);
             drawerEdgeACircle2 = drawerEdgeAView.findViewById(R.id.drawer_edge_a_circle_2);
@@ -2836,19 +2743,18 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(theNestDrawerLayout.findViewById(R.id.drawer_edge_a) == null){
             theNestDrawerLayout.addView(drawerEdgeAView);
-            setMargins(this, drawerEdgeA, 10, 0, 20, 0);
-            layoutParamsTypeB(this, drawerEdgeA, new int[]{direction(3), direction(5)}, direction(7), R.id.drawer_tiles);
+            setMargins(this, drawerEdgeALayout, 10, 0, 20, 0);
         }
     }
 
     View drawerEdgeBView;
-    RelativeLayout drawerEdgeB;
+    RelativeLayout drawerEdgeBLayout;
     ImageView drawerEdgeBSquare, drawerEdgeBCircle1, drawerEdgeBCircle2, drawerEdgeBLine;
     TextView drawerEdgeBLines;
     private void drawerEdgeB(){
         if(drawerEdgeBView == null){
             drawerEdgeBView = inflater.inflate(R.layout.drawer_edge_b, null);
-            drawerEdgeB = drawerEdgeBView.findViewById(R.id.drawer_edge_b);
+            drawerEdgeBLayout = drawerEdgeBView.findViewById(R.id.drawer_edge_b);
             drawerEdgeBSquare = drawerEdgeBView.findViewById(R.id.drawer_edge_b_square);
             drawerEdgeBCircle1 = drawerEdgeBView.findViewById(R.id.drawer_edge_b_circle_1);
             drawerEdgeBCircle2 = drawerEdgeBView.findViewById(R.id.drawer_edge_b_circle_2);
@@ -2863,36 +2769,45 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(theNestDrawerLayout.findViewById(R.id.drawer_edge_b) == null){
             theNestDrawerLayout.addView(drawerEdgeBView);
-            setMargins(this, drawerEdgeB, 5, 10, 20, 0);
-            layoutParamsTypeB(this, drawerEdgeB, new int[]{direction(4), direction(5)}, direction(8), R.id.drawer_tiles);
+            setMargins(this, drawerEdgeBLayout, 0, 10, 20, 0);
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    private void drawerEdgePositions(){
+        if (theNestDrawerLayout.findViewById(R.id.drawer_tiles) != null) {
+            layoutParamsTypeB(this, drawerEdgeALayout, new int[]{direction(3), direction(5)}, direction(7), R.id.drawer_tiles);
+            layoutParamsTypeB(this, drawerEdgeBLayout, new int[]{direction(4), direction(5)}, direction(8), R.id.drawer_tiles);
+        } else {
+            layoutParamsTypeB(this, drawerEdgeALayout, new int[]{direction(3), direction(5)}, direction(7), R.id.drawer_applet);
+            layoutParamsTypeB(this, drawerEdgeBLayout, new int[]{direction(4), direction(5)}, direction(8), R.id.drawer_applet);
+        }
+    }
+
+    //..........
+    //-------------------- DRAWER -------------------- []
+    //--------------------- TOOLTIP ------------------ []
+    //``````````
 
     View drawerTooltipView;
-    public static RelativeLayout drawerTooltipLayout;
+    public static RelativeLayout drawerTooltipLayout, drawerTooltipFrame;
     public static TextView drawerTooltipText;
-    private void drawerTooltipCREATED(){
+    private void drawerTooltip(){
         if(drawerTooltipView == null){
             drawerTooltipView = inflater.inflate(R.layout.drawer_tooltip, null);
             drawerTooltipLayout = drawerTooltipView.findViewById(R.id.drawer_tooltip);
+            drawerTooltipFrame = drawerTooltipView.findViewById(R.id.drawer_tooltip_frame);
             drawerTooltipText = drawerTooltipView.findViewById(R.id.drawer_tooltip_text);
 
-            backgroundTypeC(this, drawerTooltipLayout, background(3), tintA);
+            backgroundTypeC(this, drawerTooltipFrame, background(3), tintA);
         }
         if(theNestDrawerLayout.findViewById(R.id.drawer_tooltip) == null){
             theNestDrawerLayout.addView(drawerTooltipView);
-            layoutParamsTypeA(this, drawerTooltipLayout, new int[]{direction(3), direction(6)});
+            layoutParamsTypeB(this, drawerTooltipLayout, new int[]{direction(3), direction(6)}, direction(10), R.id.drawer_edge_a);
             drawerTooltipStateA(this);
         }
     }
 
-    private void drawerTooltipSTOPPED(){
+    private void drawerTooltipReset(){
         try {
             drawerTooltipStateA(homeTooltipLayout.getContext());
             drawerTooltipHandler.removeCallbacks(drawerTooltipRunnable);
@@ -2907,7 +2822,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
 
     public static void drawerTooltipStateB(Context context, String tooltip){
         textType(context, drawerTooltipText, tooltip, tintB, fontAStyle);
-        setMargins(context, drawerTooltipLayout, 20, 0, 0, 20);
+        setMargins(context, drawerTooltipLayout, 20, 0, 20, 20);
         setSize(context, drawerTooltipLayout, size(1), size(1));
     }
 
@@ -2919,43 +2834,10 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     };
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    Handler drawerTilesHandler = new Handler();
-    Runnable drawerTilesRunnable;
-    private void drawerTilesPress_0(){
-        drawerAppletString = "";
-        drawerTilesText.setText("");
-        gridAdapter.clear();
-        gridAdapter.notifyDataSetChanged();
-        gridArray.clear();
-        if(drawerBrowseMode.equals("Index")){
-            drawerAlphabets.clear();
-            drawerTilesAlphabets.removeAllViews();
-            drawerTilesFrame3.setVisibility(View.GONE);
-        }
-        try {
-            drawerTilesHandler.removeCallbacks(drawerTilesRunnable);
-        } catch (Exception e){}
-        drawerTilesRunnable = new Runnable() {
-            @Override
-            public void run() {
-                drawerAppsList();
-                if(drawerBrowseMode.equals("Index")){
-                    alphabets();
-                    initializeAlphabets(drawerAlphabets, drawerTilesAlphabets);
-                    drawerTilesFrame3.setVisibility(View.VISIBLE);
-                }
-            }
-        };
-        drawerTilesHandler.postDelayed(drawerTilesRunnable, 50);
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- DRAWER -------------------- []
+    //---------------------- TILES ------------------- []
+    //``````````
 
     private View drawerTilesView;
     private RelativeLayout drawerTilesLayout, drawerTilesFrame1, drawerTilesFrame2, drawerTilesFrame3, drawerTilesFrame4;
@@ -2963,7 +2845,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
     private TextView drawerTilesText;
     private ScrollView drawerTilesScrollView;
     private LinearLayout drawerTilesAlphabets;
-    private void drawerTilesView() {
+    private void drawerTiles() {
         if (drawerTilesView == null) {
             drawerTilesView = inflater.inflate(R.layout.drawer_tiles, null);
             drawerTilesLayout = drawerTilesView.findViewById(R.id.drawer_tiles);
@@ -2983,507 +2865,324 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             textType(this, drawerTilesText, "", tintA, Typeface.BOLD);
 
             customTouchModeB(drawerTilesFrame1, textC(19), 1, 0, 0);
-            drawerBrowseIndex();
         }
         if (theNestDrawerLayout.findViewById(R.id.drawer_tiles) == null) {
             theNestDrawerLayout.addView(drawerTilesView);
             layoutParamsTypeA(this, drawerTilesLayout, new int[]{direction(5), direction(2)});
             setMargins(this, drawerTilesLayout, 10, 5, 20, 0);
-            if (drawerAppletLayout != null && theNestDrawerLayout.findViewById(R.id.drawer_applet) != null) {
+            if (drawerAppletLayout != null && theNestDrawerLayout.findViewById(R.id.drawer_applet) != null)
                 theNestDrawerLayout.removeView(drawerTilesView);
-            }
         }
+        drawerTilesIndex();
     }
 
-    private void drawerBrowseIndex(){
-        if(drawerBrowseMode.equals("Index")){
-            drawerTilesFrame3.setVisibility(View.GONE);
-            Handler drawerTilesHandler = new Handler();
-            Runnable drawerTilesRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    alphabets();
-                    initializeAlphabets(drawerAlphabets, drawerTilesAlphabets);
-                    drawerTilesFrame3.setVisibility(View.VISIBLE);
-                }
-            };
-            drawerTilesHandler.postDelayed(drawerTilesRunnable, 120);
-        } else {
-            drawerTilesFrame3.setVisibility(View.GONE);
+    // -----[ DRAWER TILES BUTTONS ]----- //
+
+    private void drawerTilesHold_0(){
+        if(!drawerAlphabetsString.isEmpty()){
+            drawerBlink = true;
+            drawerAppsStyle(gridArray);
+        }
+        drawerAlphabetsString = "";
+    }
+
+    private boolean drawerRefresh;
+    private void drawerTilesPress_0(){
+        drawerRefresh(true);
+    }
+
+    private void drawerTilesPress_1(){
+        List<String> temporary = new ArrayList<>();
+        for(String string : gridArray){
+            String label = appLabel(TheNest.this, string);
+            if(label.startsWith(drawerAlphabetsString.toLowerCase())
+                    || label.startsWith(drawerAlphabetsString.toUpperCase()))
+                temporary.add(string);
+        }
+        drawerBlink = false;
+        drawerAppsStyle(temporary);
+    }
+
+    // -----[ DRAWER TILES METHODS ]----- //
+
+    private void drawerRefresh(boolean blink){
+        if(!drawerRefresh){
+            drawerRefresh = true;
+            drawerAppsCount = 0;
+            drawerBlink = blink;
+            drawerAppsList();
+            drawerTilesIndex();
         }
     }
 
     ArrayList<String> drawerAlphabets;
-    private void alphabet(String text, String value){
-        if(text.startsWith(value.toLowerCase()) || text.startsWith(value.toUpperCase())){
-            if(!drawerAlphabets.toString().contains(value)){
-                drawerAlphabets.add(value);
-            }
-        }
-    }
+    private void drawerTilesIndex(){
+        if(drawerBrowseMode.equals("Index")){
+            if(drawerAlphabets != null)
+                drawerAlphabets.clear();
 
-    private void alphabets(){
-        if(drawerAlphabets == null){
             drawerAlphabets = new ArrayList<>();
+
+            if(!drawerAlphabetsString.isEmpty()){
+                drawerBlink = true;
+                drawerAppsStyle(gridArray);
+            }
+            drawerAlphabetsString = "";
+            for(String string : gridArray){
+                String text = appLabel(TheNest.this, string);
+                if(!drawerAlphabets.contains(text.substring(0, 1)))
+                    drawerAlphabets.add(text.substring(0, 1));
+            }
+            drawerTilesAlphabets.removeAllViews();
+            drawerTilesInitialize(drawerAlphabets, drawerTilesAlphabets);
+            drawerTilesFrame3.setVisibility(View.VISIBLE);
+        } else {
+            drawerTilesFrame3.setVisibility(View.GONE);
         }
-        for(GridItemsA text : gridArray.subList(0, gridArray.size())){
-            alphabet(text.getLabel(), "A");
-            alphabet(text.getLabel(), "B");
-            alphabet(text.getLabel(), "C");
-            alphabet(text.getLabel(), "D");
-            alphabet(text.getLabel(), "E");
-            alphabet(text.getLabel(), "F");
-            alphabet(text.getLabel(), "G");
-            alphabet(text.getLabel(), "H");
-            alphabet(text.getLabel(), "I");
-            alphabet(text.getLabel(), "J");
-            alphabet(text.getLabel(), "K");
-            alphabet(text.getLabel(), "L");
-            alphabet(text.getLabel(), "M");
-            alphabet(text.getLabel(), "A");
-            alphabet(text.getLabel(), "O");
-            alphabet(text.getLabel(), "P");
-            alphabet(text.getLabel(), "Q");
-            alphabet(text.getLabel(), "R");
-            alphabet(text.getLabel(), "S");
-            alphabet(text.getLabel(), "T");
-            alphabet(text.getLabel(), "U");
-            alphabet(text.getLabel(), "V");
-            alphabet(text.getLabel(), "W");
-            alphabet(text.getLabel(), "X");
-            alphabet(text.getLabel(), "Y");
-            alphabet(text.getLabel(), "Z");
-        }
+        drawerTilesText.setText(String.valueOf(gridArray.size()));
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    View drawerAlphabetsView;
-    RelativeLayout drawerAlphabetsFrame;
-    TextView drawerAlphabetsText;
+    View linearCView;
+    RelativeLayout linearCFrame;
+    TextView linearCText;
     public static String drawerAlphabetsString = "";
     @SuppressLint("ClickableViewAccessibility")
-    private void initializeAlphabets(ArrayList<String> list, LinearLayout layout){
+    private void drawerTilesInitialize(ArrayList<String> list, LinearLayout layout){
         for (int i = 0; i < list.size(); i++) {
-            drawerAlphabetsView = inflater.inflate(R.layout.linear_type_c, layout, false);
-            drawerAlphabetsFrame = drawerAlphabetsView.findViewById(R.id.linear_type_c_frame);
-            drawerAlphabetsText = drawerAlphabetsView.findViewById(R.id.linear_type_c_text);
+            linearCView = inflater.inflate(R.layout.linear_type_c, layout, false);
+            linearCFrame = linearCView.findViewById(R.id.linear_type_c_frame);
+            linearCText = linearCView.findViewById(R.id.linear_type_c_text);
 
-            textType(this, drawerAlphabetsText, list.get(i), tintA, fontBStyle);
-
-            int finalI = i;
-            drawerAlphabetsFrame.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN){
-                        touchStart(view);
-                        onTouchRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                if(!drawerAlphabetsString.isEmpty()){
-                                    drawerAlphabetsString = "";
-                                    gridAdapter = new GridTypeA(TheNest.this, R.layout.grid_type_a, gridArray, TheNest.this);
-                                    drawerAppsGridView.setAdapter(gridAdapter);
-                                    drawerTilesText.setText(String.valueOf(gridAdapter.getCount()));
-                                }
-                                touchVibrate(TheNest.this, view);
-                            }
-                        };
-                        onTouchHandler.postDelayed(onTouchRunnable, 300);
-                    }
-                    if(event.getAction() == MotionEvent.ACTION_UP){
-                        touchStop(view);
-                        if((System.currentTimeMillis() - time) < 200){
-                            if(!drawerAlphabetsString.equals(list.get(finalI))){
-                                drawerAlphabetsString = list.get(finalI);
-                                ArrayList<GridItemsA> temp = new ArrayList<>();
-                                temp.clear();
-                                for(GridItemsA items : gridArray){
-                                    if(items.getLabel().startsWith(drawerAlphabetsString.toUpperCase()) || items.getLabel().startsWith(drawerAlphabetsString.toLowerCase())){
-                                        temp.add(items);
-                                    }
-                                }
-                                gridAdapter = new GridTypeA(TheNest.this, R.layout.grid_type_a, temp, TheNest.this);
-                                drawerAppsGridView.setAdapter(gridAdapter);
-                                drawerTilesText.setText(String.valueOf(gridAdapter.getCount()));
-                            }
-                        }
-                    }
-                    touchEnd(event, view);
-                    return true;
-                }
-            });
-            layout.addView(drawerAlphabetsView);
+            textType(this, linearCText, list.get(i), tintA, fontBStyle);
+            customTouchModeA(linearCFrame, list.get(i), 2, 2);
+            layout.addView(linearCView);
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- DRAWER -------------------- []
+    //--------------------- APPS --------------------- []
+    //``````````
 
     private View drawerAppsView;
     private RelativeLayout drawerAppsLayout;
-    private GridView drawerAppsGridView;
-    private void drawerAppsView() {
+    ScrollView drawerAppsScrollView1, drawerAppsScrollView2, drawerAppsScrollView3;
+    GridLayout drawerAppsGridLayout, drawerAppsShapeLayout;
+    LinearLayout drawerAppsListLayout;
+    private void drawerApps() {
         if (drawerAppsView == null) {
             drawerAppsView = inflater.inflate(R.layout.drawer_apps, null);
             drawerAppsLayout = drawerAppsView.findViewById(R.id.drawer_apps);
-            drawerAppsGridView = drawerAppsView.findViewById(R.id.drawer_apps_gridview);
-
-            Handler drawerAppsHandler = new Handler();
-            Runnable drawerAppsRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    drawerAppsList();
-                }
-            };
-            drawerAppsHandler.postDelayed(drawerAppsRunnable, 100);
+            drawerAppsScrollView1 = drawerAppsView.findViewById(R.id.drawer_apps_scroll_view_1);
+            drawerAppsScrollView2 = drawerAppsView.findViewById(R.id.drawer_apps_scroll_view_2);
+            drawerAppsScrollView3 = drawerAppsView.findViewById(R.id.drawer_apps_scroll_view_3);
+            drawerAppsGridLayout = drawerAppsView.findViewById(R.id.drawer_apps_grid_layout);
+            drawerAppsListLayout = drawerAppsView.findViewById(R.id.drawer_apps_list_layout);
+            drawerAppsShapeLayout = drawerAppsView.findViewById(R.id.drawer_apps_shape_layout);
         }
         if (theNestDrawerLayout.findViewById(R.id.drawer_apps) == null) {
             theNestDrawerLayout.addView(drawerAppsView);
             layoutParamsTypeB(this, drawerAppsLayout, new int[]{direction(6), direction(4)}, direction(8), R.id.drawer_tooltip);
-            setMargins(this, drawerAppsLayout, 20, 50, 0, 20);
-            setSize(this, drawerAppsGridView, density(this, 240), size(2));
-            drawerGridStyle();
+            setMargins(this, drawerAppsLayout, 20, 50, 0, 0);
         }
-        if(drawerAppsCount != 0){
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(Intent.ACTION_MAIN, null);
-                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    List<ResolveInfo> drawerPackages = getPackageManager().queryIntentActivities(intent, PackageManager.GET_META_DATA);
-                    if(drawerPackages.size() != drawerAppsCount){
-                        gridAdapter.clear();
-                        gridAdapter.notifyDataSetChanged();
-                        gridArray.clear();
-                        drawerAppsList();
-                        drawerAppletString = "";
-                        if(drawerBrowseMode.equals("Index")){
-                            drawerAlphabets.clear();
-                            alphabets();
-                            drawerTilesAlphabets.removeAllViews();
-                            initializeAlphabets(drawerAlphabets, drawerTilesAlphabets);
-                        }
-                        if (theNestDrawerLayout.findViewById(R.id.drawer_applet) != null) {
-                            drawerAppletClose();
-                        }
-                    }
+        drawerAppsList();
+    }
+
+    // -----[ DRAWER APPS BUTTONS ]----- //
+
+    private void drawerAppsHold_0(){
+        if(isAppInstalled(TheNest.this, homeAppletBString)){
+            theNestDrawerLayout.removeView(drawerTilesView);
+            drawerApplet0();
+            drawerAppletCurrent(homeAppletBString);
+        }
+    }
+
+    private void drawerAppsPress_0(){
+        if(isAppInstalled(TheNest.this, homeAppletBString)){
+            try {
+                Intent intent = getPackageManager().getLaunchIntentForPackage(homeAppletBString);
+                startActivity(intent);
+            } catch (Exception e){}
+        }
+    }
+
+    // -----[ DRAWER APPS COMMON ]----- //
+
+    private void drawerAppsCommonA(){
+        drawerAppsGridLayout.removeAllViews();
+        drawerAppsListLayout.removeAllViews();
+        drawerAppsShapeLayout.removeAllViews();
+    }
+
+    private void drawerAppsCommonB(int id_a, View view, int id_b, int id_c, int id_d, int mode){
+        drawerListView = inflater.inflate(id_a, (ViewGroup) view, false);
+        drawerListFrame = drawerListView.findViewById(id_b);
+        drawerListIcon = drawerListView.findViewById(id_c);
+        if(id_c != -1)
+            drawerListText = drawerListView.findViewById(id_d);
+
+        if(mode == 0)
+            backgroundTypeA(this, drawerListFrame, background(8), tintA, 3);
+
+        if(mode == 1)
+            backgroundTypeC(this, drawerListFrame, background(6), tintA);
+    }
+
+    // -----[ DRAWER APPS METHODS ]----- //
+
+    boolean drawerBlink;
+    private void drawerAppsStyle(List<String> list){
+        int_a = 0;
+        int_b = 1;
+        if(drawerBlink) {
+            drawerAppsCommonA();
+            drawerBlink = false;
+            drawerAppsScrollView1.setVisibility(View.GONE);
+            drawerAppsScrollView2.setVisibility(View.GONE);
+            drawerAppsScrollView3.setVisibility(View.GONE);
+        }
+        if(drawerTilesText != null)
+            drawerTilesText.setText(String.valueOf(list.size()));
+
+        Handler drawerAppsHandler = new Handler();
+        Runnable drawerAppsRunnable = new Runnable() {
+            @Override
+            public void run() {
+                drawerAppsCommonA();
+
+                if(drawerGridStyle.equals("Tiles")) {
+                    drawerAppsScrollView1.setVisibility(View.VISIBLE);
+                    drawerAppsInitialize(list, 0);
                 }
-            }, 100);
-        }
+                if(drawerGridStyle.equals("List")){
+                    drawerAppsScrollView2.setVisibility(View.VISIBLE);
+                    drawerAppsInitialize(list, 1);
+                }
+                if(drawerGridStyle.equals("Bubbles")){
+                    drawerAppsScrollView3.setVisibility(View.VISIBLE);
+                    drawerAppsInitialize(list, 2);
+                }
+                drawerRefresh = false;
+            }
+        };
+        drawerAppsHandler.postDelayed(drawerAppsRunnable, 25);
     }
 
-    private void drawerGridStyle(){
-        if(drawerGridStyle.equals("Tiles")){
-            drawerAppsGridView.setNumColumns(2);
-            drawerAppsGridView.setVerticalSpacing(density(this, 20));
-            drawerAppsGridView.setHorizontalSpacing(density(this, 0));
-        }
-        if(drawerGridStyle.equals("Bubbles")){
-            drawerAppsGridView.setNumColumns(4);
-            drawerAppsGridView.setVerticalSpacing(density(this, 15));
-            drawerAppsGridView.setHorizontalSpacing(density(this, 20));
-        }
-    }
-
-    private ArrayList<GridItemsA> gridArray;
-    private GridTypeA gridAdapter;
-    int drawerAppsCount = 0;
-    String gridViewString;
+    private List<String> gridArray;
+    private int drawerAppsCount = 0;
     private void drawerAppsList(){
         Intent intent = new Intent(Intent.ACTION_MAIN, null);
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
         List<ResolveInfo> drawerPackages = getPackageManager().queryIntentActivities(intent, PackageManager.GET_META_DATA);
-        if(drawerSortingOrder.equals("Alphabetically")){
-            Collections.sort(drawerPackages, new Comparator<ResolveInfo>() {
-                @Override
-                public int compare(ResolveInfo resolveInfo_1, ResolveInfo resolveInfo_2) {
-                    return resolveInfo_1.loadLabel(getPackageManager()).toString().compareTo(resolveInfo_2.loadLabel(getPackageManager()).toString());
-                }
-            });
-        }
-
-        drawerAppsCount = drawerPackages.size();
-
-        for (ResolveInfo resolveInfo : drawerPackages.subList(0, drawerPackages.size())) {
-            boolean add = false;
-            if(fileExist(TheNest.this, "List/Array - 03")) {
-                List<String> readValues = read(TheNest.this, "List/Array - 03");
-                if(!readValues.contains(resolveInfo.activityInfo.packageName)){
-                    add = true;
-                }
-            } else {
-                add = true;
-            }
-            if(add){
-                gridViewString = (String) resolveInfo.loadLabel(getPackageManager());
-                String packageName = resolveInfo.activityInfo.packageName;
-                if(fileExist(this, "List/Array - 04")){
-                    List<String> readValues_2 = read(this, "List/Array - 04");
-                    for(String value : readValues_2){
-                        if(value.startsWith(packageName)){
-                            gridViewString = value.substring(packageName.length() + 3).trim();
-                        }
-                    }
-                }
-                if(gridArray == null) {
-                    gridArray = new ArrayList<>();
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    gridArray.add(new GridItemsA(roundedBitmap(adaptiveIcon(this, packageName, 60)), gridViewString, packageName));
-                } else {
-                    gridArray.add(new GridItemsA(roundedBitmap(drawableIcon(this, packageName, 60)), gridViewString, packageName));
-                }
-                gridAdapter = new GridTypeA(this, R.layout.grid_type_a, gridArray, this);
-                drawerAppsGridView.setAdapter(gridAdapter);
-                drawerTilesText.setText(String.valueOf(gridAdapter.getCount()));
-            }
-        }
-    }
-
-    int gridArrayPosition;
-    @Override
-    public void onItemPressed(String current, int position) {
-        gridArrayPosition = position;
-        if(isAppInstalled(this, current)){
-            theNestDrawerLayout.removeView(drawerTilesView);
-            drawerAppletCREATED();
-            drawerAppletCurrent(current);
-        } else {
-            //gridArray.remove(current);
-        }
-    }
-
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    private void drawerAppletPress_0(){
-        if(isAppInstalled(this, drawerAppletString)){
-            if (drawerAppletALayout.findViewById(R.id.drawer_applet_b) != null) {
-                drawerAppletALayout.removeView(drawerAppletBView);
-                buttonModeA(this, drawerAppletAFrame2, drawerAppletAIcon2, background(5), false);
-            } else {
-                drawerAppletB();
-                buttonModeA(this, drawerAppletAFrame2, drawerAppletAIcon2, background(5), true);
-            }
-            if (drawerAppletALayout.findViewById(R.id.drawer_applet_c) != null) {
-                drawerAppletALayout.removeView(drawerAppletCView);
-                buttonModeA(this, drawerAppletAFrame3, drawerAppletAIcon3, background(5), false);
-            }
-        } else {
-            drawerAppletClose();
-        }
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-    }
-
-    private void drawerAppletPress_1(){
-        drawerAppletClose();
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-    }
-
-    private void drawerAppletPress_2(){
-        if(!drawerAppletBEditText.getText().toString().isEmpty()){
-            if(!drawerAppletBString.equals(drawerAppletBEditText.getText().toString())){
-                String label = drawerAppletBEditText.getText().toString().trim();
-                if(!fileExist(this, "List/Array - 04")){
-                    create(this, "List","/Array - 04", drawerAppletString + " - " + label);
-                } else {
-                    try {
-                        if (new Scanner(new File(getFilesDir(), "List/Array - 04")).useDelimiter("\\Z").next().contains(drawerAppletString)) {
-                            edit(this, "List/Array - 04", drawerAppletString + " - " + defaultName, drawerAppletString + " - " + label);
-                        } else {
-                            create(this, "List","/Array - 04", drawerAppletString + " - " + label);
-                        }
-                    } catch (Exception e) {}
-                }
-                drawerAppletCurrent(drawerAppletString);
-                gridAdapter.getItem(gridArrayPosition).setLabel(label);
-                gridAdapter.notifyDataSetChanged();
-            }
-        }
-    }
-
-    private void drawerAppletPress_3(){
-        String label = "";
-        try {
-            label = (String) getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(drawerAppletString, 0));
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if(!defaultName.equals(label)){
-            edit(this, "List/Array - 04", drawerAppletString + " - " + defaultName, drawerAppletString + " - " + label);
-            drawerAppletCurrent(drawerAppletString);
-            gridAdapter.getItem(gridArrayPosition).setLabel(label);
-            gridAdapter.notifyDataSetChanged();
-        }
-    }
-
-    private void drawerAppletPress_4(){
-        if(isAppInstalled(this, drawerAppletString)){
-            Methods.startActivity(this, drawerAppletString, Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        } else {
-            drawerAppletClose();
-        }
-    }
-
-    private void drawerAppletPress_5(){
-        if(isAppInstalled(this, drawerAppletString)){
-            Methods.startActivity(this, drawerAppletString, Intent.ACTION_DELETE);
-        } else {
-            drawerAppletClose();
-        }
-    }
-
-    private void drawerAppletPress_6(){
-        if(isAppInstalled(this, drawerAppletString)){
-            create(this, "List", "/Array - 03", drawerAppletString);
-            ////
-            gridArray.remove(gridArrayPosition);
-            gridAdapter.notifyDataSetChanged();
-            drawerTilesText.setText(String.valueOf(gridAdapter.getCount()));
-            drawerAppletClose();
-        } else {
-            drawerAppletClose();
-        }
-    }
-
-    private void drawerAppletPress_7(){
-        boolean permissionGranted = false;
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-            if(permission(this, "android.permission.WRITE_EXTERNAL_STORAGE") &&
-                    permission(this, "android.permission.MANAGE_EXTERNAL_STORAGE")){
-                permissionGranted = true;
-            }
-        } else{
-            if(permission(this, "android.permission.WRITE_EXTERNAL_STORAGE")){
-                permissionGranted = true;
-            }
-        }
-        if(permissionGranted){
-            if(isAppInstalled(this, drawerAppletString)){
-                try {
-                    ApplicationInfo ai = getPackageManager().getApplicationInfo(drawerAppletString, 0);
-                    String app = ai.loadLabel(getPackageManager()).toString();
-
-                    File f1 = new File( ai.publicSourceDir);
-                    File f2;
-
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-                        f2 = new File(getExternalFilesDir(null).getAbsolutePath() + "/SimplifiCc/Apps");
-                    } else{
-                        f2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/SimplifiCc/Apps");
-                    }
-
-                    if(!f2.exists())
-                        f2.mkdirs();
-
-                    File f3 = new File(f2.getPath() + "/" + app + ".apk");
-
-                    if(!threadState){
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                threadState = true;
-                                try {
-                                    f3.createNewFile();
-                                    InputStream in = new FileInputStream(f1);
-                                    OutputStream out = new FileOutputStream(f3);
-                                    byte[] bytes = new byte[1024];
-                                    int i;
-                                    while ((i = in.read(bytes)) > 0){
-                                        out.write(bytes, 0, i);
-                                    }
-                                    in.close();
-                                    out.close();
-
-                                    threadState = false;
-                                    //runOnUiThread(new Runnable() {
-                                    //    public void run() {
-                                    //
-                                    //    }
-                                    //});
-                                } catch (Exception e){
-                                    threadState = false;
-                                }
-                            }
-                        }).start();
-                    }
-                    touchTip(this, textC(20), 1);
-                } catch (Exception e) {
-                    //Storage Permission page
-                }
-            } else {
-                drawerAppletClose();
-            }
-        } else {
-            //Storage Permission page
-        }
-    }
-
-    private void drawerAppletPress_8(){
-        if(isAppInstalled(this, drawerAppletString)){
-            if (drawerAppletALayout.findViewById(R.id.drawer_applet_b) != null) {
-                drawerAppletALayout.removeView(drawerAppletBView);
-                buttonModeA(this, drawerAppletAFrame2, drawerAppletAIcon2, background(5), false);
-            }
-            if (drawerAppletALayout.findViewById(R.id.drawer_applet_c) != null) {
-                drawerAppletALayout.removeView(drawerAppletCView);
-                buttonModeA(this, drawerAppletAFrame3, drawerAppletAIcon3, background(5), false);
-            } else {
-                drawerAppletC();
-                buttonModeA(this, drawerAppletAFrame3, drawerAppletAIcon3, background(5), true);
-            }
-        } else {
-            drawerAppletClose();
-        }
-    }
-
-    // ------------------------------------------------------------------- //
-
-    private void drawerAppletRESUMED(){
-        if(drawerAppletString != null && !drawerAppletString.isEmpty() && !isAppInstalled(this, drawerAppletString)){
-            gridAdapter.remove(gridAdapter.getItem(gridArrayPosition));
-            gridAdapter.notifyDataSetChanged();
-            for(GridItemsA items : gridArray){
-                if(items.getAppPackage().matches(drawerAppletString)){
-                    gridArray.remove(items);
-                }
-            }
-            if(!drawerAlphabetsString.isEmpty()){
-                drawerAlphabetsString = "";
-                gridAdapter = new GridTypeA(this, R.layout.grid_type_a, gridArray, this);
-                drawerAppsGridView.setAdapter(gridAdapter);
-            }
-            drawerTilesText.setText(String.valueOf(gridAdapter.getCount()));
-
-            drawerAppletClose();
-
-            drawerAlphabets.clear();
-            alphabets();
-            drawerTilesAlphabets.removeAllViews();
-            initializeAlphabets(drawerAlphabets, drawerTilesAlphabets);
-
-            Intent intent = new Intent(Intent.ACTION_MAIN, null);
-            intent.addCategory(Intent.CATEGORY_LAUNCHER);
-            List<ResolveInfo> drawerPackages = getPackageManager().queryIntentActivities(intent, PackageManager.GET_META_DATA);
+        if(drawerAppsCount == 0 || drawerAppsCount != drawerPackages.size()){
             drawerAppsCount = drawerPackages.size();
+
+            if(drawerSortingOrder.equals("Alphabetically")){
+                Collections.sort(drawerPackages, new Comparator<ResolveInfo>() {
+                    @Override
+                    public int compare(ResolveInfo info_a, ResolveInfo info_b) {
+                        return info_a.loadLabel(getPackageManager()).toString().compareTo(info_b.loadLabel(getPackageManager()).toString());
+                    }
+                });
+            }
+            if(gridArray != null)
+                gridArray.clear();
+
+            gridArray = new ArrayList<>();
+
+            for (ResolveInfo resolveInfo : drawerPackages)
+                gridArray.add(resolveInfo.activityInfo.packageName);
+
+            if(fileExist(TheNest.this, "Array - 03")) {
+                List<String> readValues = read(TheNest.this, "Array - 03");
+                for (Iterator<String> iterator = gridArray.iterator(); iterator.hasNext();) {
+                    String value = iterator.next();
+                    if (readValues.contains(value))
+                        iterator.remove();
+                }
+            }
+            drawerAppsStyle(gridArray);
         }
     }
 
-    // ------------------------------------------------------------------- //
+    View drawerListView;
+    RelativeLayout drawerListFrame;
+    ImageView drawerListIcon;
+    TextView drawerListText;
+    List<String> appNames;
+    int int_a = 0;
+    int int_b = 1;
+    @SuppressLint("ClickableViewAccessibility")
+    private void drawerAppsInitialize(List<String> list, int type){
+        for (int i = int_a; i < list.size(); ++i) {
+            if(i < int_b){
+                int_a = int_b;
+                int_b += 1;
+                if(type == 0)
+                    drawerAppsCommonB(R.layout.linear_type_d, drawerAppsGridLayout, R.id.linear_type_d_frame,
+                            R.id.linear_type_d_icon, R.id.linear_type_d_text, 0);
+
+                if(type == 1)
+                    drawerAppsCommonB(R.layout.linear_type_e, drawerAppsListLayout, R.id.linear_type_e_frame,
+                            R.id.linear_type_e_icon, R.id.linear_type_e_text, 1);
+
+                if(type == 2)
+                    drawerAppsCommonB(R.layout.linear_type_f, drawerAppsShapeLayout, R.id.linear_type_f_frame,
+                            R.id.linear_type_f_icon, -1, -1);
+
+                drawerListIcon.setImageBitmap(appIcon(this, list.get(i), 40));
+
+                if(type == 0 || type == 1){
+                    int tint = 0;
+                    if(type == 0)
+                        tint = tintA;
+
+                    if(type == 1)
+                        tint = tintB;
+
+                    textType(this, drawerListText, "", tint, fontBStyle);
+
+                    String app = appLabel(this, list.get(i));
+                    if(fileExist(this, "Array - 04")){
+                        if(appNames == null || appNames.size() == 0)
+                            appNames = read(this, "Array - 04");
+                        for(String label : appNames){
+                            if(label.startsWith(list.get(i)))
+                                app = label.substring(list.get(i).length() + 3).trim();
+                        }
+                    }
+                    if(type == 0)
+                        drawerListText.setText(app);
+
+                    if(type == 1){
+                        if(app.length() >= 12){
+                            drawerListText.setText(app.substring(0, 12) + textA(16));
+                        } else {
+                            drawerListText.setText(app);
+                        }
+                    }
+                }
+                customTouchModeA(drawerListFrame, list.get(i), 3, 3);
+                if(type == 0)
+                    drawerAppsGridLayout.addView(drawerListView);
+                if(type == 1)
+                    drawerAppsListLayout.addView(drawerListView);
+                if(type == 2)
+                    drawerAppsShapeLayout.addView(drawerListView);
+            }
+        }
+    }
+
+    //..........
+    //-------------------- DRAWER -------------------- []
+    //-------------------- APPLET -------------------- []
+    //``````````
 
     private View drawerAppletView;
     private RelativeLayout drawerAppletLayout;
-    private void drawerAppletCREATED() {
+    private void drawerApplet0() {
         if (drawerAppletView == null) {
             drawerAppletView = inflater.inflate(R.layout.drawer_applet, null);
             drawerAppletLayout = drawerAppletView.findViewById(R.id.drawer_applet);
@@ -3496,8 +3195,6 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             drawerAppletA();
         }
     }
-
-    // ------------------------------------------------------------------- //
 
     private View drawerAppletAView;
     private RelativeLayout drawerAppletALayout, drawerAppletAFrame1, drawerAppletAFrame2, drawerAppletAFrame3;
@@ -3536,63 +3233,6 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    private String drawerAppletString;
-    private String defaultName;
-    private void drawerAppletCurrent(String packageName){
-        layoutParamsTypeB(this, drawerEdgeA, new int[]{direction(3), direction(5)}, direction(7), R.id.drawer_applet);
-        layoutParamsTypeB(this, drawerEdgeB, new int[]{direction(4), direction(5)}, direction(8), R.id.drawer_applet);
-        drawerAppletString = packageName;
-        try {
-            defaultName = (String) getPackageManager().getApplicationLabel(getPackageManager().getApplicationInfo(packageName, 0));
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if(fileExist(this, "List/Array - 04")){
-            List<String> readValues = read(this, "List/Array - 04");
-            for(String value : readValues){
-                if(value.startsWith(packageName)){
-                    defaultName = value.substring(packageName.length() + 3).trim();
-                }
-            }
-        }
-        drawerAppletAText.setText(defaultName);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            drawerAppletAIcon1.setImageBitmap(roundedBitmap(adaptiveIcon(this, packageName, 50)));
-        } else {
-            drawerAppletAIcon1.setImageBitmap(roundedBitmap(drawableIcon(this, packageName, 50)));
-        }
-
-        if (drawerAppletLayout.findViewById(R.id.drawer_applet_b) != null) {
-            drawerCurrentLabel();
-        }
-        if (drawerAppletLayout.findViewById(R.id.drawer_applet_c) != null) {
-            drawerCurrentType();
-        }
-    }
-
-    private void drawerAppletClose(){
-        layoutParamsTypeB(this, drawerEdgeA, new int[]{direction(3), direction(5)}, direction(7), R.id.drawer_tiles);
-        layoutParamsTypeB(this, drawerEdgeB, new int[]{direction(4), direction(5)}, direction(8), R.id.drawer_tiles);
-        drawerAppletString = "";
-        setMargins(this, drawerAppletLayout, 0, 0, 0, 0);
-        if (drawerAppletALayout.findViewById(R.id.drawer_applet_b) != null) {
-            drawerAppletALayout.removeView(drawerAppletBView);
-            buttonModeA(this, drawerAppletAFrame2, drawerAppletAIcon2,  background(5), false);
-        }
-        if (drawerAppletALayout.findViewById(R.id.drawer_applet_c) != null) {
-            drawerAppletALayout.removeView(drawerAppletCView);
-            buttonModeA(this, drawerAppletAFrame3, drawerAppletAIcon3,  background(5), false);
-        }
-        drawerAppletALayout.removeView(drawerAppletCView);
-        theNestDrawerLayout.removeView(drawerAppletView);
-        if (theNestDrawerLayout.findViewById(R.id.drawer_tiles) == null) {
-            theNestDrawerLayout.addView(drawerTilesView);
-        }
-    }
-
-    // ------------------------------------------------------------------- //
-
     private View drawerAppletBView;
     private RelativeLayout drawerAppletBLayout, drawerAppletBFrame1, drawerAppletBFrame2, drawerAppletBFrame3, drawerAppletBFrame4;
     private EditText drawerAppletBEditText;
@@ -3621,6 +3261,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
 
             customTypeB(this, drawerAppletBEditText, textA(7), tintB, fontBStyle);
 
+            emptyTouch(drawerAppletBFrame1);
             customTouchModeB(drawerAppletBFrame2, textC(13),1,1,2);
             customTouchModeB(drawerAppletBFrame3, textC(22),1,1,3);
         }
@@ -3631,53 +3272,62 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                     direction(12), R.id.drawer_applet_a_frame_2);
             setSize(this, drawerAppletBLayout, size(1), size(1));
             setMargins(this, drawerAppletBLayout, 0, -10, 10, 0);
-            drawerCurrentLabel();
+            drawerAppletBEditText.setText(drawerAppLabel);
         }
     }
 
-    String drawerAppletBString;
-    private boolean threadState = false;
-    private void drawerCurrentLabel() {
-        drawerAppletBEditText.setText(defaultName);
-        drawerAppletBString = defaultName;
-    }
-
-    // ------------------------------------------------------------------- //
-
     private View drawerAppletCView;
-    private RelativeLayout drawerAppletCLayout, drawerAppletCFrame1, drawerAppletCFrame2, drawerAppletCFrame3, drawerAppletCFrame4, drawerAppletCFrame5;
-    private ImageView drawerAppletCIcon1, drawerAppletCIcon2, drawerAppletCIcon3, drawerAppletCIcon4, drawerAppletCAngle;
+    private RelativeLayout drawerAppletCLayout, drawerAppletCFrame1, drawerAppletCFrame2, drawerAppletCFrame3,
+            drawerAppletCFrame4, drawerAppletCFrame5, drawerAppletCFrame6, drawerAppletCFrame7;
+    private ImageView drawerAppletCAngle, drawerAppletCIcon1, drawerAppletCIcon2, drawerAppletCIcon3, drawerAppletCIcon4,
+            drawerAppletCIcon5;
+    private TextView drawerAppletCText1, drawerAppletCText2;
+    private ScrollView drawerAppletCScrollView;
     private void drawerAppletC() {
         if (drawerAppletCView == null) {
             drawerAppletCView = inflater.inflate(R.layout.drawer_applet_c, null);
             drawerAppletCLayout = drawerAppletCView.findViewById(R.id.drawer_applet_c);
+            drawerAppletCScrollView = drawerAppletCView.findViewById(R.id.drawer_applet_c_scroll_view);
             drawerAppletCFrame1 = drawerAppletCView.findViewById(R.id.drawer_applet_c_frame_1);
             drawerAppletCFrame2 = drawerAppletCView.findViewById(R.id.drawer_applet_c_frame_2);
             drawerAppletCFrame3 = drawerAppletCView.findViewById(R.id.drawer_applet_c_frame_3);
             drawerAppletCFrame4 = drawerAppletCView.findViewById(R.id.drawer_applet_c_frame_4);
             drawerAppletCFrame5 = drawerAppletCView.findViewById(R.id.drawer_applet_c_frame_5);
+            drawerAppletCFrame6 = drawerAppletCView.findViewById(R.id.drawer_applet_c_frame_6);
+            drawerAppletCFrame7 = drawerAppletCView.findViewById(R.id.drawer_applet_c_frame_7);
             drawerAppletCAngle = drawerAppletCView.findViewById(R.id.drawer_applet_c_angle);
             drawerAppletCIcon1 = drawerAppletCView.findViewById(R.id.drawer_applet_c_icon_1);
             drawerAppletCIcon2 = drawerAppletCView.findViewById(R.id.drawer_applet_c_icon_2);
             drawerAppletCIcon3 = drawerAppletCView.findViewById(R.id.drawer_applet_c_icon_3);
             drawerAppletCIcon4 = drawerAppletCView.findViewById(R.id.drawer_applet_c_icon_4);
+            drawerAppletCIcon5 = drawerAppletCView.findViewById(R.id.drawer_applet_c_icon_5);
+            drawerAppletCText1 = drawerAppletCView.findViewById(R.id.drawer_applet_c_text_1);
+            drawerAppletCText2 = drawerAppletCView.findViewById(R.id.drawer_applet_c_text_2);
 
             backgroundTypeC(this, drawerAppletCFrame1, background(3), tintA);
             backgroundTypeA(this, drawerAppletCFrame2, background(5), tintB, 3);
             backgroundTypeA(this, drawerAppletCFrame3, background(5), tintB, 3);
             backgroundTypeA(this, drawerAppletCFrame4, background(5), tintB, 3);
             backgroundTypeA(this, drawerAppletCFrame5, background(5), tintB, 3);
+            backgroundTypeC(this, drawerAppletCFrame6, background(3), tintA);
+            backgroundTypeA(this, drawerAppletCFrame7, background(9), tintB, 3);
 
             imageTypeA(this, drawerAppletCAngle, drawable(2), tintA, 30);
             imageTypeA(this, drawerAppletCIcon1, icon(40), tintB, 50);
             imageTypeA(this, drawerAppletCIcon2, icon(32), tintB, 50);
             imageTypeA(this, drawerAppletCIcon3, icon(38), tintB, 50);
             imageTypeA(this, drawerAppletCIcon4, icon(34), tintB, 50);
+            imageTypeA(this, drawerAppletCIcon5, icon(20), tintB, 50);
 
+            textType(this, drawerAppletCText1, textC(67), tintB, fontAStyle);
+            textType(this, drawerAppletCText2, textB(83), tintB, fontBStyle);
+
+            emptyTouch(drawerAppletCFrame1);
             customTouchModeB(drawerAppletCFrame2, textC(11), 1, 1,4);
             customTouchModeB(drawerAppletCFrame3, textC(12), 1, 1,5);
             customTouchModeB(drawerAppletCFrame4, textC(17), 1, 1,6);
             customTouchModeB(drawerAppletCFrame5, textC(23), 1, 1,7);
+            customTouchModeB(drawerAppletCFrame7, textC(75), 1, 1,9);
         }
         if (drawerAppletALayout.findViewById(R.id.drawer_applet_c) == null) {
             drawerAppletALayout.addView(drawerAppletCView);
@@ -3686,139 +3336,291 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                     direction(12), R.id.drawer_applet_a_frame_3);
             setSize(this, drawerAppletCLayout, size(1), size(1));
             setMargins(this, drawerAppletCLayout, 0, -45, 10, 0);
-            drawerCurrentType();
+            drawerAppOptions();
         }
     }
 
-    private void drawerCurrentType(){
-        if(systemApp(this, drawerAppletString)){
-            drawerAppletCFrame3.setVisibility(View.GONE);
+    // -----[ DRAWER APPLET BUTTONS ]----- //
+
+    private void drawerAppletPress_0(){
+        drawerAppletCommonE(1);
+    }
+
+    private void drawerAppletPress_1(){
+        drawerAppletClose();
+        ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    private void drawerAppletPress_2(){
+        if(!drawerAppletBEditText.getText().toString().isEmpty()){
+            if(!drawerAppLabel.equals(drawerAppletBEditText.getText().toString())){
+                String label = drawerAppletBEditText.getText().toString().trim();
+                if(!fileExist(this, "Array - 04")){
+                    create(this, "Array - 04", drawerAppletString + " - " + label);
+                } else {
+                    try {
+                        if (new Scanner(new File(getFilesDir(), "Array - 04")).useDelimiter("\\Z").next().contains(drawerAppletString)) {
+                            edit(this, "Array - 04", drawerAppletString + " - " + drawerAppLabel, drawerAppletString + " - " + label);
+                        } else {
+                            create(this, "Array - 04", drawerAppletString + " - " + label);
+                        }
+                    } catch (Exception e) {}
+                }
+                drawerAppletCommonA(label);
+            }
+        }
+    }
+
+    private void drawerAppletPress_3(){
+        String label = appLabel(this, drawerAppletString);
+        if(!drawerAppLabel.equals(label)){
+            edit(this, "Array - 04",
+                    drawerAppletString + " - " + drawerAppLabel,
+                    drawerAppletString + " - " + label);
+            drawerAppletCommonA(label);
+        }
+    }
+
+    private void drawerAppletPress_4(){
+        drawerAppletCommonB(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+    }
+
+    private void drawerAppletPress_5(){
+        drawerAppletCommonB(Intent.ACTION_DELETE);
+    }
+
+    private void drawerAppletPress_6(){
+        if(isAppInstalled(this, drawerAppletString)){
+            create(this, "Array - 03", drawerAppletString);
+            drawerRefresh(false);
+        }
+        drawerAppletClose();
+    }
+
+    private void drawerAppletPress_7(){
+        if(drawerAppletPermission()){
+            if(isAppInstalled(this, drawerAppletString)){
+                try {
+                    ApplicationInfo ai = getPackageManager().getApplicationInfo(drawerAppletString, 0);
+                    String app = ai.loadLabel(getPackageManager()).toString();
+
+                    File f1 = new File(ai.publicSourceDir);
+                    File f2;
+
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+                        f2 = new File(getExternalFilesDir(null).getAbsolutePath() + "/SimplifiCc/Apps");
+                    } else{
+                        f2 = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/SimplifiCc/Apps");
+                    }
+
+                    if(!f2.exists())
+                        f2.mkdirs();
+
+                    File f3 = new File(f2.getPath() + "/" + app + ".apk");
+
+                    if(!drawerThreadState){
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                drawerThreadState = true;
+                                try {
+                                    f3.createNewFile();
+                                    InputStream in = new FileInputStream(f1);
+                                    OutputStream out = new FileOutputStream(f3);
+                                    byte[] bytes = new byte[1024];
+                                    int i;
+                                    while ((i = in.read(bytes)) > 0){
+                                        out.write(bytes, 0, i);
+                                    }
+                                    in.close();
+                                    out.close();
+                                    //runOnUiThread(new Runnable() { public void run() {}});
+                                } catch (Exception e){}
+                                drawerThreadState = false;
+                            }
+                        }).start();
+                    }
+                    touchTip(this, textC(20), 1);
+                } catch (Exception e) {}
+            } else {
+                drawerAppletClose();
+            }
         } else {
-            drawerAppletCFrame3.setVisibility(View.VISIBLE);
+            drawerAppletCFrame1.setVisibility(View.GONE);
+            drawerAppletCFrame6.setVisibility(View.VISIBLE);
+            drawerAppletCAngle.setVisibility(View.INVISIBLE);
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    View theNestSettingsView;
-    RelativeLayout theNestSettingsLayout;
-
-    private String settingsTab;
-    private String miscListStyle;
-    private String homeListStyle;
-    private void settingsConfigurations(){
-        if(!fileExist(this, "Settings/Configurations")){
-            create(this, "Settings","/Configurations", "# Settings Configurations...");
-            create(this, "Settings","/Configurations", "Settings Tab - About");
-            create(this, "Settings","/Configurations", "Misc List Style - Square");
-            create(this, "Settings","/Configurations", "Home List Style - Hexagon");
-            create(this, "Settings","/Configurations", " ");
-            create(this, "Settings","/Configurations", "--------------------");
-            create(this, "Settings","/Configurations", " ");
-        }
-
-        List<String> readValues = read(this, "Settings/Configurations");
-        settingsTab = readValues.get(1).substring(15).trim();
-        miscListStyle = readValues.get(2).substring(18).trim();
-        homeListStyle = readValues.get(3).substring(18).trim();
+    private void drawerAppletPress_8(){
+        drawerAppletCommonE(2);
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    private void drawerAppletPress_9(){
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", getPackageName(), null));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 
-    private void settingsScreenSTATE_A(){
+    // -----[ DRAWER APPLET COMMON ]----- //
+
+    private void drawerAppletCommonA(String label){
+        for(int i = 0; i < drawerAppsGridLayout.getChildCount(); ++i){
+            TextView textView = drawerAppsGridLayout.getChildAt(i).findViewById(R.id.linear_type_d_text);
+            if(textView.getText().equals(drawerAppLabel))
+                textView.setText(label);
+        }
+        drawerAppletCurrent(drawerAppletString);
+    }
+
+    private void drawerAppletCommonB(String intent){
+        if(isAppInstalled(this, drawerAppletString)){
+            Methods.startActivity(this, drawerAppletString, intent);
+        } else {
+            drawerAppletClose();
+        }
+    }
+
+    private void drawerAppletCommonC(int id, View view, RelativeLayout frame, ImageView icon){
+        if (drawerAppletALayout.findViewById(id) != null) {
+            drawerAppletALayout.removeView(view);
+            buttonModeA(this, frame, icon, background(5), false);
+        }
+    }
+
+    private void drawerAppletCommonD(int id, View view, RelativeLayout frame, ImageView icon){
+        if (drawerAppletALayout.findViewById(id) != null) {
+            drawerAppletALayout.removeView(view);
+            buttonModeA(this, frame, icon, background(5), false);
+        } else {
+            if(drawerAppletInt == 1)
+                drawerAppletB();
+            if(drawerAppletInt == 2)
+                drawerAppletC();
+            buttonModeA(this, frame, icon, background(5), true);
+        }
+    }
+
+    private void drawerAppletCommonE(int mode){
+        if(isAppInstalled(this, drawerAppletString)){
+            drawerAppletInt = mode;
+            drawerAppletSwitch();
+        } else {
+            drawerAppletClose();
+        }
+    }
+
+    // -----[ DRAWER APPLET METHODS ]----- //
+
+    private int drawerAppletInt = 0;
+    private void drawerAppletSwitch(){
+        if(drawerAppletInt == 1){
+            drawerAppletCommonD(R.id.drawer_applet_b, drawerAppletBView, drawerAppletAFrame2, drawerAppletAIcon2);
+            drawerAppletCommonC(R.id.drawer_applet_c, drawerAppletCView, drawerAppletAFrame3, drawerAppletAIcon3);
+        }
+        if(drawerAppletInt == 2){
+            drawerAppletCommonC(R.id.drawer_applet_b, drawerAppletBView, drawerAppletAFrame2, drawerAppletAIcon2);
+            drawerAppletCommonD(R.id.drawer_applet_c, drawerAppletCView, drawerAppletAFrame3, drawerAppletAIcon3);
+        }
+        ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+    }
+
+    private boolean drawerAppletPermission(){
+        boolean result = false;
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            if(permission(this, "android.permission.WRITE_EXTERNAL_STORAGE") &&
+                    permission(this, "android.permission.MANAGE_EXTERNAL_STORAGE")){
+                result = true;
+            }
+        } else{
+            if(permission(this, "android.permission.WRITE_EXTERNAL_STORAGE")){
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    private String drawerAppletString = "";
+    private String drawerAppLabel;
+    private boolean drawerThreadState;
+    private void drawerAppletCurrent(String appPackage){
+        drawerEdgePositions();
+        drawerAppletString = appPackage;
+        drawerAppLabel = appLabel(this, drawerAppletString);
+        if(fileExist(this, "Array - 04")){
+            List<String> readValues = read(this, "Array - 04");
+            for(String value : readValues){
+                if(value.startsWith(appPackage)){
+                    drawerAppLabel = value.substring(appPackage.length() + 3).trim();
+                }
+            }
+        }
+        drawerAppletAText.setText(drawerAppLabel);
+        drawerAppletAIcon1.setImageBitmap(appIcon(this, appPackage, 50));
+
+        if (drawerAppletLayout.findViewById(R.id.drawer_applet_b) != null)
+            drawerAppletBEditText.setText(drawerAppLabel);
+
+        if (drawerAppletLayout.findViewById(R.id.drawer_applet_c) != null)
+            drawerAppOptions();
+    }
+
+    private void drawerAppOptions(){
+        drawerAppletCFrame1.setVisibility(View.VISIBLE);
+        drawerAppletCFrame6.setVisibility(View.GONE);
+        drawerAppletCAngle.setVisibility(View.VISIBLE);
+        drawerAppletCFrame3.setVisibility(View.VISIBLE);
+        if(systemApp(this, drawerAppletString))
+            drawerAppletCFrame3.setVisibility(View.GONE);
+    }
+
+    private void drawerAppletClose(){
+        drawerAppletCommonC(R.id.drawer_applet_b, drawerAppletBView, drawerAppletAFrame2, drawerAppletAIcon2);
+        drawerAppletCommonC(R.id.drawer_applet_c, drawerAppletCView, drawerAppletAFrame3, drawerAppletAIcon3);
+        theNestDrawerLayout.removeView(drawerAppletView);
+        theNestDrawerLayout.addView(drawerTilesView);
+        drawerEdgePositions();
+    }
+
+    /*
+       -----------------------------
+       [                           ]
+       [     SETTINGS - SCREEN     ]
+       [                           ]
+       -----------------------------
+    */
+
+    private void settingsScreenStateA(){
         if(settingsDrawerLayout != null && settingsDrawerLayout.findViewById(R.id.settings_drawer_b) != null)
-            hiddenApps();
+            hiddenAppsInitialize();
+
         if(settingsHomeLayout != null && settingsHomeLayout.findViewById(R.id.settings_home_b) != null)
-            settingsHomeWidgets();
+            homeWidgetState();
+
         if(settingsHomeLayout != null && settingsHomeLayout.findViewById(R.id.settings_home_d) != null)
-            settingsHomeWallpaper();
+            homeWallpaperState();
+
         if(settingsHomeLayout != null && settingsHomeLayout.findViewById(R.id.settings_home_e) != null)
             settingsHomeFolder();
+
         if(settingsHomeLayout != null && settingsHomeLayout.findViewById(R.id.settings_home_f) != null)
             settingsHomeStatus();
+
         if(settingsHomeLayout != null && settingsHomeLayout.findViewById(R.id.settings_home_h) != null)
             settingsHomeShortcut();
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    private void settingsButtonsPress_0(){
-        if(theNestSettingsLayout.findViewById(R.id.settings_about) == null){
-            settingsAboutView();
-        }
-        theNestSettingsLayout.removeView(settingsMiscView);
-        theNestSettingsLayout.removeView(settingsDrawerView);
-        theNestSettingsLayout.removeView(settingsHomeView);
-        buttonModeB(TheNest.this, settingsButtonsFrame1, settingsButtonsText1, background(5), true);
-        buttonModeA(TheNest.this, settingsButtonsFrame2, settingsButtonsIcon1, background(5), false);
-        buttonModeA(TheNest.this, settingsButtonsFrame3, settingsButtonsIcon2, background(5), false);
-        buttonModeA(TheNest.this, settingsButtonsFrame4, settingsButtonsIcon3, background(5), false);
-    }
-
-    private void settingsButtonsPress_1(){
-        theNestSettingsLayout.removeView(settingsAboutView);
-        if(theNestSettingsLayout.findViewById(R.id.settings_misc) == null) {
-            settingsMiscView();
-        }
-        theNestSettingsLayout.removeView(settingsDrawerView);
-        theNestSettingsLayout.removeView(settingsHomeView);
-        buttonModeB(TheNest.this, settingsButtonsFrame1, settingsButtonsText1, background(5), false);
-        buttonModeA(TheNest.this, settingsButtonsFrame2, settingsButtonsIcon1, background(5), true);
-        buttonModeA(TheNest.this, settingsButtonsFrame3, settingsButtonsIcon2, background(5), false);
-        buttonModeA(TheNest.this, settingsButtonsFrame4, settingsButtonsIcon3, background(5), false);
-    }
-
-    private void settingsButtonsPress_2(){
-        theNestSettingsLayout.removeView(settingsAboutView);
-        theNestSettingsLayout.removeView(settingsMiscView);
-        if(theNestSettingsLayout.findViewById(R.id.settings_drawer) == null) {
-            settingsDrawer();
-        }
-        theNestSettingsLayout.removeView(settingsHomeView);
-        buttonModeB(TheNest.this, settingsButtonsFrame1, settingsButtonsText1, background(5), false);
-        buttonModeA(TheNest.this, settingsButtonsFrame2, settingsButtonsIcon1, background(5), false);
-        buttonModeA(TheNest.this, settingsButtonsFrame3, settingsButtonsIcon2, background(5), true);
-        buttonModeA(TheNest.this, settingsButtonsFrame4, settingsButtonsIcon3, background(5), false);
-    }
-
-    private void settingsButtonsPress_3(){
-        theNestSettingsLayout.removeView(settingsAboutView);
-        theNestSettingsLayout.removeView(settingsMiscView);
-        theNestSettingsLayout.removeView(settingsDrawerView);
-        if(theNestSettingsLayout.findViewById(R.id.settings_home) == null) {
-            settingsHome();
-        }
-        buttonModeB(TheNest.this, settingsButtonsFrame1, settingsButtonsText1, background(5), false);
-        buttonModeA(TheNest.this, settingsButtonsFrame2, settingsButtonsIcon1, background(5), false);
-        buttonModeA(TheNest.this, settingsButtonsFrame3, settingsButtonsIcon2, background(5), false);
-        buttonModeA(TheNest.this, settingsButtonsFrame4, settingsButtonsIcon3, background(5), true);
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- SETTINGS -------------------- []
+    //---------------------- BUTTONS ------------------- []
+    //``````````
 
     View settingsButtonsView;
     RelativeLayout settingsButtonsLayout, settingsButtonsFrame1, settingsButtonsFrame2, settingsButtonsFrame3,
             settingsButtonsFrame4;
     ImageView settingsButtonsIcon1, settingsButtonsIcon2, settingsButtonsIcon3;
     TextView settingsButtonsText1, settingsButtonsText2;
-    private void settingsButtonsCREATED(){
+    private void settingsButtons(){
         if(settingsButtonsView == null){
             settingsButtonsView = inflater.inflate(R.layout.settings_buttons, null);
             settingsButtonsLayout = settingsButtonsView.findViewById(R.id.settings_buttons);
@@ -3838,7 +3640,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             backgroundTypeA(this, settingsButtonsFrame4, background(5), tintA, 3);
 
             textType(this, settingsButtonsText1, textA(6), tintA, Typeface.BOLD);
-            textType(this, settingsButtonsText2, textA(9), tintA, Typeface.BOLD);
+            textType(this, settingsButtonsText2, textA(9) + textA(9), tintA, Typeface.BOLD);
 
             imageTypeA(this, settingsButtonsIcon1, icon(29), tintA, 65);
             imageTypeA(this, settingsButtonsIcon2, icon(36), tintA, 50);
@@ -3857,31 +3659,92 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    // -----[ SETTINGS BUTTONS ]----- //
+
+    private void settingsButtonsPress_0(){
+        if(settingsButtonsInt != 1){
+            settingsButtonsInt = 1;
+            settingsButtonsMode();
+        }
+    }
+
+    private void settingsButtonsPress_1(){
+        if(settingsButtonsInt != 2){
+            settingsButtonsInt = 2;
+            settingsButtonsMode();
+        }
+    }
+
+    private void settingsButtonsPress_2(){
+        if(settingsButtonsInt != 3){
+            settingsButtonsInt = 3;
+            settingsButtonsMode();
+        }
+    }
+
+    private void settingsButtonsPress_3(){
+        if(settingsButtonsInt != 4){
+            settingsButtonsInt = 4;
+            settingsButtonsMode();
+        }
+    }
+
+    // -----[ SETTINGS BUTTONS METHODS ]----- //
+
+    private int settingsButtonsInt;
+    private void settingsButtonsMode(){
+        theNestSettingsLayout.removeView(settingsAboutView);
+        theNestSettingsLayout.removeView(settingsMiscView);
+        theNestSettingsLayout.removeView(settingsDrawerView);
+        theNestSettingsLayout.removeView(settingsHomeView);
+        buttonModeB(this, settingsButtonsFrame1, settingsButtonsText1, background(5), false);
+        buttonModeA(this, settingsButtonsFrame2, settingsButtonsIcon1, background(5), false);
+        buttonModeA(this, settingsButtonsFrame3, settingsButtonsIcon2, background(5), false);
+        buttonModeA(this, settingsButtonsFrame4, settingsButtonsIcon3, background(5), false);
+
+        if(settingsButtonsInt == 1){
+            settingsAbout();
+            buttonModeB(TheNest.this, settingsButtonsFrame1, settingsButtonsText1, background(5), true);
+        }
+        if(settingsButtonsInt == 2){
+            settingsMisc();
+            buttonModeA(this, settingsButtonsFrame2, settingsButtonsIcon1, background(5), true);
+        }
+        if(settingsButtonsInt == 3){
+            settingsDrawer();
+            buttonModeA(this, settingsButtonsFrame3, settingsButtonsIcon2, background(5), true);
+        }
+        if(settingsButtonsInt == 4){
+            settingsHome();
+            buttonModeA(this, settingsButtonsFrame4, settingsButtonsIcon3, background(5), true);
+        }
+    }
+
+    //..........
+    //-------------------- SETTINGS -------------------- []
+    //---------------------- TOOLTIP ------------------- []
+    //``````````
 
     View settingsTooltipView;
-    public static RelativeLayout settingsTooltipLayout;
+    public static RelativeLayout settingsTooltipLayout, settingsTooltipFrame;
     public static TextView settingsTooltipText;
-    private void settingsTooltipCREATED(){
+    private void settingsTooltip(){
         if(settingsTooltipView == null){
             settingsTooltipView = inflater.inflate(R.layout.settings_tooltip, null);
             settingsTooltipLayout = settingsTooltipView.findViewById(R.id.settings_tooltip);
+            settingsTooltipFrame = settingsTooltipView.findViewById(R.id.settings_tooltip_frame);
             settingsTooltipText = settingsTooltipView.findViewById(R.id.settings_tooltip_text);
 
-            backgroundTypeC(this, settingsTooltipLayout, background(3), tintA);
+            backgroundTypeC(this, settingsTooltipFrame, background(3), tintA);
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_tooltip) == null){
             theNestSettingsLayout.addView(settingsTooltipView);
-            layoutParamsTypeA(this, settingsTooltipLayout, new int[]{direction(4), direction(5)});
+            layoutParamsTypeB(this, settingsTooltipLayout, new int[]{direction(4), direction(5)}, direction(9), R.id.settings_edge_b);
             settingsTooltipStateA(this);
         }
     }
 
-    private void settingsTooltipSTOPPED(){
+    private void settingsTooltipReset(){
         try {
             settingsTooltipStateA(homeTooltipLayout.getContext());
             settingsTooltipHandler.removeCallbacks(settingsTooltipRunnable);
@@ -3896,7 +3759,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
 
     public static void settingsTooltipStateB(Context context, String tooltip){
         textType(context, settingsTooltipText, tooltip, tintB, fontAStyle);
-        setMargins(context, settingsTooltipLayout, 0, 20, 20, 0);
+        setMargins(context, settingsTooltipLayout, 0, 20, 20, 20);
         setSize(context, settingsTooltipLayout, size(1), size(1));
     }
 
@@ -3908,36 +3771,37 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     };
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    //..........
+    //-------------------- SETTINGS -------------------- []
+    //---------------------- PANEL --------------------- []
+    //``````````
 
-    private void settingsPanelCREATED(){
-        settingsEdgeAView();
-        settingsEdgeBView();
-        if(settingsTab.equals("About")){
+    private void settingsPanel(){
+        settingsEdgeA();
+        settingsEdgeB();
+        if(settingsTab.equals("About") || settingsTab.equals("Auto"))
             settingsButtonsPress_0();
-        }
-        if(settingsTab.equals("Misc")){
+
+        if(settingsTab.equals("Misc"))
             settingsButtonsPress_1();
-        }
-        if(settingsTab.equals("Drawer")){
+
+        if(settingsTab.equals("Drawer"))
             settingsButtonsPress_2();
-        }
-        if(settingsTab.equals("Home")){
+
+        if(settingsTab.equals("Home"))
             settingsButtonsPress_3();
-        }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- SETTINGS -------------------- []
+    //---------------------- EDGE --------------------- []
+    //``````````
 
     View settingsEdgeAView;
     RelativeLayout settingsEdgeALayout, settingsEdgeAFrame;
     ImageView settingsEdgeALine1, settingsEdgeALine2;
     TextView settingsEdgeAText;
-    private void settingsEdgeAView(){
+    private void settingsEdgeA(){
         if(settingsEdgeAView == null){
             settingsEdgeAView = inflater.inflate(R.layout.settings_edge_a, null);
             settingsEdgeALayout = settingsEdgeAView.findViewById(R.id.settings_edge_a);
@@ -3958,13 +3822,11 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
     View settingsEdgeBView;
     RelativeLayout settingsEdgeBLayout;
     ImageView settingsEdgeBLine1, settingsEdgeBLine2, settingsEdgeBDot1, settingsEdgeBDot2,
             settingsEdgeBSquare, settingsEdgeBCylinder1, settingsEdgeBCylinder2;
-    private void settingsEdgeBView(){
+    private void settingsEdgeB(){
         if(settingsEdgeBView == null){
             settingsEdgeBView = inflater.inflate(R.layout.settings_edge_b, null);
             settingsEdgeBLayout = settingsEdgeBView.findViewById(R.id.settings_edge_b);
@@ -3991,76 +3853,10 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    private void settingsAboutPress_0(){
-        settingsAboutText1.setText(textC(24));
-        settingsAboutText2.setText(textC(25));
-    }
-
-    private void settingsAboutPress_1(){
-        settingsAboutText1.setText(textC(26));
-        settingsAboutText2.setText(textC(27));
-    }
-
-    private void settingsAboutPress_2(){
-        if(isAppInstalled(TheNest.this, "com.google.android.gm")){
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            String email = "simplicdeveloper2062@gmail.com";
-            intent.putExtra(Intent.EXTRA_EMAIL, email);
-            intent.putExtra(Intent.EXTRA_SUBJECT,"(^o^)/ Over Here...");
-            intent.putExtra(Intent.EXTRA_TEXT,"Is something wrong (*.*)...");
-            intent.setType("text/html");
-            intent.setPackage("com.google.android.gm");
-            startActivity(Intent.createChooser(intent, "Send mail"));
-        } else {
-            //Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://mail.google.com"));
-            //try {
-            //    startActivity(intent);
-            //} catch (Exception e){
-            //    touchTip(this, text(39), 2);
-            //}
-            if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-                android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                clipboard.setText("simplicdeveloper2062@gmail.com");
-            } else {
-                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                android.content.ClipData clip = android.content.ClipData.newPlainText("Email Copied", "simplicdeveloper2062@gmail.com");
-                clipboard.setPrimaryClip(clip);
-            }
-            touchTip(this, textC(28), 2);
-        }
-    }
-
-    private void settingsAboutPress_3(){
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/SimpliC-Developer"));
-        try {
-            startActivity(intent);
-        } catch (Exception e){
-            //touchTip(this, text(39), 2);
-            if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-                android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                clipboard.setText("https://github.com/SimpliC-Developer");
-            } else {
-                android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                android.content.ClipData clip = android.content.ClipData.newPlainText("Linnk Copied", "https://github.com/SimpliC-Developer");
-                clipboard.setPrimaryClip(clip);
-            }
-            touchTip(this, textC(29), 2);
-        }
-    }
-
-    private void settingsAboutPress_4(){
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", getPackageName(), null));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- SETTINGS -------------------- []
+    //---------------------- ABOUT --------------------- []
+    //``````````
 
     View settingsAboutView;
     RelativeLayout settingsAboutLayout, settingsAboutFrame1, settingsAboutFrame2, settingsAboutFrame3, settingsAboutFrame4;
@@ -4072,7 +3868,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             settingsAboutText17, settingsAboutText18, settingsAboutText19, settingsAboutText20,
             settingsAboutText21, settingsAboutText22, settingsAboutText23;
     ImageView settingsAboutIcon1, settingsAboutIcon2, settingsAboutIcon3;
-    private void settingsAboutView(){
+    private void settingsAbout(){
         if(settingsAboutView == null){
             settingsAboutView = inflater.inflate(R.layout.settings_about, null);
             settingsAboutLayout = settingsAboutView.findViewById(R.id.settings_about);
@@ -4164,257 +3960,73 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    // -----[ SETTINGS ABOUT BUTTONS ]----- //
 
-    private void settingsMiscPress_0(){
-        settingsMiscLayout.removeView(settingsMiscBView);
-        settingsMiscAView.setVisibility(View.VISIBLE);
+    private void settingsAboutPress_0(){
+        settingsAboutCommonA(24, 25);
     }
 
-    private void settingsMiscPress_1(){
-        if(settingsMiscBInt == 0){
-            if(fileExist(TheNest.this, "Home")){
-                File home = new File(getFilesDir(), "Home/Configurations");
-                home.delete();
-            }
-            if(fileExist(TheNest.this, "Drawer")){
-                File drawer = new File(getFilesDir(), "Drawer/Configurations");
-                drawer.delete();
-            }
-            if(fileExist(TheNest.this, "Settings")){
-                File settings = new File(getFilesDir(), "Settings/Configurations");
-                settings.delete();
-            }
-            if(fileExist(TheNest.this, "Fozin")){
-                File fozin = new File(getFilesDir(), "Fozin/Configurations");
-                fozin.delete();
-            }
-        }
-        if(settingsMiscBInt == 1){
-            ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
-            getCacheDir().delete();
-            getFilesDir().delete();
-        }
-        restart(TheNest.this);
+    private void settingsAboutPress_1(){
+        settingsAboutCommonA(26, 27);
     }
 
-    private void settingsMiscPress_2(){
-        if(settingsMiscBInt != 0){
-            settingsMiscBInt = 0;
-            miscResetMode();
-        }
-    }
-
-    private void settingsMiscPress_3(){
-        if(settingsMiscBInt != 1){
-            settingsMiscBInt = 1;
-            miscResetMode();
-        }
-    }
-
-    private void settingsMiscPress_4(){
-        settingsMiscLayout.removeView(settingsMiscCView);
-        settingsMiscAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsMiscPress_5(){
-        if(settingsMiscCInt == 0){
-            if(statusBar.equals("Enabled")) {
-                edit(TheNest.this,  "Fozin/Configurations","Status Bar - Enabled","Status Bar - Disabled");
-            } else {
-                edit(TheNest.this, "Fozin/Configurations", "Status Bar - Disabled", "Status Bar - Enabled");
-            }
-        }
-        if(settingsMiscCInt == 1){
-            if (navigationBar.equals("Enabled")) {
-                edit(TheNest.this, "Fozin/Configurations", "Navigation Bar - Enabled", "Navigation Bar - Disabled");
-            } else {
-                edit(TheNest.this, "Fozin/Configurations", "Navigation Bar - Disabled", "Navigation Bar - Enabled");
-            }
-        }
-        fozinConfigurations();
-        miscBarsMode();
-    }
-
-    private void settingsMiscPress_6(){
-        if(settingsMiscCInt != 0){
-            settingsMiscCInt = 0;
-            miscBarsMode();
-        }
-    }
-
-    private void settingsMiscPress_7(){
-        if(settingsMiscCInt != 1){
-            settingsMiscCInt = 1;
-            miscBarsMode();
-        }
-    }
-
-    private void settingsMiscPress_8(){
-        settingsMiscLayout.removeView(settingsMiscDView);
-        settingsMiscAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsMiscPress_9(){
-        if(settingsMiscDInt_1 == 0){
-            if(settingsTab.equals("About"))
-                edit(this, "Settings/Configurations", "Settings Tab - " + settingsTab, "Settings Tab - Misc");
-            if(settingsTab.equals("Misc"))
-                edit(this, "Settings/Configurations", "Settings Tab - " + settingsTab, "Settings Tab - Drawer");
-            if(settingsTab.equals("Drawer"))
-                edit(this, "Settings/Configurations", "Settings Tab - " + settingsTab, "Settings Tab - Home");
-            if(settingsTab.equals("Home"))
-                edit(this, "Settings/Configurations", "Settings Tab - " + settingsTab, "Settings Tab - About");
-            restart(this);
-        }
-        if(settingsMiscDInt_1 == 1){
-            String style = "";
-            if(settingsMiscDInt_2 == 0) {
-                if(miscListStyle.equals("Square"))
-                    style = "Cylinder";
-                if(miscListStyle.equals("Cylinder"))
-                    style = "Hexagon";
-                if(miscListStyle.equals("Hexagon"))
-                    style = "Square";
-                edit(this,  "Settings/Configurations", "Misc List Style - " + miscListStyle, "Misc List Style - " + style);
-                settingsConfigurations();
-                settingsMiscDText3.setText(miscListStyle);
-                if(settingsMiscAListView != null){
-                    miscAItems.clear();
-                    miscAItems.notifyDataSetChanged();
-                    settingsMiscAList();
-                }
-            }
-            if(settingsMiscDInt_2 == 1) {
-                if(homeListStyle.equals("Square"))
-                    style = "Cylinder";
-                if(homeListStyle.equals("Cylinder"))
-                    style = "Hexagon";
-                if(homeListStyle.equals("Hexagon"))
-                    style = "Square";
-                edit(this,  "Settings/Configurations", "Home List Style - " + homeListStyle, "Home List Style - " + style);
-                settingsConfigurations();
-                settingsMiscDText3.setText(homeListStyle);
-                if(settingsHomeAListView != null){
-                    homeAItems.clear();
-                    homeAItems.notifyDataSetChanged();
-                    settingsHomeAList();
-                }
-            }
-        }
-    }
-
-    private void settingsMiscPress_10(){
-        if(settingsMiscDInt_1 != 0){
-            settingsMiscDInt_1 = 0;
-            miscTabs();
-        }
-    }
-
-    private void settingsMiscPress_11(){
-        if(settingsMiscDInt_1 != 1){
-            settingsMiscDInt_1 = 1;
-            miscTabs();
-        }
-    }
-
-    private void settingsMiscPress_12(){
-        if(settingsMiscDInt_2 != 0){
-            settingsMiscDInt_2 = 0;
-            miscSwitches_Tint();
-        }
-    }
-
-    private void settingsMiscPress_13(){
-        if(settingsMiscDInt_2 != 1){
-            settingsMiscDInt_2 = 1;
-            miscSwitches_Tint();
-        }
-    }
-
-    private void settingsMiscPress_14(){
-
-    }
-
-    private void settingsMiscPress_15(){
-        settingsMiscLayout.removeView(settingsMiscEView);
-        settingsMiscAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsMiscPress_16(){
-        edit(this, "Fozin/Configurations", "Background - " + background, "Background - " + R.color.origin);
-        edit(this, "Fozin/Configurations", "UI - " + ui, "UI - " + R.color.orange_3);
-        edit(this, "Fozin/Configurations", "Tint A - " + tintA, "Tint A - " + R.color.white);
-        edit(this, "Fozin/Configurations", "Tint B - " + tintB, "Tint B - " + R.color.black);
-        restart(this);
-    }
-
-    private void settingsMiscPress_17(){
-        settingsMiscLayout.removeView(settingsMiscFView);
-        settingsMiscAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsMiscPress_18(){
-        if(settingsMiscFInt != 0){
-            settingsMiscFInt = 0;
-            miscFonts();
-        }
-    }
-
-    private void settingsMiscPress_19(){
-        if(settingsMiscFInt != 1){
-            settingsMiscFInt = 1;
-            miscFonts();
-        }
-    }
-
-    private void settingsMiscPress_20(){
-        if(settingsMiscFInt == 0)
-            settingsMiscPress_Common_1("Font A Style - ", fontAStyle);
-        if(settingsMiscFInt == 1)
-            settingsMiscPress_Common_1("Font B Style - ", fontBStyle);
-        restart(this);
-    }
-
-    private void settingsMiscPress_Common_1(String type, int style){
-        if(style == Typeface.BOLD)
-            edit(this,  "Fozin/Configurations", type + style, type + Typeface.ITALIC);
-        if(style == Typeface.ITALIC)
-            edit(this,  "Fozin/Configurations", type + style, type + Typeface.BOLD_ITALIC);
-        if(style == Typeface.BOLD_ITALIC)
-            edit(this,  "Fozin/Configurations", type + style, type + Typeface.NORMAL);
-        if(style == Typeface.NORMAL)
-            edit(this,  "Fozin/Configurations", type + style, type + Typeface.BOLD);
-    }
-
-    private void settingsMiscPress_21(){
-        if(fontAMode.equals("SimpliC")){
-            edit(this,  "Fozin/Configurations", "Font A Mode - " + fontAMode, "Font A Mode - Common");
+    private void settingsAboutPress_2(){
+        if(isAppInstalled(this, "com.google.android.gm")){
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            String email = textB(84);
+            intent.putExtra(Intent.EXTRA_EMAIL, email);
+            intent.putExtra(Intent.EXTRA_SUBJECT,textB(85));
+            intent.putExtra(Intent.EXTRA_TEXT,textB(86));
+            intent.setType("text/html");
+            intent.setPackage("com.google.android.gm");
+            startActivity(Intent.createChooser(intent, "Send mail"));
         } else {
-            edit(this,  "Fozin/Configurations", "Font A Mode - " + fontAMode, "Font A Mode - SimpliC");
+            settingsAboutCommonB("Email Copied", textB(84));
+            touchTip(this, textC(28), 2);
         }
-        restart(this);
     }
 
-    private void settingsMiscPress_22(){
-        edit(this,  "Fozin/Configurations", "Font A Mode - " + fontAMode, "Font A Mode - SimpliC");
-        edit(this,  "Fozin/Configurations", "Font A Style - " + fontAStyle, "Font A Style - " + Typeface.BOLD);
-        edit(this,  "Fozin/Configurations", "Font B Style - " + fontBStyle, "Font B Style - " + Typeface.NORMAL);
-        restart(this);
+    private void settingsAboutPress_3(){
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(textB(87)));
+        try {
+            startActivity(intent);
+        } catch (Exception e){
+            settingsAboutCommonB("Link Copied", textB(87));
+            touchTip(this, textC(29), 2);
+        }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    private void settingsAboutPress_4(){
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", getPackageName(), null));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    // -----[ SETTINGS ABOUT COMMON ]----- //
+
+    private void settingsAboutCommonA(int a, int b){
+        settingsAboutText1.setText(textC(a));
+        settingsAboutText2.setText(textC(b));
+    }
+
+    private void settingsAboutCommonB(String text_1, String text_2){
+        android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        android.content.ClipData clip = android.content.ClipData.newPlainText(text_1, text_2);
+        clipboard.setPrimaryClip(clip);
+    }
+
+    //..........
+    //-------------------- SETTINGS -------------------- []
+    //---------------------- MISC --------------------- []
+    //``````````
 
     View settingsMiscView;
     RelativeLayout settingsMiscLayout;
-    private void settingsMiscView(){
+    private void settingsMisc(){
         if(settingsMiscView == null){
             settingsMiscView = inflater.inflate(R.layout.settings_misc, null);
             settingsMiscLayout = settingsMiscView.findViewById(R.id.settings_misc);
+            settingsMiscA();
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_misc) == null){
             theNestSettingsLayout.addView(settingsMiscView);
@@ -4422,34 +4034,38 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             setSize(this, settingsMiscLayout, size(2), size(2));
             setMargins(this, settingsMiscLayout, -40, 20, 20, 60);
             settingsEdgeAText.setText(textC(39));
-            if(settingsMiscLayout.getChildCount() == 0){
-                settingsMiscAView();
-            }
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
     View settingsMiscAView;
-    RelativeLayout settingsMiscA;
+    RelativeLayout settingsMiscALayout;
     ListView settingsMiscAListView;
-    ListTypeB miscAItems;
-    private void settingsMiscAView(){
+    ContentsA miscContents;
+    private void settingsMiscA(){
         if(settingsMiscAView == null){
             settingsMiscAView = inflater.inflate(R.layout.settings_misc_a, null);
-            settingsMiscA = settingsMiscAView.findViewById(R.id.settings_misc_a);
+            settingsMiscALayout = settingsMiscAView.findViewById(R.id.settings_misc_a);
             settingsMiscAListView = settingsMiscAView.findViewById(R.id.settings_misc_a_list_view);
 
-            backgroundTypeC(this, settingsMiscA, background(3), tintA);
-            settingsMiscAList();
+            backgroundTypeC(this, settingsMiscALayout, background(3), tintA);
+            settingsMiscList();
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_a) == null){
             settingsMiscLayout.addView(settingsMiscAView);
-            setSize(this, settingsMiscA, size(2), size(2));
+            setSize(this, settingsMiscALayout, size(2), size(2));
         }
     }
 
-    private void settingsMiscAList(){
+    // -----[ SETTINGS MISC COMMON ]----- //
+
+    private void settingsMiscCommonA(View view){
+        settingsMiscLayout.removeView(view);
+        settingsMiscAView.setVisibility(View.VISIBLE);
+    }
+
+    // -----[ SETTINGS MISC METHODS ]----- //
+
+    private void settingsMiscList(){
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
         bitmaps.add(roundedBitmap(drawableIcon(this, defaultApp(this), 60)));
         bitmaps.add(reduceBitmap(this, icon(13), 60));
@@ -4481,54 +4097,56 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         Runnable settingsMiscARunnable = new Runnable() {
             @Override
             public void run() {
-                if(miscListStyle.equals("Square")){
-                    miscAItems = new ListTypeB(TheNest.this, R.layout.list_type_b, bitmaps, strings_a, strings_b, TheNest.this);
-                }
-                if(miscListStyle.equals("Cylinder")){
-                    miscAItems = new ListTypeB(TheNest.this, R.layout.list_type_c, bitmaps, strings_a, strings_b, TheNest.this);
-                }
-                if(miscListStyle.equals("Hexagon")){
-                    miscAItems = new ListTypeB(TheNest.this, R.layout.list_type_d, bitmaps, strings_a, strings_b, TheNest.this);
-                }
-                settingsMiscAListView.setAdapter(miscAItems);
+                int layout = 0;
+                if(miscListStyle.equals("Square"))
+                    layout = R.layout.list_style_a;
+
+                if(miscListStyle.equals("Cylinder"))
+                    layout = R.layout.list_style_b;
+
+                if(miscListStyle.equals("Hexagon"))
+                    layout = R.layout.list_style_c;
+
+                miscContents = new ContentsA(TheNest.this, layout, bitmaps, strings_a, strings_b, TheNest.this);
+                settingsMiscAListView.setAdapter(miscContents);
             }
         };
         settingsMiscAHandler.postDelayed(settingsMiscARunnable, 100);
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
     @Override
-    public void clicked(int mode) {
-        if(mode == 0) {
-            settingsMiscBView();
-        }
-        if(mode == 1) {
-            settingsMiscCView();
-        }
-        if(mode == 2) {
-            settingsMiscDView();
-        }
-        if(mode == 3) {
-            settingsMiscEView();
-        }
-        if(mode == 4){
-            settingsMiscFView();
-        }
+    public void settingsMiscList(int mode) {
         settingsMiscAView.setVisibility(View.GONE);
+        if(mode == 0)
+            settingsMiscB();
+
+        if(mode == 1)
+            settingsMiscC();
+
+        if(mode == 2)
+            settingsMiscD();
+
+        if(mode == 3)
+            settingsMiscE();
+
+        if(mode == 4)
+            settingsMiscF();
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- MISC -------------------- []
+    //--------------------- RESET ------------------ []
+    //``````````
 
     View settingsMiscBView;
-    RelativeLayout settingsMiscB, settingsMiscBFrame1, settingsMiscBFrame2, settingsMiscBFrame3, settingsMiscBFrame4;
+    RelativeLayout settingsMiscBLayout, settingsMiscBFrame1, settingsMiscBFrame2, settingsMiscBFrame3, settingsMiscBFrame4;
     ImageView settingsMiscBIcon1, settingsMiscBIcon2, settingsMiscBIcon3, settingsMiscBIcon4, settingsMiscBAngle;
     TextView settingsMiscBText1, settingsMiscBText2;
     @SuppressLint({"WrongConstant", "ClickableViewAccessibility"})
-    private void settingsMiscBView(){
+    private void settingsMiscB(){
         if(settingsMiscBView == null){
             settingsMiscBView = inflater.inflate(R.layout.settings_misc_b, null);
-            settingsMiscB = settingsMiscBView.findViewById(R.id.settings_misc_b);
+            settingsMiscBLayout = settingsMiscBView.findViewById(R.id.settings_misc_b);
             settingsMiscBFrame1 = settingsMiscBView.findViewById(R.id.settings_misc_b_frame_1);
             settingsMiscBFrame2 = settingsMiscBView.findViewById(R.id.settings_misc_b_frame_2);
             settingsMiscBFrame3 = settingsMiscBView.findViewById(R.id.settings_misc_b_frame_3);
@@ -4560,42 +4178,85 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_b) == null){
             settingsMiscLayout.addView(settingsMiscBView);
-            layoutParamsTypeA(this, settingsMiscB, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscB, size(2), size(1));
-            setMargins(this, settingsMiscB, 20, 20, 20, 20);
+            layoutParamsTypeA(this, settingsMiscBLayout, new int[]{direction(2), direction(3)});
+            setSize(this, settingsMiscBLayout, size(2), size(1));
+            setMargins(this, settingsMiscBLayout, 20, 20, 20, 20);
             setMargins(this, settingsMiscBAngle, 20, 0, 15, 0);
             miscResetMode();
         }
     }
 
+    // -----[ MISC RESET COMMON ]----- //
+
+    private void miscResetCommon(int int_a, int int_b, boolean boolean_a, boolean boolean_b, int id){
+        settingsMiscBText1.setText(textC(int_a));
+        settingsMiscBText2.setText(textB(int_b));
+        buttonModeC(this, settingsMiscBFrame1, settingsMiscBIcon1, boolean_a);
+        buttonModeC(this, settingsMiscBFrame2, settingsMiscBIcon2, boolean_b);
+        layoutParamsTypeC(this, settingsMiscBAngle, new int[]{0}, direction(8), id, direction(13), id);
+    }
+
+    // -----[ MISC RESET METHODS ]----- //
+
     int settingsMiscBInt = 0;
     private void miscResetMode(){
+        if(settingsMiscBInt == 0)
+            miscResetCommon(50, 31, true, false, R.id.settings_misc_b_frame_1);
+
+        if(settingsMiscBInt == 1)
+            miscResetCommon(51, 32, false, true, R.id.settings_misc_b_frame_2);
+    }
+
+    // -----[ MISC RESET BUTTONS ]----- //
+
+    private void settingsMiscPress_0(){
+        settingsMiscCommonA(settingsMiscBView);
+    }
+
+    private void settingsMiscPress_1(){
         if(settingsMiscBInt == 0){
-            settingsMiscBText1.setText(textC(50));
-            settingsMiscBText2.setText(textB(31));
-            buttonModeC(this, settingsMiscBFrame1, settingsMiscBIcon1,true);
-            buttonModeC(this, settingsMiscBFrame2, settingsMiscBIcon2,false);
-            layoutParamsTypeC(this, settingsMiscBAngle, new int[]{0}, direction(8), R.id.settings_misc_b_frame_1, direction(13), R.id.settings_misc_b_frame_1);
+            new File(getFilesDir(), "Configurations - 01").delete();
+            new File(getFilesDir(), "Configurations - 02").delete();
+            new File(getFilesDir(), "Configurations - 03").delete();
+            new File(getFilesDir(), "Configurations - 04").delete();
         }
+
         if(settingsMiscBInt == 1){
-            settingsMiscBText1.setText(textC(51));
-            settingsMiscBText2.setText(textB(32));
-            buttonModeC(this, settingsMiscBFrame1, settingsMiscBIcon1, false);
-            buttonModeC(this, settingsMiscBFrame2, settingsMiscBIcon2, true);
-            layoutParamsTypeC(this, settingsMiscBAngle, new int[]{0}, direction(8), R.id.settings_misc_b_frame_2, direction(13), R.id.settings_misc_b_frame_2);
+            ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+            getCacheDir().delete();
+            getFilesDir().delete();
+        }
+        initializeConfigurations();
+        restart(TheNest.this);
+    }
+
+    private void settingsMiscPress_2(){
+        if(settingsMiscBInt != 0){
+            settingsMiscBInt = 0;
+            miscResetMode();
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    private void settingsMiscPress_3(){
+        if(settingsMiscBInt != 1){
+            settingsMiscBInt = 1;
+            miscResetMode();
+        }
+    }
+
+    //..........
+    //-------------------- MISC -------------------- []
+    //--------------------- BARS ------------------- []
+    //``````````
 
     View settingsMiscCView;
-    RelativeLayout settingsMiscC, settingsMiscCFrame1, settingsMiscCFrame2, settingsMiscCFrame3, settingsMiscCFrame4;
+    RelativeLayout settingsMiscCLayout, settingsMiscCFrame1, settingsMiscCFrame2, settingsMiscCFrame3, settingsMiscCFrame4;
     ImageView settingsMiscCAngle, settingsMiscCCircle, settingsMiscCIcon1, settingsMiscCIcon2, settingsMiscCIcon3;
     TextView settingsMiscCText1, settingsMiscCText2;
-    private void settingsMiscCView(){
+    private void settingsMiscC(){
         if(settingsMiscCView == null){
             settingsMiscCView = inflater.inflate(R.layout.settings_misc_c, null);
-            settingsMiscC = settingsMiscCView.findViewById(R.id.settings_misc_c);
+            settingsMiscCLayout = settingsMiscCView.findViewById(R.id.settings_misc_c);
             settingsMiscCFrame1 = settingsMiscCView.findViewById(R.id.settings_misc_c_frame_1);
             settingsMiscCFrame2 = settingsMiscCView.findViewById(R.id.settings_misc_c_frame_2);
             settingsMiscCFrame3 = settingsMiscCView.findViewById(R.id.settings_misc_c_frame_3);
@@ -4626,54 +4287,94 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_c) == null){
             settingsMiscLayout.addView(settingsMiscCView);
-            layoutParamsTypeA(this, settingsMiscC, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscC, size(2), size(1));
-            setMargins(this, settingsMiscC, 20, 20, 20, 20);
+            layoutParamsTypeA(this, settingsMiscCLayout, new int[]{direction(2), direction(3)});
+            setSize(this, settingsMiscCLayout, size(2), size(1));
+            setMargins(this, settingsMiscCLayout, 20, 20, 20, 20);
             setMargins(this, settingsMiscCAngle, 20, 0, 15, 0);
             miscBarsMode();
         }
     }
 
-    int settingsMiscCInt = 0;
-    private void miscBarsMode(){
-        if(settingsMiscCInt == 0){
-            settingsMiscCText1.setText(textC(52));
-            settingsMiscCText2.setText(textB(33));
-            if(statusBar.equals("Enabled")) {
-                toggleMode(this, settingsMiscCCircle, true);
-            } else {
-                toggleMode(this, settingsMiscCCircle, false);
-            }
-            buttonModeC(this, settingsMiscCFrame1, settingsMiscCIcon1, true);
-            buttonModeC(this, settingsMiscCFrame2, settingsMiscCIcon2, false);
-            layoutParamsTypeC(this, settingsMiscCAngle, new int[]{0}, direction(8), R.id.settings_misc_c_frame_1, direction(13), R.id.settings_misc_c_frame_1);
-        }
-        if(settingsMiscCInt == 1){
-            settingsMiscCText1.setText(textC(53));
-            settingsMiscCText2.setText(textB(34));
-            if (navigationBar.equals("Enabled")) {
-                toggleMode(this, settingsMiscCCircle, true);
-            } else {
-                toggleMode(this, settingsMiscCCircle, false);
-            }
-            buttonModeC(this, settingsMiscCFrame1, settingsMiscCIcon1, false);
-            buttonModeC(this, settingsMiscCFrame2, settingsMiscCIcon2, true);
-            layoutParamsTypeC(this, settingsMiscCAngle, new int[]{0}, direction(8), R.id.settings_misc_c_frame_2, direction(13), R.id.settings_misc_c_frame_2);
+    // -----[ MISC BARS BUTTONS ]----- //
+
+    private void settingsMiscPress_4(){
+        settingsMiscCommonA(settingsMiscCView);
+    }
+
+    private void settingsMiscPress_5(){
+        if(settingsMiscCInt == 0)
+            miscBarsCommonB(statusBar, "Status");
+
+        if(settingsMiscCInt == 1)
+            miscBarsCommonB(navigationBar, "Navigation");
+
+        configurationsA();
+        miscBarsMode();
+    }
+
+    private void settingsMiscPress_6(){
+        if(settingsMiscCInt != 0){
+            settingsMiscCInt = 0;
+            miscBarsMode();
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    private void settingsMiscPress_7(){
+        if(settingsMiscCInt != 1){
+            settingsMiscCInt = 1;
+            miscBarsMode();
+        }
+    }
+
+    // -----[ MISC BARS COMMON ]----- //
+
+    private void miscBarsCommonA(int int_a, int int_b, String state, boolean boolean_a, boolean boolean_b, int id){
+        settingsMiscCText1.setText(textC(int_a));
+        settingsMiscCText2.setText(textB(int_b));
+        if(state.equals("Enabled")) {
+            toggleMode(this, settingsMiscCCircle, true);
+        } else {
+            toggleMode(this, settingsMiscCCircle, false);
+        }
+        buttonModeC(this, settingsMiscCFrame1, settingsMiscCIcon1, boolean_a);
+        buttonModeC(this, settingsMiscCFrame2, settingsMiscCIcon2, boolean_b);
+        layoutParamsTypeC(this, settingsMiscCAngle, new int[]{0}, direction(8), id, direction(13), id);
+    }
+
+    private void miscBarsCommonB(String state, String type){
+        if(state.equals("Enabled")) {
+            edit(TheNest.this,  "Configurations - 01",type + " Bar - Enabled",type + " Bar - Disabled");
+        } else {
+            edit(TheNest.this, "Configurations - 01", type + " Bar - Disabled", type + " Bar - Enabled");
+        }
+    }
+
+    // -----[ MISC BARS METHODS ]----- //
+
+    int settingsMiscCInt = 0;
+    private void miscBarsMode(){
+        if(settingsMiscCInt == 0)
+            miscBarsCommonA(52, 33, statusBar, true, false,  R.id.settings_misc_c_frame_1);
+
+        if(settingsMiscCInt == 1)
+            miscBarsCommonA(53, 34, navigationBar, false, true,  R.id.settings_misc_c_frame_2);
+    }
+
+    //..........
+    //-------------------- MISC -------------------- []
+    //--------------------- TABS ------------------- []
+    //``````````
 
     View settingsMiscDView;
-    RelativeLayout settingsMiscD, settingsMiscDFrame1, settingsMiscDFrame2, settingsMiscDFrame3, settingsMiscDFrame4,
+    RelativeLayout settingsMiscDLayout, settingsMiscDFrame1, settingsMiscDFrame2, settingsMiscDFrame3, settingsMiscDFrame4,
             settingsMiscDFrame5;
     ImageView settingsMiscDAngle, settingsMiscDIcon1, settingsMiscDIcon2, settingsMiscDIcon3,
             settingsMiscDIcon4, settingsMiscDIcon5;
     TextView settingsMiscDText1, settingsMiscDText2, settingsMiscDText3, settingsMiscDText4;
-    private void settingsMiscDView(){
+    private void settingsMiscD(){
         if(settingsMiscDView == null){
             settingsMiscDView = inflater.inflate(R.layout.settings_misc_d, null);
-            settingsMiscD = settingsMiscDView.findViewById(R.id.settings_misc_d);
+            settingsMiscDLayout = settingsMiscDView.findViewById(R.id.settings_misc_d);
             settingsMiscDFrame1 = settingsMiscDView.findViewById(R.id.settings_misc_d_frame_1);
             settingsMiscDFrame2 = settingsMiscDView.findViewById(R.id.settings_misc_d_frame_2);
             settingsMiscDFrame3 = settingsMiscDView.findViewById(R.id.settings_misc_d_frame_3);
@@ -4712,67 +4413,171 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_d) == null){
             settingsMiscLayout.addView(settingsMiscDView);
-            layoutParamsTypeA(this, settingsMiscD, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscD, size(2), size(1));
-            setMargins(this, settingsMiscD, 20, 20, 20, 20);
+            layoutParamsTypeA(this, settingsMiscDLayout, new int[]{direction(2), direction(3)});
+            setSize(this, settingsMiscDLayout, size(2), size(1));
+            setMargins(this, settingsMiscDLayout, 20, 20, 20, 20);
             setMargins(this, settingsMiscDAngle, 20, 0, 15, 0);
-            miscTabs();
+            miscTabsMode();
         }
     }
 
-    int settingsMiscDInt_1 = 0;
-    int settingsMiscDInt_2 = 0;
-    private void miscTabs(){
+    // -----[ MISC TABS BUTTONS ]----- //
+
+    private void settingsMiscPress_8(){
+        settingsMiscCommonA(settingsMiscDView);
+    }
+
+    private void settingsMiscPress_9(){
         if(settingsMiscDInt_1 == 0){
-            settingsMiscDText1.setText(textC(54));
-            settingsMiscDText2.setText(textB(35));
-            buttonModeC(this, settingsMiscDFrame1, settingsMiscDIcon1, true);
-            buttonModeC(this, settingsMiscDFrame2, settingsMiscDIcon2, false);
-            layoutParamsTypeC(this, settingsMiscDAngle, new int[]{0}, direction(8), R.id.settings_misc_d_frame_1, direction(13), R.id.settings_misc_d_frame_1);
-            settingsMiscDFrame5.setVisibility(View.GONE);
+            String tab = "";
+            if(settingsTab.equals("About"))
+                tab = "Misc";
+
+            if(settingsTab.equals("Misc"))
+                tab = "Drawer";
+
+            if(settingsTab.equals("Drawer"))
+                tab = "Home";
+
+            if(settingsTab.equals("Home"))
+                tab = "Auto";
+
+            if(settingsTab.equals("Auto"))
+                tab = "About";
+
+            edit(this, "Configurations - 04", "Settings Tab - " + settingsTab, "Settings Tab - " + tab);
+            configurationsD();
             settingsMiscDText3.setText(settingsTab);
         }
         if(settingsMiscDInt_1 == 1){
-            settingsMiscDText1.setText(textC(55));
-            settingsMiscDText2.setText(textB(36));
-            buttonModeC(this, settingsMiscDFrame1, settingsMiscDIcon1, false);
-            buttonModeC(this, settingsMiscDFrame2, settingsMiscDIcon2, true);
-            layoutParamsTypeC(this, settingsMiscDAngle, new int[]{0}, direction(8), R.id.settings_misc_d_frame_2, direction(13), R.id.settings_misc_d_frame_2);
-            settingsMiscDFrame5.setVisibility(View.VISIBLE);
-            miscSwitches_Tint();
+            if(settingsMiscDInt_2 == 0)
+                miscTabsCommonB("Misc", miscListStyle, settingsMiscAListView, 0);
+
+            if(settingsMiscDInt_2 == 1)
+                miscTabsCommonB("Home", homeListStyle, settingsHomeAListView, 1);
         }
     }
 
-    private void miscSwitches_Tint(){
-        if(settingsMiscDInt_2 == 0){
-            imageTypeB(this, settingsMiscDIcon4, background(6), ui);
-            backgroundTypeA(this, settingsMiscDIcon5, background(7), ui, 3);
-            settingsMiscDIcon5.setImageDrawable(null);
+    private void settingsMiscPress_10(){
+        if(settingsMiscDInt_1 != 0){
+            settingsMiscDInt_1 = 0;
+            miscTabsMode();
+        }
+    }
+
+    private void settingsMiscPress_11(){
+        if(settingsMiscDInt_1 != 1){
+            settingsMiscDInt_1 = 1;
+            miscTabsMode();
+        }
+    }
+
+    private void settingsMiscPress_12(){
+        if(settingsMiscDInt_2 != 0){
+            settingsMiscDInt_2 = 0;
+            miscTabsOptions();
+        }
+    }
+
+    private void settingsMiscPress_13(){
+        if(settingsMiscDInt_2 != 1){
+            settingsMiscDInt_2 = 1;
+            miscTabsOptions();
+        }
+    }
+
+    // -----[ MISC TABS COMMON ]----- //
+
+    private String miscTabsCommonA(String listStyle){
+        String style = "";
+        if(listStyle.equals("Square"))
+            style = "Cylinder";
+
+        if(listStyle.equals("Cylinder"))
+            style = "Hexagon";
+
+        if(listStyle.equals("Hexagon"))
+            style = "Square";
+        return style;
+    }
+
+    private void miscTabsCommonB(String type, String listStyle, View view, int mode){
+        edit(this,  "Configurations - 04", type + " List Style - " + listStyle,
+                type + " List Style - " + miscTabsCommonA(listStyle));
+        configurationsD();
+        if(mode == 0)
             settingsMiscDText3.setText(miscListStyle);
-            settingsMiscDText4.setText("Misc");
-        }
-        if(settingsMiscDInt_2 == 1){
-            backgroundTypeA(this, settingsMiscDIcon4, background(7), ui, 3);
-            imageTypeB(this, settingsMiscDIcon5, background(6), ui);
-            settingsMiscDIcon4.setImageDrawable(null);
+        if(mode == 1)
             settingsMiscDText3.setText(homeListStyle);
-            settingsMiscDText4.setText("Home");
+        if(view != null){
+            if(mode == 0){
+                miscContents.clear();
+                settingsMiscList();
+            }
+            if(mode == 1){
+                settingsContents.clear();
+                settingsHomeList();
+            }
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    private void miscTabsCommonC(int int_a, int int_b, boolean boolean_a, boolean boolean_b, int id, int mode, int sight){
+        settingsMiscDText1.setText(textC(int_a));
+        settingsMiscDText2.setText(textB(int_b));
+        buttonModeC(this, settingsMiscDFrame1, settingsMiscDIcon1, boolean_a);
+        buttonModeC(this, settingsMiscDFrame2, settingsMiscDIcon2, boolean_b);
+        layoutParamsTypeC(this, settingsMiscDAngle, new int[]{0}, direction(8), id, direction(13), id);
+        settingsMiscDFrame5.setVisibility(sight);
+        if(mode == 0)
+            settingsMiscDText3.setText(settingsTab);
+        if(mode == 1)
+            miscTabsOptions();
+    }
+
+    private void miscTabsCommonD(ImageView image_1, ImageView image_2, ImageView image_3, String listStyle, String type){
+        imageTypeB(this, image_1, background(6), ui);
+        backgroundTypeA(this, image_2, background(7), ui, 3);
+        image_3.setImageDrawable(null);
+        settingsMiscDText3.setText(listStyle);
+        settingsMiscDText4.setText(type);
+    }
+
+    // -----[ MISC TABS METHODS ]----- //
+
+    int settingsMiscDInt_1 = 0;
+    int settingsMiscDInt_2 = 0;
+    private void miscTabsMode(){
+        if(settingsMiscDInt_1 == 0)
+            miscTabsCommonC(54, 35, true, false, R.id.settings_misc_d_frame_1, 0, View.GONE);
+
+        if(settingsMiscDInt_1 == 1)
+            miscTabsCommonC(55, 36, false, true, R.id.settings_misc_d_frame_2, 1, View.VISIBLE);
+    }
+
+    private void miscTabsOptions(){
+        if(settingsMiscDInt_2 == 0)
+            miscTabsCommonD(settingsMiscDIcon4, settingsMiscDIcon5, settingsMiscDIcon5, miscListStyle, "Misc");
+
+        if(settingsMiscDInt_2 == 1)
+            miscTabsCommonD(settingsMiscDIcon5, settingsMiscDIcon4, settingsMiscDIcon4, homeListStyle, "Home");
+    }
+
+    //..........
+    //-------------------- MISC -------------------- []
+    //--------------------- COLORS ------------------- []
+    //``````````
 
     View settingsMiscEView;
-    RelativeLayout settingsMiscE, settingsMiscEFrame1, settingsMiscEFrame2, settingsMiscEFrame3;
+    RelativeLayout settingsMiscELayout, settingsMiscEFrame1, settingsMiscEFrame2, settingsMiscEFrame3;
     ImageView settingsMiscEIcon1, settingsMiscEIcon2;
     TextView settingsMiscEText1, settingsMiscEText2;
     HorizontalScrollView settingsMiscEHorizontalView;
     LinearLayout settingsMiscEColors;
     @SuppressLint({"WrongConstant", "ClickableViewAccessibility"})
-    private void settingsMiscEView(){
+    private void settingsMiscE(){
         if(settingsMiscEView == null){
             settingsMiscEView = inflater.inflate(R.layout.settings_misc_e, null);
-            settingsMiscE = settingsMiscEView.findViewById(R.id.settings_misc_e);
+            settingsMiscELayout = settingsMiscEView.findViewById(R.id.settings_misc_e);
             settingsMiscEFrame1 = settingsMiscEView.findViewById(R.id.settings_misc_e_frame_1);
             settingsMiscEFrame2 = settingsMiscEView.findViewById(R.id.settings_misc_e_frame_2);
             settingsMiscEFrame3 = settingsMiscEView.findViewById(R.id.settings_misc_e_frame_3);
@@ -4807,7 +4612,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             Runnable settingsMiscDRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    miscColors(list, settingsMiscEColors);
+                    miscColorsContents(list, settingsMiscEColors);
                     settingsMiscEFrame2.setVisibility(View.VISIBLE);
                 }
             };
@@ -4821,91 +4626,80 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_e) == null){
             settingsMiscLayout.addView(settingsMiscEView);
-            layoutParamsTypeA(this, settingsMiscE, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscE, size(2), size(1));
-            setMargins(this, settingsMiscE, 20, 20, 20, 20);
+            layoutParamsTypeA(this, settingsMiscELayout, new int[]{direction(2), direction(3)});
+            setSize(this, settingsMiscELayout, size(2), size(1));
+            setMargins(this, settingsMiscELayout, 20, 20, 20, 20);
         }
     }
+
+    // -----[ MISC COLORS BUTTONS ]----- //
+
+    private void settingsMiscPress_14(int i){
+        if(i == 0)
+            miscColorsCommonA(R.color.black, R.color.blue_1, R.color.white, R.color.origin);
+
+        if(i == 1)
+            miscColorsCommonA(R.color.white, R.color.teal, R.color.black, R.color.white);
+
+        if(i == 2)
+            miscColorsCommonA(R.color.grey, R.color.black, R.color.origin, R.color.white);
+
+        if(i == 3)
+            miscColorsCommonA(R.color.yellow_3, R.color.red_2, R.color.origin, R.color.white);
+
+        if(i == 4)
+            miscColorsCommonA(R.color.blue_1, R.color.green_3, R.color.white, R.color.origin);
+    }
+
+    private void settingsMiscPress_15(){
+        settingsMiscCommonA(settingsMiscEView);
+    }
+
+    private void settingsMiscPress_16(){
+        miscColorsCommonA(R.color.origin, R.color.orange_3, R.color.white, R.color.black);
+    }
+
+    // -----[ MISC COLORS COMMON ]----- //
+
+    private void miscColorsCommonA(int a, int b, int c, int d){
+        edit(this, "Configurations - 01", "Background - " + background, "Background - " + a);
+        edit(this, "Configurations - 01", "UI - " + ui, "UI - " + b);
+        edit(this, "Configurations - 01", "Tint A - " + tintA, "Tint A - " + c);
+        edit(this, "Configurations - 01", "Tint B - " + tintB, "Tint B - " + d);
+        restart(this);
+    }
+
+    // -----[ MISC COLORS METHODS ]----- //
 
     View colorTemplatesView;
     ImageView colorTemplatesIcon;
     @SuppressLint("ClickableViewAccessibility")
-    private void miscColors(ArrayList<Bitmap> list, LinearLayout layout){
+    private void miscColorsContents(ArrayList<Bitmap> list, LinearLayout layout){
         for (int i = 0; i < list.size(); i++) {
             colorTemplatesView = inflater.inflate(R.layout.linear_type_b, layout, false);
             colorTemplatesIcon = colorTemplatesView.findViewById(R.id.linear_type_b_icon);
             colorTemplatesIcon.setImageBitmap(list.get(i));
 
-            int finalI = i;
-            colorTemplatesIcon.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View view, MotionEvent event) {
-                    if(event.getAction() == MotionEvent.ACTION_DOWN){
-                        touchStart(view);
-                        onTouchRunnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                touchVibrate(TheNest.this, view);
-                            }
-                        };
-                        onTouchHandler.postDelayed(onTouchRunnable, 300);
-                    }
-                    if(event.getAction() == MotionEvent.ACTION_UP){
-                        touchStop(view);
-                        if((System.currentTimeMillis() - time) < 200){
-                            if(finalI == 0){
-                                edit(TheNest.this, "Fozin/Configurations", "Background - " + background, "Background - " + R.color.black);
-                                edit(TheNest.this, "Fozin/Configurations", "UI - " + ui, "UI - " + R.color.blue_1);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint A - " + tintA, "Tint A - " + R.color.white);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint B - " + tintB, "Tint B - " + R.color.origin);
-                            }
-                            if(finalI == 1){
-                                edit(TheNest.this, "Fozin/Configurations", "Background - " + background, "Background - " + R.color.white);
-                                edit(TheNest.this, "Fozin/Configurations", "UI - " + ui, "UI - " + R.color.teal);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint A - " + tintA, "Tint A - " + R.color.black);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint B - " + tintB, "Tint B - " + R.color.white);
-                            }
-                            if(finalI == 2){
-                                edit(TheNest.this, "Fozin/Configurations", "Background - " + background, "Background - " + R.color.grey);
-                                edit(TheNest.this, "Fozin/Configurations", "UI - " + ui, "UI - " + R.color.black);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint A - " + tintA, "Tint A - " + R.color.origin);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint B - " + tintB, "Tint B - " + R.color.white);
-                            }
-                            if(finalI == 3){
-                                edit(TheNest.this, "Fozin/Configurations", "Background - " + background, "Background - " + R.color.yellow_3);
-                                edit(TheNest.this, "Fozin/Configurations", "UI - " + ui, "UI - " + R.color.red_2);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint A - " + tintA, "Tint A - " + R.color.origin);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint B - " + tintB, "Tint B - " + R.color.white);
-                            }
-                            if(finalI == 4){
-                                edit(TheNest.this, "Fozin/Configurations", "Background - " + background, "Background - " + R.color.blue_1);
-                                edit(TheNest.this, "Fozin/Configurations", "UI - " + ui, "UI - " + R.color.green_3);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint A - " + tintA, "Tint A - " + R.color.white);
-                                edit(TheNest.this, "Fozin/Configurations", "Tint B - " + tintB, "Tint B - " + R.color.origin);
-                            }
-                            restart(TheNest.this);
-                        }
-                    }
-                    touchEnd(event, view);
-                    return true;
-                }
-            });
+            customTouchModeA(colorTemplatesIcon, Integer.toString(i), -1, 4);
             layout.addView(colorTemplatesView);
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- MISC -------------------- []
+    //--------------------- FONTS ------------------ []
+    //``````````
 
     View settingsMiscFView;
-    RelativeLayout settingsMiscF, settingsMiscFFrame1, settingsMiscFFrame2, settingsMiscFFrame3, settingsMiscFFrame4,
+    RelativeLayout settingsMiscFLayout, settingsMiscFFrame1, settingsMiscFFrame2, settingsMiscFFrame3, settingsMiscFFrame4,
             settingsMiscFFrame5, settingsMiscFFrame6;
     ImageView settingsMiscFAngle, settingsMiscFIcon1, settingsMiscFIcon2, settingsMiscFIcon3, settingsMiscFIcon4;
     TextView settingsMiscFText1, settingsMiscFText2, settingsMiscFText3, settingsMiscFText4, settingsMiscFText5,
             settingsMiscFText6;
-    private void settingsMiscFView(){
+    private void settingsMiscF(){
         if(settingsMiscFView == null){
             settingsMiscFView = inflater.inflate(R.layout.settings_misc_f, null);
-            settingsMiscF = settingsMiscFView.findViewById(R.id.settings_misc_f);
+            settingsMiscFLayout = settingsMiscFView.findViewById(R.id.settings_misc_f);
             settingsMiscFFrame1 = settingsMiscFView.findViewById(R.id.settings_misc_f_frame_1);
             settingsMiscFFrame2 = settingsMiscFView.findViewById(R.id.settings_misc_f_frame_2);
             settingsMiscFFrame3 = settingsMiscFView.findViewById(R.id.settings_misc_f_frame_3);
@@ -4958,139 +4752,115 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_f) == null){
             settingsMiscLayout.addView(settingsMiscFView);
-            layoutParamsTypeA(this, settingsMiscF, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscF, size(2), size(1));
-            setMargins(this, settingsMiscF, 20, 20, 20, 20);
+            layoutParamsTypeA(this, settingsMiscFLayout, new int[]{direction(2), direction(3)});
+            setSize(this, settingsMiscFLayout, size(2), size(1));
+            setMargins(this, settingsMiscFLayout, 20, 20, 20, 20);
             setMargins(this, settingsMiscFAngle, 20, 0, 15, 0);
-            miscFonts();
+            miscFontsMode();
         }
     }
 
-    private int settingsMiscFInt = 0;
-    private void miscFonts(){
-        if(settingsMiscFInt == 0){
-            settingsMiscFText1.setText(textC(57));
-            settingsMiscFText2.setText(textB(38));
-            buttonModeC(this, settingsMiscFFrame1, settingsMiscFIcon1, true);
-            buttonModeC(this, settingsMiscFFrame2, settingsMiscFIcon2, false);
-            layoutParamsTypeC(this, settingsMiscFAngle, new int[]{0}, direction(8), R.id.settings_misc_f_frame_1, direction(13), R.id.settings_misc_f_frame_1);
-            settingsMiscFFrame5.setVisibility(View.VISIBLE);
-            miscFontsCommon(fontAStyle);
-            settingsMiscFText6.setText(textC(59));
-        }
-        if(settingsMiscFInt == 1){
-            settingsMiscFText1.setText(textC(58));
-            settingsMiscFText2.setText(textB(39));
-            buttonModeC(this, settingsMiscFFrame1, settingsMiscFIcon1, false);
-            buttonModeC(this, settingsMiscFFrame2, settingsMiscFIcon2, true);
-            layoutParamsTypeC(this, settingsMiscFAngle, new int[]{0}, direction(8), R.id.settings_misc_f_frame_2, direction(13), R.id.settings_misc_f_frame_2);
-            settingsMiscFFrame5.setVisibility(View.GONE);
-            miscFontsCommon(fontBStyle);
+    // -----[ MISC FONTS BUTTONS ]----- //
+
+    private void settingsMiscPress_17(){
+        settingsMiscCommonA(settingsMiscFView);
+    }
+
+    private void settingsMiscPress_18(){
+        if(settingsMiscFInt != 0){
+            settingsMiscFInt = 0;
+            miscFontsMode();
         }
     }
 
-    private void miscFontsCommon(int style){
+    private void settingsMiscPress_19(){
+        if(settingsMiscFInt != 1){
+            settingsMiscFInt = 1;
+            miscFontsMode();
+        }
+    }
+
+    private void settingsMiscPress_20(){
+        if(settingsMiscFInt == 0)
+            miscFontsCommonA("Font A Style - ", fontAStyle);
+
+        if(settingsMiscFInt == 1)
+            miscFontsCommonA("Font B Style - ", fontBStyle);
+        restart(this);
+    }
+
+    private void settingsMiscPress_21(){
+        if(fontAMode.equals("SimpliC")){
+            edit(this,  "Configurations - 01", "Font A Mode - " + fontAMode, "Font A Mode - Common");
+        } else {
+            edit(this,  "Configurations - 01", "Font A Mode - " + fontAMode, "Font A Mode - SimpliC");
+        }
+        restart(this);
+    }
+
+    private void settingsMiscPress_22(){
+        edit(this,  "Configurations - 01", "Font A Mode - " + fontAMode, "Font A Mode - SimpliC");
+        edit(this,  "Configurations - 01", "Font A Style - " + fontAStyle, "Font A Style - " + Typeface.BOLD);
+        edit(this,  "Configurations - 01", "Font B Style - " + fontBStyle, "Font B Style - " + Typeface.NORMAL);
+        restart(this);
+    }
+
+    // -----[ MISC FONTS COMMON ]----- //
+
+    private void miscFontsCommonA(String type, int style){
+        if(style == Typeface.BOLD)
+            edit(this,  "Configurations - 01", type + style, type + Typeface.ITALIC);
+
+        if(style == Typeface.ITALIC)
+            edit(this,  "Configurations - 01", type + style, type + Typeface.BOLD_ITALIC);
+
+        if(style == Typeface.BOLD_ITALIC)
+            edit(this,  "Configurations - 01", type + style, type + Typeface.NORMAL);
+
+        if(style == Typeface.NORMAL)
+            edit(this,  "Configurations - 01", type + style, type + Typeface.BOLD);
+    }
+
+    private void miscFontsCommonB(int style){
         if(style == Typeface.BOLD)
             settingsMiscFText4.setText("Bold");
+
         if(style == Typeface.ITALIC)
             settingsMiscFText4.setText("Italic A");
+
         if(style == Typeface.BOLD_ITALIC)
             settingsMiscFText4.setText("Italic B");
+
         if(style == Typeface.NORMAL)
             settingsMiscFText4.setText("Normal");
     }
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
-
-    private void settingsDrawerPress_0(){
-        settingsDrawerLayout.removeView(settingsDrawerAView);
-        settingsDrawerB();
+    private void miscFontsCommonC(int int_a, int int_b, boolean boolean_a, boolean boolean_b, int id, int style, int sight){
+        settingsMiscFText1.setText(textC(int_a));
+        settingsMiscFText2.setText(textB(int_b));
+        buttonModeC(this, settingsMiscFFrame1, settingsMiscFIcon1, boolean_a);
+        buttonModeC(this, settingsMiscFFrame2, settingsMiscFIcon2, boolean_b);
+        layoutParamsTypeC(this, settingsMiscFAngle, new int[]{0}, direction(8),id, direction(13), id);
+        miscFontsCommonB(style);
+        settingsMiscFFrame5.setVisibility(sight);
+        settingsMiscFText6.setText(textC(59));
     }
 
-    private void settingsDrawerPress_1(){
-        settingsDrawerLayout.removeView(settingsDrawerBView);
-        settingsDrawerLayout.addView(settingsDrawerAView);
+    // -----[ MISC FONTS METHODS ]----- //
+
+    private int settingsMiscFInt = 0;
+    private void miscFontsMode(){
+        if(settingsMiscFInt == 0)
+            miscFontsCommonC(57, 38, true, false, R.id.settings_misc_f_frame_1, fontAStyle, View.VISIBLE);
+
+        if(settingsMiscFInt == 1)
+            miscFontsCommonC(58, 39, false, true, R.id.settings_misc_f_frame_2, fontBStyle, View.GONE);
     }
 
-    private void settingsDrawerPress_2(){
-        settingsDrawerBFrame1.setVisibility(View.INVISIBLE);
-        settingsDrawerBFrame3.setVisibility(View.VISIBLE);
-        imageTypeA(this, settingsDrawerBIcon3, icon(50), tintA, 40);
-        settingsDrawerBText3.setText(textB(48));
-        settingsDrawerBInt = 0;
-    }
-
-    private void settingsDrawerPress_3(){
-        settingsDrawerBFrame1.setVisibility(View.VISIBLE);
-        settingsDrawerBFrame3.setVisibility(View.GONE);
-    }
-
-    private void settingsDrawerPress_4(){
-        if(settingsDrawerBInt == 0){
-            if(fileExist(this, "List/Array - 03")){
-                File hidden = new File(getFilesDir(), "List/Array - 03");
-                hidden.delete();
-            }
-        }
-        if(settingsDrawerBInt == 1){
-            if(fileExist(this, "List/Array - 03")){
-                edit(this, "List/Array - 03", settingsDrawerBString, "");
-            }
-        }
-        hiddenApps();
-        if(drawerAppsGridView != null)
-            drawerTilesPress_0();
-        settingsDrawerBFrame1.setVisibility(View.VISIBLE);
-        settingsDrawerBFrame3.setVisibility(View.GONE);
-    }
-
-    private void settingsDrawerPress_5(){
-        if(drawerGridStyle.equals("Tiles")){
-            edit(this, "Drawer/Configurations", "Drawer Grid Style - " + drawerGridStyle, "Drawer Grid Style - Bubbles");
-        }
-        if(drawerGridStyle.equals("Bubbles")){
-            edit(this, "Drawer/Configurations", "Drawer Grid Style - " + drawerGridStyle, "Drawer Grid Style - Tiles");
-        }
-        drawerConfigurations();
-        currentOptions();
-
-        if(drawerAppsGridView != null){
-            drawerTilesPress_0();
-            drawerGridStyle();
-        }
-    }
-
-    private void settingsDrawerPress_6(){
-        if(drawerSortingOrder.equals("Alphabetically")){
-            edit(this, "Drawer/Configurations", "Drawer Sorting Order - " + drawerSortingOrder, "Drawer Sorting Order - Random");
-        }
-        if(drawerSortingOrder.equals("Random")){
-            edit(this, "Drawer/Configurations", "Drawer Sorting Order - " + drawerSortingOrder, "Drawer Sorting Order - Alphabetically");
-        }
-        drawerConfigurations();
-        currentOptions();
-        if(drawerAppsGridView != null)
-            drawerTilesPress_0();
-    }
-
-    private void settingsDrawerPress_7(){
-        if(drawerBrowseMode.equals("[ NONE ]")){
-            edit(this, "Drawer/Configurations", "Drawer Browse Mode - " + drawerBrowseMode, "Drawer Browse Mode - Index");
-        }
-        if(drawerBrowseMode.equals("Index")){
-            edit(this, "Drawer/Configurations", "Drawer Browse Mode - " + drawerBrowseMode, "Drawer Browse Mode - [ NONE ]");
-        }
-        drawerConfigurations();
-        currentOptions();
-        if(drawerTilesFrame3 != null)
-            drawerBrowseIndex();
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- SETTINGS -------------------- []
+    //--------------------- DRAWER --------------------- []
+    //``````````
 
     View settingsDrawerView;
     RelativeLayout settingsDrawerLayout;
@@ -5105,28 +4875,24 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             setSize(this, settingsDrawerLayout, size(2), size(2));
             setMargins(this, settingsDrawerLayout, -40, 20, 20, 60);
             settingsEdgeAText.setText(textC(41));
-            if(settingsDrawerLayout.getChildCount() == 0){
-                settingsDrawerAView();
-            }
+            if(settingsDrawerLayout.getChildCount() == 0)
+                settingsDrawerA();
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
     View settingsDrawerAView;
-    RelativeLayout settingsDrawerA, settingsDrawerAFrame1, settingsDrawerAFrame2, settingsDrawerAFrame3, settingsDrawerAFrame4,
-            settingsDrawerAFrame5, settingsDrawerAFrame6, settingsDrawerAFrame7;
-    ImageView settingsDrawerAIcon1, settingsDrawerADot1, settingsDrawerADot2, settingsDrawerADot3, settingsDrawerADot4,
-            settingsDrawerADash1, settingsDrawerADash2;
+    RelativeLayout settingsDrawerALayout, settingsDrawerAFrame1, settingsDrawerAFrame2, settingsDrawerAFrame3, settingsDrawerAFrame4,
+            settingsDrawerAFrame5;
+    ImageView settingsDrawerAIcon;
     TextView settingsDrawerAText1, settingsDrawerAText2, settingsDrawerAText3, settingsDrawerAText4, settingsDrawerAText5,
             settingsDrawerAText6, settingsDrawerAText7, settingsDrawerAText8, settingsDrawerAText9, settingsDrawerAText10,
             settingsDrawerAText11, settingsDrawerALine1, settingsDrawerALine2, settingsDrawerALine3, settingsDrawerALine4,
             settingsDrawerALine5;
     ScrollView settingsDrawerAScrollView;
-    private void settingsDrawerAView(){
+    private void settingsDrawerA(){
         if(settingsDrawerAView == null){
             settingsDrawerAView = inflater.inflate(R.layout.settings_drawer_a, null);
-            settingsDrawerA = settingsDrawerAView.findViewById(R.id.settings_drawer_a);
+            settingsDrawerALayout = settingsDrawerAView.findViewById(R.id.settings_drawer_a);
             settingsDrawerAScrollView = settingsDrawerAView.findViewById(R.id.settings_drawer_a_scroll_view);
             settingsDrawerAText1 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_text_1);
             settingsDrawerAText2 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_text_2);
@@ -5149,29 +4915,15 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             settingsDrawerAFrame3 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_frame_3);
             settingsDrawerAFrame4 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_frame_4);
             settingsDrawerAFrame5 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_frame_5);
-            settingsDrawerAFrame6 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_frame_6);
-            settingsDrawerAFrame7 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_frame_7);
-            settingsDrawerAIcon1 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_icon_1);
-            settingsDrawerADot1 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_dot_1);
-            settingsDrawerADot2 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_dot_2);
-            settingsDrawerADot3 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_dot_3);
-            settingsDrawerADot4 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_dot_4);
-            settingsDrawerADash1 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_dash_1);
-            settingsDrawerADash2 = settingsDrawerAView.findViewById(R.id.settings_drawer_a_dash_2);
+            settingsDrawerAIcon = settingsDrawerAView.findViewById(R.id.settings_drawer_a_icon);
 
-            backgroundTypeC(this, settingsDrawerA, background(3), tintA);
+            backgroundTypeC(this, settingsDrawerALayout, background(3), tintA);
             backgroundTypeA(this, settingsDrawerAFrame2, background(9), tintB, 3);
             backgroundTypeA(this, settingsDrawerAFrame3, background(7), tintB, 3);
             backgroundTypeA(this, settingsDrawerAFrame4, background(8), tintB, 3);
-            backgroundTypeA(this, settingsDrawerAFrame6, background(12), tintB, 3);
+            backgroundTypeA(this, settingsDrawerAFrame5, background(12), tintB, 3);
 
-            imageTypeA(this, settingsDrawerAIcon1, icon(38), tintB, 60);
-            imageTypeB(this, settingsDrawerADot1, background(4), ui);
-            imageTypeB(this, settingsDrawerADot2, background(4), ui);
-            imageTypeB(this, settingsDrawerADot3, background(4), ui);
-            imageTypeB(this, settingsDrawerADot4, background(4), ui);
-            imageTypeB(this, settingsDrawerADash1, background(6), ui);
-            imageTypeB(this, settingsDrawerADash2, background(6), ui);
+            imageTypeA(this, settingsDrawerAIcon, icon(38), tintB, 60);
 
             textType(this, settingsDrawerAText1, textC(60), tintB, fontAStyle);
             textType(this, settingsDrawerAText2, textB(42), tintB, fontBStyle);
@@ -5186,69 +4938,36 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             textType(this, settingsDrawerAText11, "", tintB, fontBStyle);
             textType(this, settingsDrawerALine1, textA(13), tintB, fontBStyle);
             textType(this, settingsDrawerALine2, textA(13), tintB, fontBStyle);
-            textType(this, settingsDrawerALine3, textA(9), tintB, fontBStyle);
-            textType(this, settingsDrawerALine4, textA(9), tintB, fontBStyle);
+            textType(this, settingsDrawerALine3, textA(17), tintB, fontBStyle);
+            textType(this, settingsDrawerALine4, textA(18), tintB, fontBStyle);
             textType(this, settingsDrawerALine5,textA(13), tintB, fontBStyle);
 
             customTouchModeB(settingsDrawerAFrame2, textC(64), 2, 3, 0);
             customTouchModeB(settingsDrawerAFrame3, "", 2, 3, 5);
             customTouchModeB(settingsDrawerAFrame4, "", 2, 3, 6);
-            customTouchModeB(settingsDrawerAFrame6, "", 2, 3, 7);
+            customTouchModeB(settingsDrawerAFrame5, "", 2, 3, 7);
 
-            drawerConfigurations();
+            configurationsC();
         }
         if(settingsDrawerLayout.findViewById(R.id.settings_drawer_a) == null){
             settingsDrawerLayout.addView(settingsDrawerAView);
-            setSize(this, settingsDrawerA, size(2), size(2));
-            currentOptions();
+            setSize(this, settingsDrawerALayout, size(2), size(2));
+            settingsDrawerOptions();
         }
     }
-
-    private void currentOptions(){
-        if(drawerGridStyle.equals("Tiles")){
-            settingsDrawerAText5.setText("Tiles");
-            settingsDrawerADot1.setAlpha(1.0f);
-            settingsDrawerADot2.setAlpha(.3f);
-        }
-        if(drawerGridStyle.equals("Bubbles")){
-            settingsDrawerAText5.setText("Bubbles");
-            settingsDrawerADot1.setAlpha(.3f);
-            settingsDrawerADot2.setAlpha(1.0f);
-        }
-        if(drawerSortingOrder.equals("Alphabetically")){
-            settingsDrawerAText8.setText("Alphabetically");
-            settingsDrawerADash1.setAlpha(1.0f);
-            settingsDrawerADash2.setAlpha(.3f);
-        }
-        if(drawerSortingOrder.equals("Random")){
-            settingsDrawerAText8.setText("Random");
-            settingsDrawerADash1.setAlpha(.3f);
-            settingsDrawerADash2.setAlpha(1.0f);
-        }
-        if(drawerBrowseMode.equals("[ NONE ]")){
-            settingsDrawerAText11.setText("None");
-            settingsDrawerADot3.setAlpha(1.0f);
-            settingsDrawerADot4.setAlpha(.3f);
-        }
-        if(drawerBrowseMode.equals("Index")){
-            settingsDrawerAText11.setText("Index " + textA(14));
-            settingsDrawerADot3.setAlpha(.3f);
-            settingsDrawerADot4.setAlpha(1.0f);
-        }
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
 
     View settingsDrawerBView;
-    RelativeLayout settingsDrawerB, settingsDrawerBFrame1, settingsDrawerBFrame2, settingsDrawerBFrame3, settingsDrawerBFrame4,
-            settingsDrawerBFrame5;
+    RelativeLayout settingsDrawerBLayout, settingsDrawerBFrame1, settingsDrawerBFrame2, settingsDrawerBFrame3,
+            settingsDrawerBFrame4, settingsDrawerBFrame5;
     ImageView settingsDrawerBIcon1, settingsDrawerBIcon2, settingsDrawerBIcon3, settingsDrawerBIcon4;
     TextView settingsDrawerBText1, settingsDrawerBText2, settingsDrawerBText3;
-    ListView settingsDrawerBListview;
+    LinearLayout settingsDrawerBListView;
+    ScrollView settingsDrawerBScrollView;
     private void settingsDrawerB(){
         if(settingsDrawerBView == null){
             settingsDrawerBView = inflater.inflate(R.layout.settings_drawer_b, null);
-            settingsDrawerB = settingsDrawerBView.findViewById(R.id.settings_drawer_b);
+            settingsDrawerBLayout = settingsDrawerBView.findViewById(R.id.settings_drawer_b);
+            settingsDrawerBScrollView = settingsDrawerBView.findViewById(R.id.settings_drawer_b_scroll_view);
             settingsDrawerBFrame1 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_frame_1);
             settingsDrawerBFrame2 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_frame_2);
             settingsDrawerBFrame3 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_frame_3);
@@ -5261,11 +4980,10 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             settingsDrawerBIcon2 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_icon_2);
             settingsDrawerBIcon3 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_icon_3);
             settingsDrawerBIcon4 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_icon_4);
-            settingsDrawerBListview = settingsDrawerBView.findViewById(R.id.settings_drawer_b_list_view);
+            settingsDrawerBListView = settingsDrawerBView.findViewById(R.id.settings_drawer_b_list_view);
 
             backgroundTypeC(this, settingsDrawerBFrame2, background(7), tintA);
             backgroundTypeA(this, settingsDrawerBFrame4, background(9), tintA, 3);
-            settingsDrawerBFrame3.setVisibility(View.GONE);
 
             imageTypeA(this, settingsDrawerBIcon1, icon(32), tintB, 40);
             imageTypeA(this, settingsDrawerBIcon2, icon(33), tintA, 75);
@@ -5278,457 +4996,201 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             customTouchModeB(settingsDrawerBIcon2, textC(48), 2, 3, 1);
             customTouchModeB(settingsDrawerBFrame4, "", 2, 3, 3);
             customTouchModeB(settingsDrawerBIcon4, textC(49), 2, 3, 4);
+            settingsDrawerBFrame3.setVisibility(View.GONE);
         }
         if(settingsDrawerLayout.findViewById(R.id.settings_drawer_b) == null){
             settingsDrawerLayout.addView(settingsDrawerBView);
-            setSize(this, settingsDrawerB, size(2), size(2));
-            setMargins(this, settingsDrawerB, 20, 20, 20, 20);
-            hiddenApps();
+            setSize(this, settingsDrawerBLayout, size(2), size(2));
+            setMargins(this, settingsDrawerBLayout, 20, 20, 20, 20);
+            hiddenAppsInitialize();
         }
     }
 
-    ListTypeC hiddenListItems;
-    List<String> hiddenListArray;
-    private void hiddenApps(){
-        if(!settingsDrawerBString.isEmpty() && !isAppInstalled(this, settingsDrawerBString)){
-            settingsDrawerBFrame1.setVisibility(View.VISIBLE);
-            settingsDrawerBFrame3.setVisibility(View.GONE);
-        }
-        try {
-            hiddenListArray.clear();
-            hiddenListItems.clear();
-        } catch (Exception e){}
-        if(fileExist(this, "List/Array - 03")){
-            hiddenListArray = read(this, "List/Array - 03");
-            for (Iterator<String> iterator = hiddenListArray.iterator(); iterator.hasNext();) {
-                String value = iterator.next();
-                if (value.isEmpty() || !isAppInstalled(this, value)) {
-                    iterator.remove();
-                }
-            }
-            if(hiddenListArray.size() != 0){
-                settingsDrawerBFrame2.setAlpha(1.0f);
-                customTouchModeB(settingsDrawerBFrame2, textC(66), 2, 3, 2);
-                settingsDrawerBText1.setText("••• " + hiddenListArray.size());
-                settingsDrawerBText2.setText(textB(46));
+    // -----[ SETTINGS DRAWER BUTTONS ]----- //
 
-                Handler settingsDrawerBHandler = new Handler();
-                Runnable settingsDrawerBRunnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        hiddenListItems = new ListTypeC(TheNest.this, hiddenListArray, TheNest.this);
-                        settingsDrawerBListview.setAdapter(hiddenListItems);
-                    }
-                };
-                settingsDrawerBHandler.postDelayed(settingsDrawerBRunnable, 50);
-            } else {
-                if(fileExist(this, "List/Array - 03")){
-                    File hidden = new File(getFilesDir(), "List/Array - 03");
-                    hidden.delete();
-                }
-                hiddenApps();
-            }
-        } else {
-            settingsDrawerBFrame1.setVisibility(View.VISIBLE);
-            settingsDrawerBFrame3.setVisibility(View.GONE);
-            settingsDrawerBFrame2.setAlpha(.5f);
-            settingsDrawerBFrame2.setOnTouchListener(null);
-            settingsDrawerBText1.setText(textC(65));
-            settingsDrawerBText2.setText(textB(47));
-        }
+    private void settingsDrawerPress_0(){
+        settingsDrawerLayout.removeView(settingsDrawerAView);
+        settingsDrawerB();
     }
 
-    private int settingsDrawerBInt = 0;
-    private String settingsDrawerBString = "";
-    @Override
-    public void hiddenApp(String current) {
+    private void settingsDrawerPress_1(){
+        settingsDrawerLayout.removeView(settingsDrawerBView);
+        settingsDrawerLayout.addView(settingsDrawerAView);
+    }
+
+    private void settingsDrawerPress_2(){
+        settingsDrawerBFrame1.setVisibility(View.INVISIBLE);
+        settingsDrawerBFrame3.setVisibility(View.VISIBLE);
+        imageTypeA(this, settingsDrawerBIcon3, icon(50), tintA, 40);
+        settingsDrawerBText3.setText(textB(48));
+        settingsDrawerBInt = 0;
+    }
+
+    private void settingsDrawerPress_3(){
+        settingsDrawerCommonB();
+    }
+
+    private void settingsDrawerPress_4(){
+        if(settingsDrawerBInt == 0){
+            if(fileExist(this, "Array - 03"))
+                new File(getFilesDir(), "Array - 03").delete();
+        }
+        if(settingsDrawerBInt == 1){
+            if(fileExist(this, "Array - 03")){
+                edit(this, "Array - 03", settingsDrawerBString, "");
+            }
+        }
+        hiddenAppsInitialize();
+        if(drawerAppsLayout != null)
+            drawerRefresh(false);
+        settingsDrawerCommonB();
+    }
+
+    private void settingsDrawerPress_5(){
+        String type = "";
+        if(drawerGridStyle.equals("Tiles"))
+            type = "List";
+
+        if(drawerGridStyle.equals("List"))
+            type = "Bubbles";
+
+        if(drawerGridStyle.equals("Bubbles"))
+            type = "Tiles";
+        settingsDrawerCommonA("Drawer Grid Style - ", drawerGridStyle, type);
+    }
+
+    private void settingsDrawerPress_6(){
+        String order = "";
+        if(drawerSortingOrder.equals("Alphabetically"))
+            order = "Random";
+
+        if(drawerSortingOrder.equals("Random"))
+            order = "Alphabetically";
+        settingsDrawerCommonA("Drawer Sorting Order - ", drawerSortingOrder, order);
+    }
+
+    private void settingsDrawerPress_7(){
+        String browseMode = "";
+        if(drawerBrowseMode.equals("[ NONE ]"))
+            browseMode = "Index";
+
+        if(drawerBrowseMode.equals("Index"))
+            browseMode = "[ NONE ]";
+        settingsDrawerCommonA("Drawer Browse Mode - ", drawerBrowseMode, browseMode);
+    }
+
+    private void settingsDrawerPress_8(){
         settingsDrawerBInt = 1;
-        settingsDrawerBString = current;
         settingsDrawerBFrame1.setVisibility(View.INVISIBLE);
         settingsDrawerBFrame3.setVisibility(View.VISIBLE);
         switchTint(this, settingsDrawerBIcon3, R.color.transparent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            settingsDrawerBIcon3.setImageBitmap(roundedBitmap(adaptiveIcon(this, current, 40)));
+        settingsDrawerBIcon3.setImageBitmap(appIcon(this, settingsDrawerBString, 40));
+        settingsDrawerBText3.setText(appLabel(this, settingsDrawerBString));
+    }
+
+    // -----[ SETTINGS DRAWER COMMON ]----- //
+
+    private void settingsDrawerCommonA(String string_a, String string_b, String string_c){
+        edit(this, "Configurations - 03", string_a + string_b, string_a + string_c);
+        configurationsC();
+        settingsDrawerOptions();
+        if(drawerAppsLayout != null)
+            drawerRefresh(false);
+    }
+
+    private void settingsDrawerCommonB(){
+        settingsDrawerBFrame1.setVisibility(View.VISIBLE);
+        settingsDrawerBFrame3.setVisibility(View.GONE);
+    }
+
+    private void settingsDrawerCommonC(int mode, float alpha, int a){
+        if(mode == 0){
+            customTouchModeB(settingsDrawerBFrame2, textC(66), 2, 3, 2);
+            settingsDrawerBText1.setText("••• " + hiddenListArray.size());
         } else {
-            settingsDrawerBIcon3.setImageBitmap(roundedBitmap(drawableIcon(this, current, 40)));
+            settingsDrawerBFrame2.setOnTouchListener(null);
+            settingsDrawerBText1.setText(textC(65));
         }
-        String label = "";
-        try {
-            label = (String) getPackageManager().getApplicationInfo(current, 0).loadLabel(getPackageManager());
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        settingsDrawerBText3.setText(label);
+        settingsDrawerBFrame2.setAlpha(alpha);
+        settingsDrawerBText2.setText(textB(a));
     }
 
+    // -----[ SETTINGS DRAWER METHODS ]----- //
 
-    //---------- ---------- ---------- ---------- ---------- []
-    //                                                       []
-    //                                                       []
-    //                                                       []
-    //---------- ---------- ---------- ---------- ---------- []
+    private int settingsDrawerBInt = 0;
+    private String settingsDrawerBString = "";
+    private void settingsDrawerOptions(){
+        settingsDrawerAText5.setText(drawerGridStyle);
+        settingsDrawerAText8.setText(drawerSortingOrder);
+        if(drawerBrowseMode.equals("[ NONE ]"))
+            settingsDrawerAText11.setText("None");
 
-    private void settingsHomePress_0(){
-        settingsHomeLayout.removeView(settingsHomeBView);
-        settingsHomeAView.setVisibility(View.VISIBLE);
+        if(drawerBrowseMode.equals("Index"))
+            settingsDrawerAText11.setText("Index " + textA(14));
     }
 
-    private void settingsHomePress_1(){
-        if(widgetState.equals("Enabled")) {
-            edit(this, "Home/Configurations", "Widget State - " + widgetState, "Widget State - Disabled");
-        } else {
-            edit(this, "Home/Configurations", "Widget State - " + widgetState, "Widget State - Enabled");
-        }
-        settingsHomeWidgets();
-        homeWIDGET();
-        homeAppletPositions();
-    }
+    ArrayList<String> hiddenListArray;
+    private void hiddenAppsInitialize(){
+        if(!settingsDrawerBString.isEmpty() && !isAppInstalled(this, settingsDrawerBString))
+            settingsDrawerCommonB();
 
-    private void settingsHomePress_2(){
-        if(settingsHomeBInt_a == 0){
-            settingsHomeBInt_a = 1;
-        } else {
-            if (settingsHomeBInt_a == 1) {
-                settingsHomeBInt_a = 0;
-            }
-        }
-        settingsHomeWidgetsTabs();
-        settingsHomeWidgetsLists();
-    }
-
-    private void settingsHomePress_3(){
-        if(settingsHomeBFrame6.getVisibility() != View.VISIBLE){
-            settingsHomeBFrame6.setVisibility(View.VISIBLE);
-            settingsHomeBFrame1.setVisibility(View.INVISIBLE);
-        } else {
-            settingsHomeBFrame6.setVisibility(View.GONE);
-            settingsHomeBFrame1.setVisibility(View.VISIBLE);
-        }
-        if(homeBItems == null)
-            settingsHomeWidgetsLists();
-    }
-
-    private void settingsHomePress_4(){
-        if(settingsHomeBInt_b == 0){
-            edit(this, "Home/Configurations", "Widget Mode - " + widgetMode, "Widget Mode - SimpliC");
-            if(settingsHomeBString_b.equals("Analog Clock")){
-                edit(this, "Home/Configurations", "Widget Component - " + widgetComponent, "Widget Component - Clock 1");
-            } else {
-                edit(this, "Home/Configurations", "Widget Component - " + widgetComponent, "Widget Component - Clock 2");
-            }
-            homeConfigurations();
-            homeWIDGET();
-        } else {
-            edit(this, "Home/Configurations", "Widget Mode - " + widgetMode, "Widget Mode - Device");
-            homeWidgetInitiate();
-        }
-        settingsHomePress_5();
-        touchTip(this, textC(20), 2);
-    }
-
-    private void settingsHomePress_5(){
-        settingsHomeBFrame6.setVisibility(View.VISIBLE);
-        settingsHomeBFrame7.setVisibility(View.GONE);
-        settingsHomeBFrame3.setAlpha(1.0f);
-        customTouchModeB(settingsHomeBFrame4, "", 2, 4, 2);
-        customTouchModeB(settingsHomeBFrame5, "", 2, 4, 3);
-    }
-
-    private void settingsHomePress_6(){
-        homeWidgetRemove();
-        settingsHomePress_5();
-        touchTip(this, textC(20), 2);
-    }
-
-    private void settingsHomePress_7(){
-        settingsHomeLayout.removeView(settingsHomeCView);
-        settingsHomeAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsHomePress_8(){
-        settingsHomeCEditText.setVisibility(View.VISIBLE);
-        settingsHomeCText3.setVisibility(View.GONE);
-        imageTypeA(this, settingsHomeCIcon1, icon(31), tintB, 50);
-        customTouchModeB(settingsHomeCFrame2, textC(13), 2, 4, 9);
-        backgroundTypeC(this, settingsHomeCFrame2, background(5), ui);
-    }
-
-    private void settingsHomePress_9(){
-        settingsHomeC_CommonA();
-        ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
-
-        edit(this, "Home/Configurations", "Applet Text - " + appletText, "Applet Text - " + settingsHomeCEditText.getText().toString().trim());
-        appletText = settingsHomeCEditText.getText().toString().trim();
-        settingsHomeC_CommonB();
-    }
-
-    private void settingsHomeC_CommonA(){
-        settingsHomeCEditText.setVisibility(View.GONE);
-        settingsHomeCText3.setVisibility(View.VISIBLE);
-        imageTypeA(this, settingsHomeCIcon1, icon(45), tintA, 50);
-        customTouchModeB(settingsHomeCFrame2, textC(14), 2, 4, 8);
-        backgroundTypeA(this, settingsHomeCFrame2, background(5), tintA, 3);
-    }
-
-    private void settingsHomeC_CommonB(){
-        homeAppletAText.setText(appletText);
-        homeAppletText();
-        settingsHomeApplet();
-    }
-
-    private void settingsHomePress_10(){
-        if(settingsHomeCText3.getVisibility() != View.VISIBLE)
-            settingsHomeC_CommonA();
-
-        edit(this, "Home/Configurations", "Applet Text - " + appletText, "Applet Text - ∆×••⟨[ ]⟩");
-        appletText = "∆×••⟨[ ]⟩";
-        settingsHomeC_CommonB();
-    }
-
-    private void settingsHomePress_11(){
-        settingsHomeLayout.removeView(settingsHomeDView);
-        settingsHomeAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsHomePress_12(){
-        if(wallpaperState.equals("Enabled")) {
-            edit(this, "Home/Configurations", "Wallpaper State - " + wallpaperState, "Wallpaper State - Disabled");
-        } else {
-            edit(this, "Home/Configurations", "Wallpaper State - " + wallpaperState, "Wallpaper State - Enabled");
-        }
-        settingsHomeWallpaper();
-        homeWALLPAPER();
-        homeCenterPositions();
-    }
-
-    private void settingsHomePress_13(){
-        if(settingsHomeDInt == 0){
-            settingsHomeDInt = 1;
-        } else {
-            if (settingsHomeDInt == 1) {
-                settingsHomeDInt = 0;
-            }
-        }
-        settingsHomeWallpaper_A();
-        if(settingsHomeDFrame6.getVisibility() == View.VISIBLE)
-            settingsHomeWallpaper_B();
-    }
-
-    private void settingsHomePress_14(){
-        if(settingsHomeDFrame6.getVisibility() != View.VISIBLE){
-            settingsHomeDFrame6.setVisibility(View.VISIBLE);
-            settingsHomeDFrame1.setVisibility(View.INVISIBLE);
-        } else {
-            settingsHomeDFrame6.setVisibility(View.GONE);
-            settingsHomeDFrame1.setVisibility(View.VISIBLE);
-        }
-        settingsHomeWallpaper_B();
-    }
-
-    private void settingsHomePress_15(){
-        if(settingsHomeDInt == 0){
-            edit(this, "Home/Configurations", "Wallpaper Mode - " + wallpaperMode, "Wallpaper Mode - SimpliC");
-            edit(this, "Home/Configurations", "Wallpaper Component - " + wallpaperComponent, "Wallpaper Component - Blocks");
-        } else {
-            edit(this, "Home/Configurations", "Wallpaper Mode - " + wallpaperMode, "Wallpaper Mode - Device");
-            edit(this, "Home/Configurations", "Wallpaper Component - " + wallpaperComponent, "Wallpaper Component - Unknown");
-        }
-        homeConfigurations();
-        homeWALLPAPER();
-        //settingsHomePress_14();
-        settingsHomeWallpaper_B();
-        touchTip(this, textC(20), 2);
-    }
-
-    private void settingsHomePress_16(){
-        homeWallpaperRemove();
-        //settingsHomePress_14();
-        settingsHomeWallpaper_B();
-        touchTip(this, textC(20), 2);
-    }
-
-    private void settingsHomePress_17(){
-        settingsHomeLayout.removeView(settingsHomeEView);
-        settingsHomeAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsHomePress_18(){
-        if(folderState.equals("Enabled")) {
-            edit(this, "Home/Configurations", "Folder State - " + folderState, "Folder State - Disabled");
-        } else {
-            edit(this, "Home/Configurations", "Folder State - " + folderState, "Folder State - Enabled");
-        }
-        settingsHomeFolder();
-        homeFolder_Flower();
-        homeCenterPositions();
-    }
-
-    private void settingsHomePress_19(){
-        settingsHomeE_CommonA();
-        settingsHomeFolder_A();
-    }
-
-    private void settingsHomePress_20(){
-        if(folderSortingOrder.equals("Alphabetically")){
-            edit(this, "Home/Configurations", "Folder Sorting Order - "
-                    + folderSortingOrder, "Folder Sorting Order - Random");
-        } else {
-            edit(this, "Home/Configurations", "Folder Sorting Order - "
-                    + folderSortingOrder, "Folder Sorting Order - Alphabetically");
-        }
-        homeConfigurations();
-        settingsHomeEText5.setText(folderSortingOrder);
-        if(settingsHomeEListItems != null){
-            if(folderSortingOrder.equals("Alphabetically")){
-                Collections.sort(settingsHomeEArray, new Comparator<String>() {
-                    @Override
-                    public int compare(String a, String b) {
-                        return appLabel(TheNest.this, a).compareTo(appLabel(TheNest.this, b));
+        if(fileExist(this, "Array - 03")){
+            Handler settingsDrawerBHandler = new Handler();
+            Runnable settingsDrawerBRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    hiddenListArray = (ArrayList<String>) read(TheNest.this, "Array - 03");
+                    for (Iterator<String> iterator = hiddenListArray.iterator(); iterator.hasNext();) {
+                        String value = iterator.next();
+                        if (value.isEmpty() || !isAppInstalled(TheNest.this, value))
+                            iterator.remove();
                     }
-                });
-            } else {
-                Collections.sort(settingsHomeEArray);
-            }
-            settingsHomeEListItems.notifyDataSetChanged();
-        }
-        if(folderListItems != null){
-            if(folderSortingOrder.equals("Alphabetically")){
-                Collections.sort(folderListArray, new Comparator<String>() {
-                    @Override
-                    public int compare(String a, String b) {
-                        return appLabel(TheNest.this, a).compareTo(appLabel(TheNest.this, b));
+                    if(hiddenListArray.size() != 0){
+                        settingsDrawerCommonC(0, 1.0f, 46);
+
+                        if(settingsDrawerBListView.getChildCount() != hiddenListArray.size()){
+                            settingsDrawerBListView.removeAllViews();
+                            hiddenAppsInitialize(hiddenListArray, settingsDrawerBListView);
+                        }
+                    } else {
+                        settingsDrawerBListView.removeAllViews();
+                        new File(getFilesDir(), "Array - 03").delete();
+                        hiddenAppsInitialize();
                     }
-                });
-            } else {
-                Collections.sort(folderListArray);
-            }
-            folderListItems.clear();
-            folderListItems.addAll(folderListArray);
-            folderListItems.notifyDataSetChanged();
-        }
-    }
-
-    private void settingsHomePress_21(){
-        settingsHomeE_CommonB();
-    }
-
-    private void settingsHomePress_22(){
-        settingsHomeLayout.removeView(settingsHomeFView);
-        settingsHomeAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsHomePress_23(){
-        if(statusState.equals("Enabled")) {
-            edit(this, "Home/Configurations", "Status State - " + statusState, "Status State - Disabled");
+                }
+            };
+            settingsDrawerBHandler.postDelayed(settingsDrawerBRunnable, 50);
         } else {
-            edit(this, "Home/Configurations", "Status State - " + statusState, "Status State - Enabled");
+            settingsDrawerCommonB();
+            settingsDrawerCommonC(1, .5f, 47);
+            settingsDrawerBListView.removeAllViews();
         }
-        settingsHomeStatus();
-        homeStatus();
-        homeCenterPositions();
     }
 
-    private void settingsHomePress_24(){
-        settingsHomeFFrame1.setVisibility(View.GONE);
-        settingsHomeFFrame5.setVisibility(View.VISIBLE);
-        settingsHomeStatus_A();
-    }
+    View hiddenListView;
+    RelativeLayout hiddenListFrame;
+    ImageView hiddenListIcon;
+    TextView hiddenListText;
+    @SuppressLint("ClickableViewAccessibility")
+    private void hiddenAppsInitialize(ArrayList<String> list, LinearLayout layout){
+        for (int i = 0; i < list.size(); i++) {
+            hiddenListView = inflater.inflate(R.layout.linear_type_g, layout, false);
+            hiddenListFrame = hiddenListView.findViewById(R.id.linear_type_g_frame);
+            hiddenListIcon = hiddenListView.findViewById(R.id.linear_type_g_icon);
+            hiddenListText = hiddenListView.findViewById(R.id.linear_type_g_text);
 
-    private void settingsHomePress_25(){
-        settingsHomeFFrame1.setVisibility(View.VISIBLE);
-        settingsHomeFFrame5.setVisibility(View.GONE);
-    }
+            hiddenListIcon.setImageBitmap(appIcon(this, list.get(i), 40));
+            textType(this, hiddenListText, appLabel(this, list.get(i)), tintA, fontBStyle);
 
-    private void settingsHomePress_26(){
-        edit(this, "Home/Configurations", "Status Mode - " + statusMode, "Status Mode - " + settingsHomeFString);
-        homeConfigurations();
-        homeStatus();
-        settingsHomeFFrame6.setVisibility(View.GONE);
-        settingsHomeFListView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsHomePress_27(){
-        settingsHomeFFrame6.setVisibility(View.GONE);
-        settingsHomeFListView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsHomePress_28(){
-        settingsHomeLayout.removeView(settingsHomeGView);
-        settingsHomeAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsHomePress_29(){
-        String icon = "";
-        if(drawerIcon.equals("BeeHive"))
-            icon = "SimpliC";
-        if(drawerIcon.equals("SimpliC"))
-            icon = "BeeHive";
-        edit(this, "Home/Configurations", "Drawer Icon - " + drawerIcon, "Drawer Icon - " + icon);
-        settingsHomeDrawer();
-        homeDrawerPresets(homeDrawerAIcon);
-    }
-
-    private void settingsHomePress_30(){
-        String size = "";
-        if(drawerSize.equals("A"))
-            size = "B";
-        if(drawerSize.equals("B"))
-            size = "C";
-        if(drawerSize.equals("C"))
-            size = "D";
-        if(drawerSize.equals("D"))
-            size = "E";
-        if(drawerSize.equals("E"))
-            size = "A";
-        edit(this, "Home/Configurations", "Drawer Size - " + drawerSize, "Drawer Size - " + size);
-        settingsHomeDrawer();
-        homeDrawerPresets(homeDrawerAIcon);
-    }
-    private void settingsHomePress_31(){
-        float alpha = 0.0f;
-        if(drawerAlpha == 1.0f)
-            alpha = 0.0f;
-        if(drawerAlpha == 0.0f)
-            alpha = 0.5f;
-        if(drawerAlpha == 0.5f)
-            alpha = 1.0f;
-        edit(this, "Home/Configurations", "Drawer Alpha - " + drawerAlpha, "Drawer Alpha - " + alpha);
-        settingsHomeDrawer();
-        homeDrawerPresets(homeDrawerAIcon);
-    }
-    private void settingsHomePress_32(){
-        edit(this, "Home/Configurations", "Drawer Icon - " + drawerIcon, "Drawer Icon - BeeHive");
-        edit(this, "Home/Configurations", "Drawer Size - " + drawerSize, "Drawer Size - C");
-        edit(this, "Home/Configurations", "Drawer Alpha - " + drawerAlpha, "Drawer Alpha - 1.0");
-        settingsHomeDrawer();
-        homeDrawerPresets(homeDrawerAIcon);
-    }
-
-    private void settingsHomePress_33(){
-        settingsHomeLayout.removeView(settingsHomeHView);
-        settingsHomeAView.setVisibility(View.VISIBLE);
-    }
-
-    private void settingsHomePress_34(){
-        if(shortcutState.equals("Enabled")) {
-            edit(this, "Home/Configurations", "Shortcut State - " + shortcutState, "Shortcut State - Disabled");
-        } else {
-            edit(this, "Home/Configurations", "Shortcut State - " + shortcutState, "Shortcut State - Enabled");
+            customTouchModeA(hiddenListView, list.get(i), -1, 5);
+            layout.addView(hiddenListView);
         }
-        settingsHomeShortcut();
-        homeSHORTCUT();
     }
 
-    private void settingsHomePress_35(){
-        settingsHomeH_CommonA();
-        settingsHomeShortcut_A();
-    }
-
-    private void settingsHomePress_36(){
-        settingsHomeH_CommonB();
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- SETTINGS -------------------- []
+    //---------------------- HOME ---------------------- []
+    //``````````
 
     View settingsHomeView;
     RelativeLayout settingsHomeLayout;
@@ -5743,36 +5205,40 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             setSize(this, settingsHomeLayout, size(2), size(2));
             setMargins(this, settingsHomeLayout, -40, 20, 20, 60);
             settingsEdgeAText.setText(textC(40));
-            if(settingsHomeLayout.getChildCount() == 0){
-                settingsHomeAView();
-            }
+            if(settingsHomeLayout.getChildCount() == 0)
+                settingsHomeA();
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
     View settingsHomeAView;
-    RelativeLayout settingsHomeA;
+    RelativeLayout settingsHomeALayout;
     ListView settingsHomeAListView;
-    ListTypeD homeAItems;
-    private void settingsHomeAView(){
+    ContentsB settingsContents;
+    private void settingsHomeA(){
         if(settingsHomeAView == null){
             settingsHomeAView = inflater.inflate(R.layout.settings_home_a, null);
-            settingsHomeA = settingsHomeAView.findViewById(R.id.settings_home_a);
+            settingsHomeALayout = settingsHomeAView.findViewById(R.id.settings_home_a);
             settingsHomeAListView = settingsHomeAView.findViewById(R.id.settings_home_a_list_view);
 
-            backgroundTypeC(this, settingsHomeA, background(3), tintA);
-            settingsHomeAList();
+            backgroundTypeC(this, settingsHomeALayout, background(3), tintA);
+            settingsHomeList();
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_a) == null){
             settingsHomeLayout.addView(settingsHomeAView);
-            setSize(this, settingsHomeA, size(2), size(2));
+            setSize(this, settingsHomeALayout, size(2), size(2));
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ SETTINGS HOME COMMON ]----- //
 
-    private void settingsHomeAList(){
+    private void settingsHomeCommonA(View view){
+        settingsHomeLayout.removeView(view);
+        settingsHomeAView.setVisibility(View.VISIBLE);
+    }
+
+    // -----[ SETTINGS HOME METHODS ]----- //
+
+    private void settingsHomeList(){
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
         bitmaps.add(reduceBitmap(this, icon(46), 60));
         bitmaps.add(reduceBitmap(this, icon(51), 60));
@@ -5804,25 +5270,26 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         Runnable settingsHomeARunnable = new Runnable() {
             @Override
             public void run() {
-                if(homeListStyle.equals("Square")){
-                    homeAItems = new ListTypeD(TheNest.this, R.layout.list_type_b, bitmaps, strings_a, strings_b, TheNest.this);
-                }
-                if(homeListStyle.equals("Cylinder")){
-                    homeAItems = new ListTypeD(TheNest.this, R.layout.list_type_c, bitmaps, strings_a, strings_b, TheNest.this);
-                }
-                if(homeListStyle.equals("Hexagon")){
-                    homeAItems = new ListTypeD(TheNest.this, R.layout.list_type_d, bitmaps, strings_a, strings_b, TheNest.this);
-                }
-                settingsHomeAListView.setAdapter(homeAItems);
+                int layout = 0;
+                if(homeListStyle.equals("Square"))
+                    layout = R.layout.list_style_a;
+
+                if(homeListStyle.equals("Cylinder"))
+                    layout = R.layout.list_style_b;
+
+                if(homeListStyle.equals("Hexagon"))
+                    layout = R.layout.list_style_c;
+
+                settingsContents = new ContentsB(TheNest.this, layout, bitmaps, strings_a, strings_b, TheNest.this);
+                settingsHomeAListView.setAdapter(settingsContents);
             }
         };
         settingsHomeAHandler.postDelayed(settingsHomeARunnable, 100);
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
     @Override
     public void homeScreenOptions(int mode) {
+        settingsHomeAView.setVisibility(View.GONE);
         if(mode == 0)
             settingsHomeB();
         if(mode == 1)
@@ -5837,24 +5304,28 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             settingsHomeG();
         if(mode == 6)
             settingsHomeH();
-        settingsHomeAView.setVisibility(View.GONE);
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- WIDGETS ------------------ []
+    //``````````
 
     View settingsHomeBView;
-    RelativeLayout settingsHomeB, settingsHomeBFrame1, settingsHomeBFrame2, settingsHomeBFrame3, settingsHomeBFrame4,
+    RelativeLayout settingsHomeBLayout, settingsHomeBFrame1, settingsHomeBFrame2, settingsHomeBFrame3, settingsHomeBFrame4,
             settingsHomeBFrame5, settingsHomeBFrame6, settingsHomeBFrame7, settingsHomeBFrame8, settingsHomeBFrame9,
             settingsHomeBFrame10;
     TextView settingsHomeBLines, settingsHomeBText1, settingsHomeBText2, settingsHomeBText3, settingsHomeBText4,
             settingsHomeBText5, settingsHomeBText6;
     ImageView settingsHomeBImage, settingsHomeBCircle, settingsHomeBIcon1, settingsHomeBIcon2,
             settingsHomeBIcon3, settingsHomeBIcon4, settingsHomeBIcon5, settingsHomeBIcon6;
-    ListView settingsHomeBListView;
+    LinearLayout settingsHomeBListView;
+    ScrollView settingsHomeBScrollView;
     private void settingsHomeB(){
         if(settingsHomeBView == null){
             settingsHomeBView = inflater.inflate(R.layout.settings_home_b, null);
-            settingsHomeB = settingsHomeBView.findViewById(R.id.settings_home_b);
+            settingsHomeBLayout = settingsHomeBView.findViewById(R.id.settings_home_b);
+            settingsHomeBScrollView = settingsHomeBView.findViewById(R.id.settings_home_b_scroll_view);
             settingsHomeBCircle = settingsHomeBView.findViewById(R.id.settings_home_b_circle);
             settingsHomeBImage = settingsHomeBView.findViewById(R.id.settings_home_b_image);
             settingsHomeBIcon1 = settingsHomeBView.findViewById(R.id.settings_home_b_icon_1);
@@ -5913,247 +5384,316 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             customTouchModeB(settingsHomeBFrame9, textC(49), 2, 4, 4);
             customTouchModeB(settingsHomeBFrame10, textC(10), 2, 4, 6);
 
-            settingsHomeBFrame6.setVisibility(View.GONE);
-            settingsHomeBFrame7.setVisibility(View.GONE);
+            homeWidgetCommonD();
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_b) == null){
             settingsHomeLayout.addView(settingsHomeBView);
-            setSize(this, settingsHomeB, size(2), size(2));
-            setMargins(this, settingsHomeB, 20, 20, 20, 20);
-            settingsHomeWidgets();
+            setSize(this, settingsHomeBLayout, size(2), size(2));
+            setMargins(this, settingsHomeBLayout, 20, 20, 20, 20);
+            homeWidgetState();
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME WIDGETS BUTTONS ]----- //
 
-    private void settingsHomeWidgets(){
-        homeConfigurations();
+    private void settingsHomePress_0(){
+        settingsHomeCommonA(settingsHomeBView);
+    }
+
+    private void settingsHomePress_1(){
         if(widgetState.equals("Enabled")) {
-            toggleMode(this, settingsHomeBCircle, true);
-            settingsHomeBFrame3.setVisibility(View.VISIBLE);
-            settingsHomeBText4.setVisibility(View.VISIBLE);
-            if(settingsHomeBFrame7.getVisibility() != View.VISIBLE){
-                settingsHomeBFrame7.setVisibility(View.GONE);
-                settingsHomeBFrame3.setAlpha(1.0f);
-                customTouchModeB(settingsHomeBFrame4, "", 2, 4, 2);
-                customTouchModeB(settingsHomeBFrame5, "", 2, 4, 3);
-                if(settingsHomeBFrame6.getVisibility() != View.VISIBLE){
-                    settingsHomeBFrame1.setVisibility(View.VISIBLE);
-                    settingsHomeBFrame6.setVisibility(View.GONE);
-                }
-            }
-            settingsHomeWidgetsTabs();
+            edit(this, "Configurations - 02", "Widget State - " + widgetState, "Widget State - Disabled");
         } else {
-            toggleMode(this, settingsHomeBCircle, false);
-            settingsHomeBText2.setText(textB(56));
-            settingsHomeBFrame1.setVisibility(View.VISIBLE);
-            settingsHomeBFrame3.setVisibility(View.GONE);
-            settingsHomeBText4.setVisibility(View.GONE);
+            edit(this, "Configurations - 02", "Widget State - " + widgetState, "Widget State - Enabled");
+        }
+        homeWidgetState();
+        homeWidget();
+        homeAppletPositions();
+    }
+
+    private void settingsHomePress_2(){
+        if(settingsHomeBInt == 0){
+            settingsHomeBInt = 1;
+        } else {
+            if (settingsHomeBInt == 1) {
+                settingsHomeBInt = 0;
+            }
+        }
+        homeWidgetTabs();
+        homeWidgetInitialize();
+    }
+
+    private void settingsHomePress_3(){
+        if(settingsHomeBFrame6.getVisibility() != View.VISIBLE){
+            settingsHomeBFrame6.setVisibility(View.VISIBLE);
+            settingsHomeBFrame1.setVisibility(View.INVISIBLE);
+        } else {
             settingsHomeBFrame6.setVisibility(View.GONE);
-            settingsHomeBFrame7.setVisibility(View.GONE);
-            settingsHomeBFrame3.setAlpha(1.0f);
-            customTouchModeB(settingsHomeBFrame4, "", 2, 4, 2);
-            customTouchModeB(settingsHomeBFrame5, "", 2, 4, 3);
+            settingsHomeBFrame1.setVisibility(View.VISIBLE);
         }
+        if(settingsHomeBListView.getChildCount() == 0)
+            homeWidgetInitialize();
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    private void settingsHomeWidgetsTabs(){
-        settingsHomeBText2.setText(textB(57));
-        if(settingsHomeBInt_a == 0){
-            settingsHomeBText3.setText(textB(58));
-            imageTypeA(this, settingsHomeBIcon1, icon(56), tintA, 65);
+    private void settingsHomePress_4(){
+        if(settingsHomeBInt == 0){
+            edit(this, "Configurations - 02", "Widget Mode - " + widgetMode, "Widget Mode - SimpliC");
+            if(settingsHomeBString.equals("Analog Clock")){
+                edit(this, "Configurations - 02", "Widget Component - " + widgetComponent, "Widget Component - Clock 1");
+            } else {
+                edit(this, "Configurations - 02", "Widget Component - " + widgetComponent, "Widget Component - Clock 2");
+            }
+            configurationsB();
+            homeWidget();
+        } else {
+            edit(this, "Configurations - 02", "Widget Mode - " + widgetMode, "Widget Mode - Device");
+            homeWidgetConfigure();
         }
-        if(settingsHomeBInt_a == 1){
-            settingsHomeBText3.setText(textB(59));
-            imageTypeA(this, settingsHomeBIcon1, icon(55), tintA, 65);
-        }
+        settingsHomePress_5();
+        touchTip(this, textC(20), 2);
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    ListTypeE homeBItems;
-    private void settingsHomeWidgetsLists(){
-        if(homeWidgetManager == null)
-            homeWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
-        try {
-            homeBItems.clear();
-        } catch (Exception e){}
-        ArrayList<Bitmap> bitmaps = new ArrayList<>();
-        ArrayList<Drawable> drawables = new ArrayList<>();
-        ArrayList<String> strings_a = new ArrayList<>();
-        ArrayList<String> strings_b = new ArrayList<>();
-        if(settingsHomeBInt_a == 0){
-            bitmaps.add(reduceBitmap(this, icon(53), 50));
-            bitmaps.add(reduceBitmap(this, icon(54), 50));
-            drawables.add(new BitmapDrawable(getResources(), reduceBitmap(this, drawable(4),120)));
-            drawables.add(new BitmapDrawable(getResources(), reduceBitmap(this, drawable(5),120)));
-            strings_a.add(getPackageName());
-            strings_a.add(getPackageName());
-            strings_b.add("Analog Clock");
-            strings_b.add("Simple Clock");
-
-            homeBItems = new ListTypeE(this, bitmaps, drawables, strings_a, strings_b, settingsHomeBInt_a, this);
-            settingsHomeBListView.setAdapter(homeBItems);
-        }
-        if(settingsHomeBInt_a == 1){
-            Handler settingsHomeBHandler =  new Handler();
-            Runnable settingsHomeBRunnable =  new Runnable() {
-                @Override
-                public void run() {
-                    List<AppWidgetProviderInfo> widgetInfo = homeWidgetManager.getInstalledProviders();
-                    for (AppWidgetProviderInfo info : widgetInfo) {
-                        bitmaps.add(roundedBitmap(adaptiveIcon(TheNest.this, info.provider.getPackageName(), 40)));
-                        drawables.add(info.loadPreviewImage(TheNest.this, 100));
-                        strings_a.add(info.provider.getPackageName());
-                        strings_b.add(info.loadLabel(getPackageManager()));
-                    }
-                    homeBItems = new ListTypeE(TheNest.this, bitmaps, drawables, strings_a, strings_b, settingsHomeBInt_a, TheNest.this);
-                    settingsHomeBListView.setAdapter(homeBItems);
-                }
-            };
-            settingsHomeBHandler.postDelayed(settingsHomeBRunnable, 50);
-        }
+    private void settingsHomePress_5(){
+        settingsHomeBFrame6.setVisibility(View.VISIBLE);
+        settingsHomeBFrame7.setVisibility(View.GONE);
+        settingsHomeBFrame3.setVisibility(View.VISIBLE);
+        settingsHomeBText4.setVisibility(View.GONE);
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    private void settingsHomePress_6(){
+        homeWidgetRemove();
+        settingsHomePress_5();
+        touchTip(this, textC(20), 2);
+    }
 
-    private String settingsHomeBString_a;
-    private String settingsHomeBString_b;
-    private int settingsHomeBInt_a;
-    private int settingsHomeBInt_b;
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public void widget(String widgetPackage, String widgetModule, Bitmap widgetIcon, Drawable widgetPreview, int widgetMode) {
+    private void settingsHomePress_37(){
         settingsHomeBFrame6.setVisibility(View.GONE);
         settingsHomeBFrame7.setVisibility(View.VISIBLE);
-        settingsHomeBFrame3.setAlpha(.5f);
-        settingsHomeBFrame4.setOnTouchListener(null);
-        settingsHomeBFrame5.setOnTouchListener(null);
+        settingsHomeBFrame3.setVisibility(View.GONE);
+        settingsHomeBText4.setVisibility(View.VISIBLE);
+        settingsHomeBText5.setText(settingsHomeBString);
 
-        settingsHomeBString_a = widgetPackage;
-        settingsHomeBString_b = widgetModule;
-        settingsHomeBInt_b = widgetMode;
-
-        settingsHomeBText5.setText(widgetModule);
-        try {
-            settingsHomeBText6.setText("By - " + getPackageManager().getApplicationInfo(settingsHomeBString_a, 0).loadLabel(getPackageManager()));
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        settingsHomeBIcon5.setImageBitmap(widgetIcon);
-        settingsHomeBImage.setImageDrawable(widgetPreview);
-
-        if(settingsHomeBInt_b == 0){
+        if(settingsHomeBInt == 0){
             switchTint(this, settingsHomeBIcon5, tintB);
+            if(settingsHomeBString.equals("Analog Clock")){
+                settingsHomeBIcon5.setImageBitmap(reduceBitmap(this, icon(53), 50));
+                settingsHomeBImage.setImageDrawable(new BitmapDrawable(getResources(), reduceBitmap(this, drawable(4), 120)));
+            }
+            if(settingsHomeBString.equals("Simple Clock")){
+                settingsHomeBIcon5.setImageBitmap(reduceBitmap(this, icon(54), 50));
+                settingsHomeBImage.setImageDrawable(new BitmapDrawable(getResources(), reduceBitmap(this, drawable(5), 120)));
+            }
+            settingsHomeBText6.setText("By - " + getPackageName());
         } else {
             switchTint(this, settingsHomeBIcon5, R.color.transparent);
-        }
-
-        settingsHomeBFrame9.setVisibility(View.VISIBLE);
-        settingsHomeBFrame10.setVisibility(View.GONE);
-        if(settingsHomeBInt_b == 0){
-            if((settingsHomeBString_b.equals("Analog Clock") && widgetComponent.equals("Clock 1"))
-                    || (settingsHomeBString_b.equals("Simple Clock") && widgetComponent.equals("Clock 2"))){
-                settingsHomeBFrame9.setVisibility(View.INVISIBLE);
-                settingsHomeBFrame10.setVisibility(View.VISIBLE);
-            }
-        }
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    private void homeWidgetInitiate(){
-        if(homeWidgetManager == null)
-            homeWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
-        if(homeWidgetHost == null)
-            homeWidgetHost = new AppWidgetHost(getApplicationContext(), 2062);
-
-        List<AppWidgetProviderInfo> widgetInfo = homeWidgetManager.getInstalledProviders();
-        for (AppWidgetProviderInfo info : widgetInfo) {
-            if(info.provider.getPackageName().equals(settingsHomeBString_a)){
-                edit(this, "Home/Configurations", "Widget Component - " + widgetComponent, "Widget Component - " + info.provider.getPackageName());
-                if(info.loadLabel(getPackageManager()).equals(settingsHomeBString_b)){
-                    int widget_ID = homeWidgetHost.allocateAppWidgetId();
-                    edit(this, "Home/Configurations", "Widget ID - " + widgetID, "Widget ID - " + widget_ID);
-                    widgetID = widget_ID;
-
-                    if(info.configure != null){
-                        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
-                        intent.setComponent(info.configure);
-                        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
-                        homeWidgetManager.bindAppWidgetIdIfAllowed(widgetID, info.provider);
-                        homeWidgetHost.startAppWidgetConfigureActivityForResult(this, widgetID, intent.getFlags(), 2062, null);
-                        //startActivityForResult(intent, 2062);
-                    } else {
-                        widgetCommon(info);
-                    }
+            for (AppWidgetProviderInfo info : homeWidgetProvider){
+                if(info.loadLabel(getPackageManager()).equals(settingsHomeBString)){
+                    settingsHomeBIcon5.setImageBitmap(roundedBitmap(adaptiveIcon(TheNest.this, info.provider.getPackageName(), 40)));
+                    settingsHomeBImage.setImageDrawable(info.loadPreviewImage(this, 100));
+                    settingsHomeBText6.setText("By - " + info.provider.getPackageName());
                 }
             }
         }
+        if((settingsHomeBString.equals("Analog Clock") && widgetComponent.equals("Clock 1"))
+                || (settingsHomeBString.equals("Simple Clock") && widgetComponent.equals("Clock 2"))){
+            settingsHomeBFrame9.setVisibility(View.INVISIBLE);
+            settingsHomeBFrame10.setVisibility(View.VISIBLE);
+        } else {
+            settingsHomeBFrame9.setVisibility(View.VISIBLE);
+            settingsHomeBFrame10.setVisibility(View.GONE);
+        }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME WIDGET COMMON ]----- //
 
     private boolean settingsHomeBBoolean;
-    private void widgetCommon(AppWidgetProviderInfo info) {
-        homeConfigurations();
+    private void homeWidgetCommonA(AppWidgetProviderInfo info) {
+        configurationsB();
         if(homeWidgetLayout.findViewById(R.id.home_widget_b) == null)
-            homeWIDGET();
-        homeWidgetCommon(info);
-        if(hostView != null) {
+            homeWidget();
+
+        homeWidgetInitiate(info);
+        if(hostView != null)
             hostView.removeAllViews();
-            hostView = null;
-        }
-        homeWidgetResource.removeAllViews();
+
+        if(homeWidgetResource != null)
+            homeWidgetResource.removeAllViews();
+
+        hostView = null;
         settingsHomeBBoolean = true;
+        //one time run fix
         /*Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, info.provider);
         startActivityForResult(intent, 0);*/
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    private void homeWidgetCommonB(int int_a, int int_b){
+        settingsHomeBText3.setText(textB(int_a));
+        imageTypeA(this, settingsHomeBIcon1, icon(int_b), tintA, 65);
+    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == 2062) {
-                createWidget(data);
+    private void homeWidgetCommonC(boolean state, int text){
+        toggleMode(this, settingsHomeBCircle, state);
+        settingsHomeBText2.setText(textB(text));
+    }
+
+    private void homeWidgetCommonD(){
+        settingsHomeBFrame6.setVisibility(View.GONE);
+        settingsHomeBFrame7.setVisibility(View.GONE);
+        settingsHomeBText4.setVisibility(View.GONE);
+    }
+
+    // -----[ HOME WIDGET METHODS ]----- //
+
+    private void homeWidgetState(){
+        configurationsB();
+        if(widgetState.equals("Enabled")) {
+            homeWidgetCommonC(true, 57);
+
+            if(settingsHomeBFrame7.getVisibility() != View.VISIBLE){
+                settingsHomeBFrame7.setVisibility(View.GONE);
+                settingsHomeBText4.setVisibility(View.GONE);
+
+                settingsHomeBFrame3.setVisibility(View.VISIBLE);
+
+                if(settingsHomeBFrame6.getVisibility() != View.VISIBLE){
+                    settingsHomeBFrame1.setVisibility(View.VISIBLE);
+                    settingsHomeBFrame6.setVisibility(View.GONE);
+                }
             }
+            homeWidgetTabs();
+        } else {
+            homeWidgetCommonC(false, 56);
+            settingsHomeBFrame1.setVisibility(View.VISIBLE);
+            settingsHomeBFrame3.setVisibility(View.GONE);
+            homeWidgetCommonD();
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    private String settingsHomeBString;
+    private int settingsHomeBInt;
+    private void homeWidgetTabs(){
+        if(settingsHomeBInt == 0)
+            homeWidgetCommonB(58, 56);
 
-    private void createWidget(Intent data) {
-        Bundle extras = data.getExtras();
-        widgetID = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
-        List<AppWidgetProviderInfo> widgetInfo = homeWidgetManager.getInstalledProviders();
-        for (AppWidgetProviderInfo info : widgetInfo) {
-            if(info.provider.getPackageName().equals(settingsHomeBString_a)){
-                if(info.loadLabel(getPackageManager()).matches(settingsHomeBString_b)){
-                    if(info.configure != null){
-                        widgetCommon(info);
-                    }
+        if(settingsHomeBInt == 1)
+            homeWidgetCommonB(59, 55);
+    }
+
+    ArrayList<String> homeWidgetsArray;
+    private List<AppWidgetProviderInfo> homeWidgetProvider;
+    private void homeWidgetInitialize(){
+        if(homeWidgetManager == null)
+            homeWidgetManager = AppWidgetManager.getInstance(getApplicationContext());
+
+        Handler settingsHomeBHandler =  new Handler();
+        Runnable settingsHomeBRunnable =  new Runnable() {
+            @Override
+            public void run() {
+                homeWidgetsArray = new ArrayList<>();
+                if(settingsHomeBInt == 0){
+                    homeWidgetsArray.add("Analog Clock");
+                    homeWidgetsArray.add("Simple Clock");
+                }
+                if(settingsHomeBInt == 1){
+                    homeWidgetProvider = homeWidgetManager.getInstalledProviders();
+                    for (AppWidgetProviderInfo info : homeWidgetProvider)
+                        homeWidgetsArray.add(info.loadLabel(getPackageManager()));
+                }
+                settingsHomeBListView.removeAllViews();
+                homeWidgetInitialize(homeWidgetsArray, settingsHomeBListView);
+            }
+        };
+        settingsHomeBHandler.postDelayed(settingsHomeBRunnable, 15);
+    }
+
+    View widgetsListView;
+    RelativeLayout widgetsListFrame;
+    ImageView widgetsListIcon;
+    TextView widgetsListText;
+    @SuppressLint("ClickableViewAccessibility")
+    private void homeWidgetInitialize(ArrayList<String> list, LinearLayout layout){
+        for (int i = 0; i < list.size(); i++) {
+            widgetsListView = inflater.inflate(R.layout.linear_type_g, layout, false);
+            widgetsListFrame = widgetsListView.findViewById(R.id.linear_type_g_frame);
+            widgetsListIcon = widgetsListView.findViewById(R.id.linear_type_g_icon);
+            widgetsListText = widgetsListView.findViewById(R.id.linear_type_g_text);
+
+            textType(this, widgetsListText, "", tintA, fontBStyle);
+
+            if(list.get(i).equals("Analog Clock")){
+                widgetsListIcon.setImageBitmap(reduceBitmap(this, icon(53), 50));
+            } else if(list.get(i).equals("Simple Clock")){
+                widgetsListIcon.setImageBitmap(reduceBitmap(this, icon(54), 50));
+            } else {
+                for (AppWidgetProviderInfo info : homeWidgetProvider){
+                    if(list.get(i).equals(info.loadLabel(getPackageManager())))
+                        widgetsListIcon.setImageBitmap(appIcon(this, info.provider.getPackageName(), 40));
+                }
+            }
+            widgetsListText.setText(list.get(i));
+            customTouchModeA(widgetsListView, list.get(i), -1, 6);
+            layout.addView(widgetsListView);
+        }
+    }
+
+    private void homeWidgetConfigure(){
+        if(homeWidgetHost == null)
+            homeWidgetHost = new AppWidgetHost(getApplicationContext(), 2062);
+
+        for (AppWidgetProviderInfo info : homeWidgetProvider) {
+            if(info.loadLabel(getPackageManager()).equals(settingsHomeBString)){
+
+                edit(this, "Configurations - 02", "Widget Component - " + widgetComponent, "Widget Component - " + info.provider.getPackageName());
+                int widget_ID = homeWidgetHost.allocateAppWidgetId();
+
+                edit(this, "Configurations - 02", "Widget ID - " + widgetID, "Widget ID - " + widget_ID);
+                widgetID = widget_ID;
+
+                if(info.configure != null){
+                    Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
+                    intent.setComponent(info.configure);
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
+                    homeWidgetManager.bindAppWidgetIdIfAllowed(widgetID, info.provider);
+                    homeWidgetHost.startAppWidgetConfigureActivityForResult(this, widgetID, intent.getFlags(), 2062, null);
+                    //startActivityForResult(intent, 2062);
+                } else {
+                    homeWidgetCommonA(info);
                 }
             }
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK)
+            if (requestCode == 2062)
+                homeWidgetCreate(data);
+    }
+
+    private void homeWidgetCreate(Intent data) {
+        widgetID = data.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, -1);
+        for (AppWidgetProviderInfo info : homeWidgetProvider) {
+            if(info.loadLabel(getPackageManager()).equals(settingsHomeBString) && info.configure != null)
+                homeWidgetCommonA(info);
+        }
+    }
+
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- APPLET ------------------ []
+    //``````````
 
     View settingsHomeCView;
-    RelativeLayout settingsHomeC, settingsHomeCFrame1, settingsHomeCFrame2, settingsHomeCFrame3, settingsHomeCFrame4;
+    RelativeLayout settingsHomeCLayout, settingsHomeCFrame1, settingsHomeCFrame2, settingsHomeCFrame3, settingsHomeCFrame4;
     TextView settingsHomeCText1, settingsHomeCText2, settingsHomeCText3;
     ImageView settingsHomeCIcon1, settingsHomeCIcon2, settingsHomeCIcon3;
     EditText settingsHomeCEditText;
     private void settingsHomeC(){
         if(settingsHomeCView == null){
             settingsHomeCView = inflater.inflate(R.layout.settings_home_c, null);
-            settingsHomeC = settingsHomeCView.findViewById(R.id.settings_home_c);
+            settingsHomeCLayout = settingsHomeCView.findViewById(R.id.settings_home_c);
             settingsHomeCIcon1 = settingsHomeCView.findViewById(R.id.settings_home_c_icon_1);
             settingsHomeCIcon2 = settingsHomeCView.findViewById(R.id.settings_home_c_icon_2);
             settingsHomeCIcon3 = settingsHomeCView.findViewById(R.id.settings_home_c_icon_3);
@@ -6181,17 +5721,65 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             customTouchModeB(settingsHomeCIcon3, textC(48), 2, 4, 7);
             customTouchModeB(settingsHomeCFrame3, textC(22), 2, 4, 10);
 
-            settingsHomeC_CommonA();
+            homeAppletCommonA(View.GONE, View.VISIBLE, 45, tintA, 14, 8, 1);
             settingsHomeApplet();
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_c) == null){
             settingsHomeLayout.addView(settingsHomeCView);
-            setSize(this, settingsHomeC, size(2), size(2));
-            setMargins(this, settingsHomeC, 20, 20, 20, 20);
+            setSize(this, settingsHomeCLayout, size(2), size(2));
+            setMargins(this, settingsHomeCLayout, 20, 20, 20, 20);
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME APPLET BUTTONS ]----- //
+
+    private void settingsHomePress_7(){
+        settingsHomeCommonA(settingsHomeCView);
+    }
+
+    private void settingsHomePress_8(){
+        homeAppletCommonA(View.VISIBLE, View.GONE, 31, tintB, 13, 9, 0);
+    }
+
+    private void settingsHomePress_9(){
+        homeAppletCommonA(View.GONE, View.VISIBLE, 45, tintA, 14, 8, 1);
+        ((InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
+
+        edit(this, "Configurations - 02", "Applet Text - " + appletText, "Applet Text - " + settingsHomeCEditText.getText().toString().trim());
+        appletText = settingsHomeCEditText.getText().toString().trim();
+        homeAppletCommonB();
+    }
+
+    private void settingsHomePress_10(){
+        if(settingsHomeCText3.getVisibility() != View.VISIBLE)
+            homeAppletCommonA(View.GONE, View.VISIBLE, 45, tintA, 14, 8, 1);
+
+        edit(this, "Configurations - 02", "Applet Text - " + appletText, "Applet Text - ∆×••⟨[ ]⟩");
+        appletText = "∆×••⟨[ ]⟩";
+        homeAppletCommonB();
+    }
+
+    // -----[ HOME APPLET COMMON ]----- //
+
+    private void homeAppletCommonA(int sight_a, int sight_b, int icon, int tint, int text, int count,  int mode){
+        settingsHomeCEditText.setVisibility(sight_a);
+        settingsHomeCText3.setVisibility(sight_b);
+        imageTypeA(this, settingsHomeCIcon1, icon(icon), tint, 50);
+        customTouchModeB(settingsHomeCFrame2, textC(text), 2, 4, count);
+        if(mode == 0){
+            backgroundTypeC(this, settingsHomeCFrame2, background(5), ui);
+        } else {
+            backgroundTypeA(this, settingsHomeCFrame2, background(5), tintA, 3);
+        }
+    }
+
+    private void homeAppletCommonB(){
+        homeAppletAText.setText(appletText);
+        homeAppletText();
+        settingsHomeApplet();
+    }
+
+    // -----[ HOME APPLET METHODS ]----- //
 
     private void settingsHomeApplet(){
         settingsHomeCEditText.setText(appletText);
@@ -6203,17 +5791,22 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------ WALLPAPER ----------------- []
+    //``````````
 
     View settingsHomeDView;
-    RelativeLayout settingsHomeD, settingsHomeDFrame1, settingsHomeDFrame2, settingsHomeDFrame3, settingsHomeDFrame4,
-            settingsHomeDFrame5, settingsHomeDFrame6, settingsHomeDFrame7;
-    TextView settingsHomeDLines, settingsHomeDText1, settingsHomeDText2, settingsHomeDText3, settingsHomeDText4;
+    RelativeLayout settingsHomeDLayout, settingsHomeDFrame1, settingsHomeDFrame2, settingsHomeDFrame3, settingsHomeDFrame4,
+            settingsHomeDFrame5, settingsHomeDFrame6, settingsHomeDFrame7, settingsHomeDFrame8;
+    TextView settingsHomeDText1, settingsHomeDText2, settingsHomeDText3, settingsHomeDText4;
     ImageView settingsHomeDImage, settingsHomeDCircle, settingsHomeDIcon1, settingsHomeDIcon2, settingsHomeDIcon3;
+    ScrollView settingsHomeDScrollView;
     private void settingsHomeD(){
         if(settingsHomeDView == null){
             settingsHomeDView = inflater.inflate(R.layout.settings_home_d, null);
-            settingsHomeD = settingsHomeDView.findViewById(R.id.settings_home_d);
+            settingsHomeDLayout = settingsHomeDView.findViewById(R.id.settings_home_d);
+            settingsHomeDScrollView = settingsHomeDView.findViewById(R.id.settings_home_d_scroll_view);
             settingsHomeDCircle = settingsHomeDView.findViewById(R.id.settings_home_d_circle);
             settingsHomeDImage = settingsHomeDView.findViewById(R.id.settings_home_d_image);
             settingsHomeDIcon1 = settingsHomeDView.findViewById(R.id.settings_home_d_icon_1);
@@ -6226,11 +5819,11 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             settingsHomeDFrame5 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_5);
             settingsHomeDFrame6 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_6);
             settingsHomeDFrame7 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_7);
+            settingsHomeDFrame8 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_8);
             settingsHomeDText1 = settingsHomeDView.findViewById(R.id.settings_home_d_text_1);
             settingsHomeDText2 = settingsHomeDView.findViewById(R.id.settings_home_d_text_2);
             settingsHomeDText3 = settingsHomeDView.findViewById(R.id.settings_home_d_text_3);
             settingsHomeDText4 = settingsHomeDView.findViewById(R.id.settings_home_d_text_4);
-            settingsHomeDLines = settingsHomeDView.findViewById(R.id.settings_home_d_lines);
 
             backgroundTypeA(this, settingsHomeDFrame2, background(7), ui, 3);
             backgroundTypeA(this, settingsHomeDFrame4, background(5), tintA, 3);
@@ -6245,104 +5838,181 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             textType(this, settingsHomeDText2, "", tintA, fontBStyle);
             textType(this, settingsHomeDText3, "", tintB, fontBStyle);
             textType(this, settingsHomeDText4, "", tintA, fontBStyle);
-            textType(this, settingsHomeDLines, textA(9), tintA, Typeface.BOLD);
 
             customTouchModeB(settingsHomeDIcon1, textC(48), 2, 4, 11);
             customTouchModeB(settingsHomeDFrame2, "", 2, 4, 12);
             customTouchModeB(settingsHomeDFrame4, "", 2, 4, 13);
             customTouchModeB(settingsHomeDFrame5, "", 2, 4, 14);
+            customTouchModeB(settingsHomeDImage, "", 2, 4, 38);
 
             settingsHomeDFrame6.setVisibility(View.GONE);
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_d) == null){
             settingsHomeLayout.addView(settingsHomeDView);
-            setSize(this, settingsHomeD, size(2), size(2));
-            setMargins(this, settingsHomeD, 20, 20, 20, 20);
-            settingsHomeWallpaper();
+            setSize(this, settingsHomeDLayout, size(2), size(2));
+            setMargins(this, settingsHomeDLayout, 20, 20, 20, 20);
+            homeWallpaperState();
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    // -----[ HOME WALLPAPER BUTTONS ]----- //
 
-    private void settingsHomeWallpaper(){
-        homeConfigurations();
+    private void settingsHomePress_11(){
+        settingsHomeCommonA(settingsHomeDView);
+    }
+
+    private void settingsHomePress_12(){
+        if(wallpaperState.equals("Enabled")) {
+            edit(this, "Configurations - 02", "Wallpaper State - " + wallpaperState, "Wallpaper State - Disabled");
+        } else {
+            edit(this, "Configurations - 02", "Wallpaper State - " + wallpaperState, "Wallpaper State - Enabled");
+        }
+        homeWallpaperState();
+        homeWallpaper();
+        centerPositions();
+    }
+
+    private void settingsHomePress_13(){
+        if(settingsHomeDInt == 0){
+            settingsHomeDInt = 1;
+        } else {
+            if (settingsHomeDInt == 1){
+                settingsHomeDInt = 0;
+            }
+        }
+        homeWallpaperTabs();
+        homeWallpaperInitialize();
+    }
+
+    private void settingsHomePress_14(){
+        if(settingsHomeDFrame6.getVisibility() != View.VISIBLE){
+            settingsHomeDFrame6.setVisibility(View.VISIBLE);
+            settingsHomeDFrame1.setVisibility(View.INVISIBLE);
+        } else {
+            settingsHomeDFrame6.setVisibility(View.GONE);
+            settingsHomeDFrame1.setVisibility(View.VISIBLE);
+        }
+        if(!initialized)
+            homeWallpaperInitialize();
+    }
+
+    private void settingsHomePress_15(){
+        String mode = "";
+        String component = "";
+        if(settingsHomeDInt == 0){
+            mode = "SimpliC";
+            component = "Blocks";
+        } else {
+            mode = "Device";
+            component = "Unknown";
+        }
+
+        edit(this, "Configurations - 02", "Wallpaper Mode - " + wallpaperMode, "Wallpaper Mode - " + mode);
+        edit(this, "Configurations - 02", "Wallpaper Component - " + wallpaperComponent, "Wallpaper Component - " + component);
+        configurationsB();
+        homeWallpaper();
+        homeWallpaperInitialize();
+        touchTip(this, textC(20), 2);
+    }
+
+    private void settingsHomePress_16(){
+        homeWallpaperRemove();
+        homeWallpaperInitialize();
+        touchTip(this, textC(20), 2);
+    }
+
+    private void settingsHomePress_38(){
+        if(settingsHomeDFrame7.getVisibility() != View.VISIBLE){
+            settingsHomeDFrame7.setVisibility(View.VISIBLE);
+            if(wallpaperComponent.equals("Blocks")){
+                homeWallpaperCommonB(48, ui, 10, 16);
+            } else {
+                homeWallpaperCommonB(31, tintA, 49, 15);
+            }
+        }
+    }
+
+    // -----[ HOME WALLPAPER COMMON ]----- //
+
+    private void homeWallpaperCommonA(){
+        settingsHomeDFrame1.setVisibility(View.VISIBLE);
+        settingsHomeDFrame3.setVisibility(View.VISIBLE);
+        settingsHomeDFrame6.setVisibility(View.GONE);
+    }
+
+    private void homeWallpaperCommonB(int icon, int tint, int text, int count){
+        imageTypeA(this, settingsHomeDIcon3, icon(icon), tintB, 40);
+        backgroundTypeC(this, settingsHomeDFrame7, background(4), tint);
+        customTouchModeB(settingsHomeDFrame7, textC(text), 2, 4, count);
+    }
+
+    private void homeWallpaperCommonC(int text, int icon){
+        settingsHomeDText3.setText(textB(text));
+        imageTypeA(this, settingsHomeDIcon2, icon(icon), tintA, 65);
+    }
+
+    // -----[ HOME WALLPAPER METHODS ]----- //
+
+    private void homeWallpaperState(){
+        configurationsB();
         if(wallpaperState.equals("Enabled")){
             toggleMode(this, settingsHomeDCircle, true);
+            settingsHomeDText2.setText(textB(64));
+
             if(settingsHomeDFrame6.getVisibility() != View.VISIBLE){
-                settingsHomeD_CommonB();
-                settingsHomeWallpaper_A();
+                homeWallpaperCommonA();
+            } else {
+                homeWallpaperInitialize();
             }
+            homeWallpaperTabs();
         } else {
             toggleMode(this, settingsHomeDCircle, false);
             settingsHomeDText2.setText(textB(63));
+
             settingsHomeDFrame1.setVisibility(View.VISIBLE);
             settingsHomeDFrame3.setVisibility(View.GONE);
             settingsHomeDFrame6.setVisibility(View.GONE);
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
     private int settingsHomeDInt;
-    private void settingsHomeWallpaper_A(){
-        settingsHomeDText2.setText(textB(64));
-        if(settingsHomeDInt == 0){
-            settingsHomeDText3.setText(textB(65));
-            imageTypeA(this, settingsHomeDIcon2, icon(56), tintA, 65);
-        }
-        if(settingsHomeDInt == 1){
-            settingsHomeDText3.setText(textB(66));
-            imageTypeA(this, settingsHomeDIcon2, icon(55), tintA, 65);
-        }
+    private void homeWallpaperTabs(){
+        if(settingsHomeDInt == 0)
+            homeWallpaperCommonC(65, 56);
+
+        if(settingsHomeDInt == 1)
+            homeWallpaperCommonC(66, 55);
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
+    boolean initialized;
     @SuppressLint("ClickableViewAccessibility")
-    private void settingsHomeWallpaper_B(){
+    private void homeWallpaperInitialize(){
+        if(!initialized)
+            initialized = true;
+        settingsHomeDFrame7.setVisibility(View.GONE);
         if(settingsHomeDInt == 0){
+            settingsHomeDScrollView.setVisibility(View.VISIBLE);
             settingsHomeDText4.setText(textB(68));
-            settingsHomeDImage.setVisibility(View.VISIBLE);
-            if(wallpaperComponent.equals("Blocks")){
-                imageTypeA(this, settingsHomeDIcon3, icon(48), tintB, 40);
-                backgroundTypeC(this, settingsHomeDFrame7, background(4), ui);
-                customTouchModeB(settingsHomeDFrame7, textC(10), 2, 4, 16);
-            } else {
-                settingsHomeD_CommonA();
-            }
         }
         if(settingsHomeDInt == 1){
-            settingsHomeDImage.setVisibility(View.GONE);
-            settingsHomeD_CommonA();
+            settingsHomeDScrollView.setVisibility(View.GONE);
             if(wallpaperMode.equals("Device")){
                 settingsHomeDText4.setText(textB(69));
-                settingsHomeDFrame7.setAlpha(.5f);
-                settingsHomeDFrame7.setOnTouchListener(null);
             } else {
+                homeWallpaperCommonB(31, tintA, 49, 15);
+                settingsHomeDFrame7.setVisibility(View.VISIBLE);
                 settingsHomeDText4.setText(textB(67));
             }
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
-
-    private void settingsHomeD_CommonA(){
-        settingsHomeDFrame7.setAlpha(1.0f);
-        imageTypeA(this, settingsHomeDIcon3, icon(31), tintB, 40);
-        backgroundTypeC(this, settingsHomeDFrame7, background(4), tintA);
-        customTouchModeB(settingsHomeDFrame7, textC(49), 2, 4, 15);
-    }
-
-    private void settingsHomeD_CommonB(){
-        settingsHomeDFrame1.setVisibility(View.VISIBLE);
-        settingsHomeDFrame3.setVisibility(View.VISIBLE);
-        settingsHomeDFrame6.setVisibility(View.GONE);
-    }
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- FOLDER ------------------- []
+    //``````````
 
     View settingsHomeEView;
-    RelativeLayout settingsHomeE, settingsHomeEFrame1, settingsHomeEFrame2, settingsHomeEFrame3, settingsHomeEFrame4,
+    RelativeLayout settingsHomeELayout, settingsHomeEFrame1, settingsHomeEFrame2, settingsHomeEFrame3, settingsHomeEFrame4,
             settingsHomeEFrame5, settingsHomeEFrame6;
     TextView settingsHomeEText1, settingsHomeEText2, settingsHomeEText3, settingsHomeEText4, settingsHomeEText5;
     ImageView settingsHomeECircle, settingsHomeEIcon1, settingsHomeEIcon2, settingsHomeEIcon3;
@@ -6350,7 +6020,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
     private void settingsHomeE(){
         if(settingsHomeEView == null){
             settingsHomeEView = inflater.inflate(R.layout.settings_home_e, null);
-            settingsHomeE = settingsHomeEView.findViewById(R.id.settings_home_e);
+            settingsHomeELayout = settingsHomeEView.findViewById(R.id.settings_home_e);
             settingsHomeECircle = settingsHomeEView.findViewById(R.id.settings_home_e_circle);
             settingsHomeEIcon1 = settingsHomeEView.findViewById(R.id.settings_home_e_icon_1);
             settingsHomeEIcon2 = settingsHomeEView.findViewById(R.id.settings_home_e_icon_2);
@@ -6394,14 +6064,93 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_e) == null){
             settingsHomeLayout.addView(settingsHomeEView);
-            setSize(this, settingsHomeE, size(2), size(2));
-            setMargins(this, settingsHomeE, 20, 20, 20, 20);
+            setSize(this, settingsHomeELayout, size(2), size(2));
+            setMargins(this, settingsHomeELayout, 20, 20, 20, 20);
             settingsHomeFolder();
         }
     }
+    
+    private void settingsHomePress_17(){
+        settingsHomeCommonA(settingsHomeEView);
+    }
+
+    private void settingsHomePress_18(){
+        if(folderState.equals("Enabled")) {
+            edit(this, "Configurations - 02", "Folder State - " + folderState, "Folder State - Disabled");
+        } else {
+            edit(this, "Configurations - 02", "Folder State - " + folderState, "Folder State - Enabled");
+        }
+        settingsHomeFolder();
+        homeFolder();
+        centerPositions();
+    }
+
+    private void settingsHomePress_19(){
+        settingsHomeE_CommonA();
+        settingsHomeFolder_A();
+    }
+
+    private void settingsHomePress_20(){
+        if(folderSortingOrder.equals("Alphabetically")){
+            edit(this, "Configurations - 02", "Folder Sorting Order - "
+                    + folderSortingOrder, "Folder Sorting Order - Random");
+        } else {
+            edit(this, "Configurations - 02", "Folder Sorting Order - "
+                    + folderSortingOrder, "Folder Sorting Order - Alphabetically");
+        }
+        configurationsB();
+        settingsHomeEText5.setText(folderSortingOrder);
+        if(settingsHomeEListItems != null){
+            if(folderSortingOrder.equals("Alphabetically")){
+                Collections.sort(settingsHomeEArray, new Comparator<String>() {
+                    @Override
+                    public int compare(String a, String b) {
+                        return appLabel(TheNest.this, a).compareTo(appLabel(TheNest.this, b));
+                    }
+                });
+            } else {
+                Collections.sort(settingsHomeEArray);
+            }
+            settingsHomeEListItems.notifyDataSetChanged();
+        }
+
+        if(homeFolderDListView != null){
+            if(folderSortingOrder.equals("Alphabetically")){
+                Collections.sort(folderListArray, new Comparator<String>() {
+                    @Override
+                    public int compare(String a, String b) {
+                        return appLabel(TheNest.this, a).compareTo(appLabel(TheNest.this, b));
+                    }
+                });
+            } else {
+                Collections.sort(folderListArray);
+            }
+            homeFolderDListView.removeAllViews();
+            homeFolderInitialize(folderListArray, homeFolderDListView);
+        }
+        /*if(folderListItems != null){
+            if(folderSortingOrder.equals("Alphabetically")){
+                Collections.sort(folderListArray, new Comparator<String>() {
+                    @Override
+                    public int compare(String a, String b) {
+                        return appLabel(TheNest.this, a).compareTo(appLabel(TheNest.this, b));
+                    }
+                });
+            } else {
+                Collections.sort(folderListArray);
+            }
+            folderListItems.clear();
+            folderListItems.addAll(folderListArray);
+            folderListItems.notifyDataSetChanged();
+        }*/
+    }
+
+    private void settingsHomePress_21(){
+        settingsHomeE_CommonB();
+    }
 
     private void settingsHomeFolder(){
-        homeConfigurations();
+        configurationsB();
         if(folderState.equals("Enabled")){
             toggleMode(this, settingsHomeECircle, true);
             settingsHomeEText2.setText(textB(71));
@@ -6449,8 +6198,8 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
                 });
             }
             for (ResolveInfo resolveInfo : apps) {
-                if(fileExist(TheNest.this, "List/Array - 01")) {
-                    List<String> readValues = read(TheNest.this, "List/Array - 01");
+                if(fileExist(TheNest.this, "Array - 01")) {
+                    List<String> readValues = read(TheNest.this, "Array - 01");
                     if(!readValues.contains(resolveInfo.activityInfo.packageName)){
                         settingsHomeE_CommonC(resolveInfo);
                     }
@@ -6497,7 +6246,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
     @Override
     public void folder(String folderApp) {
         if(isAppInstalled(this, folderApp)){
-            create(this, "List","/Array - 01", folderApp);
+            create(this, "Array - 01", folderApp);
             touchTip(this, textC(20), 2);
         } else {
             touchTip(this, textC(67), 2);
@@ -6506,11 +6255,13 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         settingsHomeEListItems.notifyDataSetChanged();
     }
 
-
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- STATUS ------------------- []
+    //``````````
 
     View settingsHomeFView;
-    RelativeLayout settingsHomeF, settingsHomeFFrame1, settingsHomeFFrame2, settingsHomeFFrame3, settingsHomeFFrame4,
+    RelativeLayout settingsHomeFLayout, settingsHomeFFrame1, settingsHomeFFrame2, settingsHomeFFrame3, settingsHomeFFrame4,
             settingsHomeFFrame5, settingsHomeFFrame6, settingsHomeFFrame7;
     TextView settingsHomeFlines, settingsHomeFText1, settingsHomeFText2, settingsHomeFText3, settingsHomeFText4;
     ImageView settingsHomeFCircle, settingsHomeFIcon1, settingsHomeFIcon2, settingsHomeFIcon3, settingsHomeFIcon4,
@@ -6519,7 +6270,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
     private void settingsHomeF(){
         if(settingsHomeFView == null){
             settingsHomeFView = inflater.inflate(R.layout.settings_home_f, null);
-            settingsHomeF = settingsHomeFView.findViewById(R.id.settings_home_f);
+            settingsHomeFLayout = settingsHomeFView.findViewById(R.id.settings_home_f);
             settingsHomeFCircle = settingsHomeFView.findViewById(R.id.settings_home_f_circle);
             settingsHomeFIcon1 = settingsHomeFView.findViewById(R.id.settings_home_f_icon_1);
             settingsHomeFIcon2 = settingsHomeFView.findViewById(R.id.settings_home_f_icon_2);
@@ -6569,14 +6320,54 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_f) == null){
             settingsHomeLayout.addView(settingsHomeFView);
-            setSize(this, settingsHomeF, size(2), size(2));
-            setMargins(this, settingsHomeF, 20, 20, 20, 20);
+            setSize(this, settingsHomeFLayout, size(2), size(2));
+            setMargins(this, settingsHomeFLayout, 20, 20, 20, 20);
             settingsHomeStatus();
         }
     }
 
+
+    private void settingsHomePress_22(){
+        settingsHomeCommonA(settingsHomeFView);
+    }
+
+    private void settingsHomePress_23(){
+        if(statusState.equals("Enabled")) {
+            edit(this, "Configurations - 02", "Status State - " + statusState, "Status State - Disabled");
+        } else {
+            edit(this, "Configurations - 02", "Status State - " + statusState, "Status State - Enabled");
+        }
+        settingsHomeStatus();
+        homeStatus();
+        centerPositions();
+    }
+
+    private void settingsHomePress_24(){
+        settingsHomeFFrame1.setVisibility(View.GONE);
+        settingsHomeFFrame5.setVisibility(View.VISIBLE);
+        settingsHomeStatus_A();
+    }
+
+    private void settingsHomePress_25(){
+        settingsHomeFFrame1.setVisibility(View.VISIBLE);
+        settingsHomeFFrame5.setVisibility(View.GONE);
+    }
+
+    private void settingsHomePress_26(){
+        edit(this, "Configurations - 02", "Status Mode - " + statusMode, "Status Mode - " + settingsHomeFString);
+        configurationsB();
+        homeStatus();
+        settingsHomeFFrame6.setVisibility(View.GONE);
+        settingsHomeFListView.setVisibility(View.VISIBLE);
+    }
+
+    private void settingsHomePress_27(){
+        settingsHomeFFrame6.setVisibility(View.GONE);
+        settingsHomeFListView.setVisibility(View.VISIBLE);
+    }
+
     private void settingsHomeStatus(){
-        homeConfigurations();
+        configurationsB();
         if(statusState.equals("Enabled")){
             toggleMode(this, settingsHomeFCircle, true);
             settingsHomeFText2.setText(textB(74));
@@ -6631,17 +6422,20 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         settingsHomeFListView.setVisibility(View.INVISIBLE);
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------- DRAWER ------------------- []
+    //``````````
 
     View settingsHomeGView;
-    RelativeLayout settingsHomeG, settingsHomeGFrame1, settingsHomeGFrame2, settingsHomeGFrame3, settingsHomeGFrame4,
+    RelativeLayout settingsHomeGLayout, settingsHomeGFrame1, settingsHomeGFrame2, settingsHomeGFrame3, settingsHomeGFrame4,
             settingsHomeGFrame5, settingsHomeGFrame6;
     TextView settingsHomeGText1, settingsHomeGText2, settingsHomeGText3;
     ImageView settingsHomeGIcon1, settingsHomeGIcon2, settingsHomeGIcon3, settingsHomeGIcon4, settingsHomeGIcon5;
     private void settingsHomeG(){
         if(settingsHomeGView == null){
             settingsHomeGView = inflater.inflate(R.layout.settings_home_g, null);
-            settingsHomeG = settingsHomeGView.findViewById(R.id.settings_home_g);
+            settingsHomeGLayout = settingsHomeGView.findViewById(R.id.settings_home_g);
             settingsHomeGIcon1 = settingsHomeGView.findViewById(R.id.settings_home_g_icon_1);
             settingsHomeGIcon2 = settingsHomeGView.findViewById(R.id.settings_home_g_icon_2);
             settingsHomeGIcon3 = settingsHomeGView.findViewById(R.id.settings_home_g_icon_3);
@@ -6679,14 +6473,67 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_g) == null){
             settingsHomeLayout.addView(settingsHomeGView);
-            setSize(this, settingsHomeG, size(2), size(2));
-            setMargins(this, settingsHomeG, 20, 20, 20, 20);
+            setSize(this, settingsHomeGLayout, size(2), size(2));
+            setMargins(this, settingsHomeGLayout, 20, 20, 20, 20);
             settingsHomeDrawer();
         }
     }
 
+
+
+    private void settingsHomePress_28(){
+        settingsHomeCommonA(settingsHomeGView);
+    }
+
+    private void settingsHomePress_29(){
+        String icon = "";
+        if(drawerIcon.equals("BeeHive"))
+            icon = "SimpliC";
+        if(drawerIcon.equals("SimpliC"))
+            icon = "BeeHive";
+        edit(this, "Configurations - 02", "Drawer Icon - " + drawerIcon, "Drawer Icon - " + icon);
+        settingsHomeDrawer();
+        homeDrawerPresets(homeDrawerAIcon);
+    }
+
+    private void settingsHomePress_30(){
+        String size = "";
+        if(drawerSize.equals("A"))
+            size = "B";
+        if(drawerSize.equals("B"))
+            size = "C";
+        if(drawerSize.equals("C"))
+            size = "D";
+        if(drawerSize.equals("D"))
+            size = "E";
+        if(drawerSize.equals("E"))
+            size = "A";
+        edit(this, "Configurations - 02", "Drawer Size - " + drawerSize, "Drawer Size - " + size);
+        settingsHomeDrawer();
+        homeDrawerPresets(homeDrawerAIcon);
+    }
+    private void settingsHomePress_31(){
+        float alpha = 0.0f;
+        if(drawerAlpha == 1.0f)
+            alpha = 0.0f;
+        if(drawerAlpha == 0.0f)
+            alpha = 0.5f;
+        if(drawerAlpha == 0.5f)
+            alpha = 1.0f;
+        edit(this, "Configurations - 02", "Drawer Alpha - " + drawerAlpha, "Drawer Alpha - " + alpha);
+        settingsHomeDrawer();
+        homeDrawerPresets(homeDrawerAIcon);
+    }
+    private void settingsHomePress_32(){
+        edit(this, "Configurations - 02", "Drawer Icon - " + drawerIcon, "Drawer Icon - BeeHive");
+        edit(this, "Configurations - 02", "Drawer Size - " + drawerSize, "Drawer Size - C");
+        edit(this, "Configurations - 02", "Drawer Alpha - " + drawerAlpha, "Drawer Alpha - 1.0");
+        settingsHomeDrawer();
+        homeDrawerPresets(homeDrawerAIcon);
+    }
+
     private void settingsHomeDrawer(){
-        homeConfigurations();
+        configurationsB();
         homeDrawerPresets(settingsHomeGIcon1);
         settingsHomeGText3.setText(drawerIcon);
         if(!drawerIcon.equals("BeeHive") || !drawerSize.equals("C") || drawerAlpha != 1.0){
@@ -6696,10 +6543,13 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
     }
 
-    // ---------- [] ---------- [] ---------- [] ---------- [] ---------- [] ---------- //
+    //..........
+    //-------------------- HOME -------------------- []
+    //------------------ SHORTCUTS ----------------- []
+    //``````````
 
     View settingsHomeHView;
-    RelativeLayout settingsHomeH, settingsHomeHFrame1, settingsHomeHFrame2, settingsHomeHFrame3, settingsHomeHFrame4,
+    RelativeLayout settingsHomeHLayout, settingsHomeHFrame1, settingsHomeHFrame2, settingsHomeHFrame3, settingsHomeHFrame4,
             settingsHomeHFrame5;
     TextView settingsHomeHText1, settingsHomeHText2, settingsHomeHText3, settingsHomeHText4;
     ImageView settingsHomeHCircle, settingsHomeHIcon1, settingsHomeHIcon2, settingsHomeHIcon3;
@@ -6707,7 +6557,7 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
     private void settingsHomeH(){
         if(settingsHomeHView == null){
             settingsHomeHView = inflater.inflate(R.layout.settings_home_h, null);
-            settingsHomeH = settingsHomeHView.findViewById(R.id.settings_home_h);
+            settingsHomeHLayout = settingsHomeHView.findViewById(R.id.settings_home_h);
             settingsHomeHCircle = settingsHomeHView.findViewById(R.id.settings_home_h_circle);
             settingsHomeHIcon1 = settingsHomeHView.findViewById(R.id.settings_home_h_icon_1);
             settingsHomeHIcon2 = settingsHomeHView.findViewById(R.id.settings_home_h_icon_2);
@@ -6746,14 +6596,37 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_h) == null){
             settingsHomeLayout.addView(settingsHomeHView);
-            setSize(this, settingsHomeH, size(2), size(2));
-            setMargins(this, settingsHomeH, 20, 20, 20, 20);
+            setSize(this, settingsHomeHLayout, size(2), size(2));
+            setMargins(this, settingsHomeHLayout, 20, 20, 20, 20);
             settingsHomeShortcut();
         }
     }
 
+    private void settingsHomePress_33(){
+        settingsHomeCommonA(settingsHomeHView);
+    }
+
+    private void settingsHomePress_34(){
+        if(shortcutState.equals("Enabled")) {
+            edit(this, "Configurations - 02", "Shortcut State - " + shortcutState, "Shortcut State - Disabled");
+        } else {
+            edit(this, "Configurations - 02", "Shortcut State - " + shortcutState, "Shortcut State - Enabled");
+        }
+        settingsHomeShortcut();
+        homeShortcut();
+    }
+
+    private void settingsHomePress_35(){
+        settingsHomeH_CommonA();
+        settingsHomeShortcut_A();
+    }
+
+    private void settingsHomePress_36(){
+        settingsHomeH_CommonB();
+    }
+
     private void settingsHomeShortcut(){
-        homeConfigurations();
+        configurationsB();
         if(shortcutState.equals("Enabled")){
             toggleMode(this, settingsHomeHCircle, true);
             settingsHomeHText2.setText(textB(80));
@@ -6793,8 +6666,8 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
             settingsHomeHInt = apps.size();
             settingsHomeHBoolean = false;
             for (ResolveInfo resolveInfo : apps) {
-                if(fileExist(TheNest.this, "List/Array - 02")) {
-                    List<String> readValues = read(TheNest.this, "List/Array - 02");
+                if(fileExist(TheNest.this, "Array - 02")) {
+                    List<String> readValues = read(TheNest.this, "Array - 02");
                     if(!readValues.contains(resolveInfo.activityInfo.packageName)){
                         settingsHomeH_CommonC(resolveInfo);
                     }
@@ -6840,16 +6713,16 @@ public class TheNest extends Activity implements ListTypeA.AdapterCallback,
     @Override
     public void shortcut(String shortcut) {
         if(isAppInstalled(this, shortcut)){
-            create(this, "List","/Array - 02", shortcut);
+            create(this, "Array - 02", shortcut);
             touchTip(this, textC(20), 2);
         } else {
             touchTip(this, textC(67), 2);
         }
         settingsHomeHArray.remove(shortcut);
         settingsHomeHListItems.notifyDataSetChanged();
-        if(homeShortcutB == null || homeShortcutLayout.findViewById(R.id.home_shortcut_b) == null) {
+        if(homeShortcutBLayout == null || homeShortcutLayout.findViewById(R.id.home_shortcut_b) == null) {
             homeShortcutLayout.removeAllViews();
-            homeShortcutView2();
+            homeShortcutB();
         }
     }
 }

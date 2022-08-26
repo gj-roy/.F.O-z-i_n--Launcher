@@ -52,8 +52,8 @@ public class ListTypeH extends ArrayAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        appName(context, holder.name, strings.get(position));
-        appIcon(context, holder.icon, strings.get(position), 30);
+        holder.name.setText(appLabel(context, strings.get(position)));
+        holder.icon.setImageBitmap(appIcon(context, strings.get(position), 30));
 
         View finalConvertView = convertView;
         convertView.setOnTouchListener(new View.OnTouchListener() {

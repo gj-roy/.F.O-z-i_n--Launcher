@@ -4,16 +4,61 @@
         android:layout_height="wrap_content"
         android:id="@+id/drawer_apps">
 
-    <GridView
-            android:gravity="center"
-            android:requiresFadingEdge="vertical"
-            android:fadingEdgeLength="5dp"
-            android:scrollbarSize="0dp"
+    <ScrollView
+            android:overScrollMode="never"
             android:layout_centerInParent="true"
-            android:id="@+id/drawer_apps_gridview"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/drawer_apps_scroll_view_1"
+            android:fadingEdgeLength="15dp"
+            android:requiresFadingEdge="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:overScrollMode="never"/>
+            android:scrollbars="none">
+
+        <GridLayout
+                android:columnCount="2"
+                android:id="@+id/drawer_apps_grid_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </ScrollView>
+
+    <ScrollView
+            android:overScrollMode="never"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/drawer_apps_scroll_view_2"
+            android:fadingEdgeLength="15dp"
+            android:requiresFadingEdge="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:id="@+id/drawer_apps_list_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </ScrollView>
+
+    <ScrollView
+            android:overScrollMode="never"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/drawer_apps_scroll_view_3"
+            android:fadingEdgeLength="15dp"
+            android:requiresFadingEdge="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
+
+        <GridLayout
+                android:columnCount="4"
+                android:id="@+id/drawer_apps_shape_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </ScrollView>
 
 </RelativeLayout>

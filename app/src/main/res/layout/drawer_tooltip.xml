@@ -4,16 +4,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-    <TextView
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
+    <RelativeLayout
             android:layout_centerInParent="true"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            android:id="@+id/drawer_tooltip_text"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/drawer_tooltip_frame"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="normal"
-            android:textSize="18sp"/>
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:id="@+id/drawer_tooltip_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

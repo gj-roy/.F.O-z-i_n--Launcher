@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../../../layout/custom_preview.xml" value="0.34270833333333334" />
         <entry key="../../../../../../layout/custom_preview.xml" value="0.35833333333333334" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3463541666666667" />
         <entry key="app/src/main/res/drawable/applet.xml" value="0.258984375" />
@@ -178,6 +179,13 @@
         <entry key="app/src/main/res/layout/linear_type_a.xml" value="0.24765625" />
         <entry key="app/src/main/res/layout/linear_type_b.xml" value="0.23736338797814208" />
         <entry key="app/src/main/res/layout/linear_type_c.xml" value="0.246875" />
+        <entry key="app/src/main/res/layout/linear_type_d.xml" value="0.19262295081967212" />
+        <entry key="app/src/main/res/layout/linear_type_e.xml" value="0.19262295081967212" />
+        <entry key="app/src/main/res/layout/linear_type_f.xml" value="0.19262295081967212" />
+        <entry key="app/src/main/res/layout/linear_type_g.xml" value="0.1950136612021858" />
+        <entry key="app/src/main/res/layout/list_style_a.xml" value="0.19296448087431695" />
+        <entry key="app/src/main/res/layout/list_style_b.xml" value="0.19296448087431695" />
+        <entry key="app/src/main/res/layout/list_style_c.xml" value="0.19296448087431695" />
         <entry key="app/src/main/res/layout/list_type_a.xml" value="0.24765625" />
         <entry key="app/src/main/res/layout/list_type_b.xml" value="0.265" />
         <entry key="app/src/main/res/layout/list_type_c.xml" value="0.266796875" />
