@@ -98,6 +98,11 @@
         <entry key="app/src/main/res/drawable/widget_border_0.xml" value="0.258984375" />
         <entry key="app/src/main/res/drawable/widget_border_1.xml" value="0.258984375" />
         <entry key="app/src/main/res/drawable/widget_border_2.xml" value="0.258984375" />
+        <entry key="app/src/main/res/layout/additional_a.xml" value="0.19296448087431695" />
+        <entry key="app/src/main/res/layout/additional_info.xml" value="0.19296448087431695" />
+        <entry key="app/src/main/res/layout/additional_notes.xml" value="0.19296448087431695" />
+        <entry key="app/src/main/res/layout/additional_screen_a.xml" value="0.19296448087431695" />
+        <entry key="app/src/main/res/layout/additional_welcome.xml" value="0.19296448087431695" />
         <entry key="app/src/main/res/layout/dragwer.xml" value="0.246875" />
         <entry key="app/src/main/res/layout/drawer.xml" value="0.246875" />
         <entry key="app/src/main/res/layout/drawer_a.xml" value="0.246875" />
@@ -229,6 +234,8 @@
         <entry key="app/src/main/res/layout/settings_tooltip.xml" value="0.246875" />
         <entry key="app/src/main/res/layout/test.xml" value="0.24765625" />
         <entry key="app/src/main/res/layout/the_nest.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/the_nest_additional_a.xml" value="0.19296448087431695" />
+        <entry key="app/src/main/res/layout/the_nest_additional_layout.xml" value="0.19296448087431695" />
         <entry key="app/src/main/res/layout/the_nest_applet.xml" value="0.246875" />
         <entry key="app/src/main/res/layout/the_nest_applet_a.xml" value="0.246875" />
         <entry key="app/src/main/res/layout/the_nest_applet_b.xml" value="0.246875" />

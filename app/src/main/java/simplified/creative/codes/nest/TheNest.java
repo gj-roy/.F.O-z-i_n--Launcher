@@ -92,18 +92,18 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     */
 
     LayoutInflater inflater;
-    View theNestHomeView, theNestDrawerView,  theNestSettingsView;
-    RelativeLayout theNestRootLayout, theNestHomeLayout, theNestDrawerLayout, theNestSettingsLayout;
+    View theNestAdditionalView, theNestHomeView, theNestDrawerView,  theNestSettingsView;
+    RelativeLayout theNestRootLayout, theNestAdditionalLayout, theNestHomeLayout, theNestDrawerLayout,
+            theNestSettingsLayout;
     private void createCycle(){
         setContentView(R.layout.the_nest_root_layout);
         inflater = LayoutInflater.from(TheNest.this);
         theNestRootLayout = findViewById(R.id.the_nest_root_layout);
 
         if(!fileExist(this, "CREATED")){
-            // WELCOME SCREEN
-            create(TheNest.this, "CREATED", "# Setup Completed...");
             initializeConfigurations();
-            restart(this);
+            configurationsA();
+            additionalScreen();
         } else {
             configurationsA();
             homeScreen();
@@ -111,50 +111,60 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     private void startCycle(){
-        homeScreenStateA();
+        if(fileExist(this, "CREATED")){
+            homeScreenStateA();
+        }
     }
 
     private void stopCycle(){
-        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
-            homeScreenStateB();
+        if(fileExist(this, "CREATED")){
+            if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
+                homeScreenStateB();
 
-        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null)
-            drawerTooltipReset();
+            if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null)
+                drawerTooltipReset();
 
-        if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) != null)
-            settingsTooltipReset();
+            if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) != null)
+                settingsTooltipReset();
 
-        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) == null) {
-            theNestRootLayout.removeView(theNestSettingsView);
-            theNestRootLayout.removeView(theNestDrawerView);
-            theNestRootLayout.addView(theNestHomeView);
+            if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) == null) {
+                theNestRootLayout.removeView(theNestSettingsView);
+                theNestRootLayout.removeView(theNestDrawerView);
+                theNestRootLayout.addView(theNestHomeView);
+            }
         }
     }
 
     private void pauseCycle(){
-        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
-            homeScreenStateB();
+        if(fileExist(this, "CREATED")){
+            if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
+                homeScreenStateB();
+        }
     }
 
     private void resumeCycle(){
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
-            homeScreenStateA();
+        if(fileExist(this, "CREATED")){
+            this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+            if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
+                homeScreenStateA();
 
-        if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null)
-            drawerScreenStateA(0);
+            if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) != null)
+                drawerScreenStateA(0);
+        }
     }
 
     private void backClick(){
-        if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null) {
-            if(homeAppletLayout.findViewById(R.id.home_applet_a) == null){
-                homeApplet(1);
+        if(fileExist(this, "CREATED")){
+            if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null) {
+                if(homeAppletLayout.findViewById(R.id.home_applet_a) == null){
+                    homeApplet(1);
+                }
+            } else {
+                theNestRootLayout.addView(theNestHomeView);
+                homeScreenStateA();
+                theNestRootLayout.removeView(theNestDrawerView);
+                theNestRootLayout.removeView(theNestSettingsView);
             }
-        } else {
-            theNestRootLayout.addView(theNestHomeView);
-            homeScreenStateA();
-            theNestRootLayout.removeView(theNestDrawerView);
-            theNestRootLayout.removeView(theNestSettingsView);
         }
     }
 
@@ -325,6 +335,18 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
        [                            ]
        ------------------------------
     */
+
+    private void additionalScreen(){
+        if(theNestAdditionalView == null){
+            theNestAdditionalView = inflater.inflate(R.layout.the_nest_additional_layout, null);
+            theNestAdditionalLayout = theNestAdditionalView.findViewById(R.id.the_nest_additional_layout);
+        }
+        if(theNestRootLayout.findViewById(R.id.the_nest_additional_layout) == null){
+            theNestRootLayout.addView(theNestAdditionalView);
+            setSize(this, theNestAdditionalLayout, size(2), size(2));
+        }
+        additionalWelcome();
+    }
 
     private void homeScreen(){
         if(theNestHomeView == null){
@@ -572,6 +594,18 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                 if(event.getAction() == MotionEvent.ACTION_UP){
                     touchStop(view);
                     if((System.currentTimeMillis() - time) < 200){
+                        if(mode == -1){
+                            if(type == -1){
+                                if(count == 0)
+                                    additionalWelcomePress_0();
+                                if(count == 1)
+                                    additionalNotesPress_0();
+                                if(count == 2)
+                                    additionalInfoPress_0();
+                                if(count == 3)
+                                    additionalInfoPress_1();
+                            }
+                        }
                         if(mode == 0){
                             if(type == 0){
                                 if(count == 0)
@@ -874,6 +908,193 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                 return true;
             }
         });
+    }
+
+    /*
+       -------------------------------
+       [                             ]
+       [     ADDITIONAL - SCREEN     ]
+       [                             ]
+       -------------------------------
+    */
+
+    View additionalWelcomeView;
+    RelativeLayout additionalWelcomeLayout, additionalWelcomeFrame1, additionalWelcomeFrame2, additionalWelcomeFrame3,
+            additionalWelcomeFrame4;
+    ImageView additionalWelcomeIcon1, additionalWelcomeIcon2, additionalWelcomeIcon3;
+    TextView additionalWelcomeText1, additionalWelcomeText2, additionalWelcomeText3, additionalWelcomeText4,
+            additionalWelcomeText5, additionalWelcomeText6, additionalWelcomeText7, additionalWelcomeText8;
+    private void additionalWelcome(){
+        if(additionalWelcomeView == null){
+            additionalWelcomeView = inflater.inflate(R.layout.additional_welcome, null);
+            additionalWelcomeLayout = additionalWelcomeView.findViewById(R.id.additional_welcome);
+            additionalWelcomeFrame1 = additionalWelcomeView.findViewById(R.id.additional_welcome_frame_1);
+            additionalWelcomeFrame2 = additionalWelcomeView.findViewById(R.id.additional_welcome_frame_2);
+            additionalWelcomeFrame3 = additionalWelcomeView.findViewById(R.id.additional_welcome_frame_3);
+            additionalWelcomeFrame4 = additionalWelcomeView.findViewById(R.id.additional_welcome_frame_4);
+            additionalWelcomeIcon1 = additionalWelcomeView.findViewById(R.id.additional_welcome_icon_1);
+            additionalWelcomeIcon2 = additionalWelcomeView.findViewById(R.id.additional_welcome_icon_2);
+            additionalWelcomeIcon3 = additionalWelcomeView.findViewById(R.id.additional_welcome_icon_3);
+            additionalWelcomeText1 = additionalWelcomeView.findViewById(R.id.additional_welcome_text_1);
+            additionalWelcomeText2 = additionalWelcomeView.findViewById(R.id.additional_welcome_text_2);
+            additionalWelcomeText3 = additionalWelcomeView.findViewById(R.id.additional_welcome_text_3);
+            additionalWelcomeText4 = additionalWelcomeView.findViewById(R.id.additional_welcome_text_4);
+            additionalWelcomeText5 = additionalWelcomeView.findViewById(R.id.additional_welcome_text_5);
+            additionalWelcomeText6 = additionalWelcomeView.findViewById(R.id.additional_welcome_text_6);
+            additionalWelcomeText7 = additionalWelcomeView.findViewById(R.id.additional_welcome_text_7);
+            additionalWelcomeText8 = additionalWelcomeView.findViewById(R.id.additional_welcome_text_8);
+
+            backgroundTypeC(this, additionalWelcomeFrame1, background(4), tintA);
+            backgroundTypeA(this, additionalWelcomeFrame2, background(5), tintA, 3);
+            backgroundTypeA(this, additionalWelcomeFrame3, background(8), tintA, 3);
+            backgroundTypeA(this, additionalWelcomeFrame4, background(8), tintA, 3);
+
+            imageTypeA(this, additionalWelcomeIcon1, icon(17), R.color.transparent, 160);
+            imageTypeA(this, additionalWelcomeIcon2, icon(18), R.color.transparent, 85);
+            imageTypeA(this, additionalWelcomeIcon3, drawable(2), tintA, 50);
+
+            textType(this, additionalWelcomeText1, textB(88), tintA, fontAStyle);
+            textType(this, additionalWelcomeText2, textB(89), tintA, fontAStyle);
+            textType(this, additionalWelcomeText3, textC(26), tintA, fontAStyle);
+            textType(this, additionalWelcomeText4, textB(90), tintA, fontAStyle);
+            textType(this, additionalWelcomeText5, textB(91), tintA, fontBStyle);
+            textType(this, additionalWelcomeText6, textC(24), tintA, fontAStyle);
+            textType(this, additionalWelcomeText7, textB(92), tintA, fontBStyle);
+            textType(this, additionalWelcomeText8, textB(93), tintA, fontBStyle);
+
+            customTouchModeB(additionalWelcomeFrame3, "", -1, -1, 0);
+        }
+        if(theNestAdditionalLayout.findViewById(R.id.additional_welcome) == null){
+            theNestAdditionalLayout.addView(additionalWelcomeView);
+
+            layoutParamsTypeA(this, additionalWelcomeLayout, new int[]{direction(2)});
+            setSize(this, additionalWelcomeLayout, size(2), size(2));
+            setMargins(this, additionalWelcomeLayout, 20, 20, 20, 20);
+        }
+    }
+
+    private void additionalWelcomePress_0(){
+        theNestAdditionalLayout.removeView(additionalWelcomeView);
+        additionalNotes();
+    }
+
+    View additionalNotesView;
+    RelativeLayout additionalNotesLayout, additionalNotesFrame1, additionalNotesFrame2;
+    ImageView additionalNotesSquare1, additionalNotesSquare2, additionalNotesLine1, additionalNotesLine2,
+            additionalNotesIcon1;
+    TextView additionalNotesText1, additionalNotesText2, additionalNotesText3;
+    ScrollView additionalNotesScrollView;
+    private void additionalNotes(){
+        if(additionalNotesView == null){
+            additionalNotesView = inflater.inflate(R.layout.additional_notes, null);
+            additionalNotesLayout = additionalNotesView.findViewById(R.id.additional_notes);
+            additionalNotesScrollView = additionalNotesView.findViewById(R.id.additional_notes_scroll_view);
+            additionalNotesFrame1 = additionalNotesView.findViewById(R.id.additional_notes_frame_1);
+            additionalNotesFrame2 = additionalNotesView.findViewById(R.id.additional_notes_frame_2);
+            additionalNotesSquare1 = additionalNotesView.findViewById(R.id.additional_notes_square_1);
+            additionalNotesSquare2 = additionalNotesView.findViewById(R.id.additional_notes_square_2);
+            additionalNotesIcon1 = additionalNotesView.findViewById(R.id.additional_notes_icon_1);
+            additionalNotesLine1 = additionalNotesView.findViewById(R.id.additional_notes_line_1);
+            additionalNotesLine2 = additionalNotesView.findViewById(R.id.additional_notes_line_2);
+            additionalNotesText1 = additionalNotesView.findViewById(R.id.additional_notes_text_1);
+            additionalNotesText2 = additionalNotesView.findViewById(R.id.additional_notes_text_2);
+            additionalNotesText3 = additionalNotesView.findViewById(R.id.additional_notes_text_3);
+
+            backgroundTypeA(this, additionalNotesFrame1, background(10), tintA, 3);
+            backgroundTypeA(this, additionalNotesFrame2, background(8), tintA, 3);
+            backgroundTypeA(this, additionalNotesSquare1, background(8), tintA, 3);
+            backgroundTypeA(this, additionalNotesSquare2, background(8), tintA, 3);
+
+            imageTypeB(this, additionalNotesLine1, background(6), tintA);
+            imageTypeB(this, additionalNotesLine2, background(6), tintA);
+            imageTypeA(this, additionalNotesIcon1, drawable(2), tintA, 50);
+
+            textType(this, additionalNotesText1, textC(76), tintA, fontAStyle);
+            textType(this, additionalNotesText2, textB(91), tintA, fontBStyle);
+            textType(this, additionalNotesText3, textB(94), tintA, fontBStyle);
+            customTouchModeB(additionalNotesFrame2, "", -1, -1, 1);
+        }
+        if(theNestAdditionalLayout.findViewById(R.id.additional_notes) == null){
+            theNestAdditionalLayout.addView(additionalNotesView);
+
+            layoutParamsTypeA(this, additionalNotesLayout, new int[]{direction(2)});
+            setSize(this, additionalNotesLayout, size(2), size(2));
+            setMargins(this, additionalNotesLayout, 20, 20, 20, 20);
+        }
+    }
+
+    private void additionalNotesPress_0(){
+        theNestAdditionalLayout.removeView(additionalNotesView);
+        additionalInfo();
+    }
+
+    View additionalInfoView;
+    RelativeLayout additionalInfoLayout, additionalInfoFrame1, additionalInfoFrame2, additionalInfoFrame3;
+    ImageView additionalInfoIcon1, additionalInfoIcon2, additionalInfoIcon3, additionalInfoLine, additionalInfoAngle;
+    TextView additionalInfoText1, additionalInfoText2, additionalInfoText3, additionalInfoText4;
+    private void additionalInfo(){
+        if(additionalInfoView == null){
+            additionalInfoView = inflater.inflate(R.layout.additional_info, null);
+            additionalInfoLayout = additionalInfoView.findViewById(R.id.additional_info);
+            additionalInfoFrame1 = additionalInfoView.findViewById(R.id.additional_info_frame_1);
+            additionalInfoFrame2 = additionalInfoView.findViewById(R.id.additional_info_frame_2);
+            additionalInfoAngle = additionalInfoView.findViewById(R.id.additional_info_angle);
+            additionalInfoLine = additionalInfoView.findViewById(R.id.additional_info_line);
+            additionalInfoIcon1 = additionalInfoView.findViewById(R.id.additional_info_icon_1);
+            additionalInfoIcon2 = additionalInfoView.findViewById(R.id.additional_info_icon_2);
+            additionalInfoText1 = additionalInfoView.findViewById(R.id.additional_info_text_1);
+            additionalInfoText2 = additionalInfoView.findViewById(R.id.additional_info_text_2);
+            additionalInfoText3 = additionalInfoView.findViewById(R.id.additional_info_text_3);
+            additionalInfoText4 = additionalInfoView.findViewById(R.id.additional_info_text_4);
+
+            backgroundTypeA(this, additionalInfoFrame1, background(8), tintA, 3);
+            backgroundTypeC(this, additionalInfoFrame2, background(4), tintA);
+
+            imageTypeA(this, additionalInfoIcon1, icon(39), tintA, 120);
+            imageTypeB(this, additionalInfoLine, background(6), tintA);
+            imageTypeA(this, additionalInfoAngle, drawable(2), tintA, 40);
+
+            textType(this, additionalInfoText1, textC(77), tintA, fontAStyle);
+            textType(this, additionalInfoText2, textB(95), tintA, fontBStyle);
+            textType(this, additionalInfoText3, textC(78), tintA, fontAStyle);
+            textType(this, additionalInfoText4, "", tintA, fontBStyle);
+
+            customTouchModeB(additionalInfoFrame1, "", -1, -1, 2);
+            customTouchModeB(additionalInfoFrame2, "", -1, -1, 3);
+        }
+        if(theNestAdditionalLayout.findViewById(R.id.additional_info) == null){
+            theNestAdditionalLayout.addView(additionalInfoView);
+
+            layoutParamsTypeA(this, additionalInfoLayout, new int[]{direction(2)});
+            setSize(this, additionalInfoLayout, size(1), size(1));
+            setMargins(this, additionalInfoLayout, 20, 20, 20, 20);
+            additionalInfoTips();
+        }
+    }
+
+    private void additionalInfoPress_0(){
+        create(TheNest.this, "CREATED", "# Setup Completed...");
+        restart(this);
+    }
+
+    private void additionalInfoPress_1(){
+        if(additionalInfoInt == 0) {
+            additionalInfoInt = 1;
+        } else {
+            additionalInfoInt = 0;
+        }
+        additionalInfoTips();
+    }
+
+    private int additionalInfoInt = 0;
+    private void additionalInfoTips(){
+        if(additionalInfoInt == 0){
+            imageTypeA(this, additionalInfoIcon2, icon(35), tintB, 50);
+            additionalInfoText4.setText(textB(96));
+        } else {
+            imageTypeA(this, additionalInfoIcon2, icon(43), tintB, 50);
+            additionalInfoText4.setText(textB(97));
+        }
     }
 
     /*
@@ -2907,44 +3128,29 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     private void drawerTilesHold_0(){
         if(!drawerAlphabetsString.isEmpty()){
-            drawerBlink = true;
-            drawerAppsStyle(gridArray);
+            drawerRefresh();
         }
         drawerAlphabetsString = "";
     }
 
-    private boolean drawerRefresh;
     private void drawerTilesPress_0(){
         drawerRefresh();
     }
 
     private void drawerTilesPress_1(){
         List<String> temporary = new ArrayList<>();
-        for(String string : gridArray){
+        for(String string : drawerAppsArray){
             String label = appLabel(TheNest.this, string);
             if(label.startsWith(drawerAlphabetsString.toLowerCase())
                     || label.startsWith(drawerAlphabetsString.toUpperCase()))
                 temporary.add(string);
         }
-        drawerAppsStyle(temporary);
-        //int_a = 0;
-        //int_b = 1;
-
-        drawerAppsGridLayout.removeAllViews();
-        drawerAppsListLayout.removeAllViews();
-        drawerAppsShapeLayout.removeAllViews();
-        if(drawerGridStyle.equals("Tiles"))
-            drawerAppsInitialize(temporary, 0);
-
-        if(drawerGridStyle.equals("List"))
-            drawerAppsInitialize(temporary, 1);
-
-        if(drawerGridStyle.equals("Bubbles"))
-            drawerAppsInitialize(temporary, 2);
+        drawerAppsCommonC();
     }
 
     // -----[ DRAWER TILES METHODS ]----- //
 
+    private boolean drawerRefresh;
     private void drawerRefresh(){
         if(!drawerRefresh){
             drawerRefresh = true;
@@ -2960,7 +3166,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             drawerAlphabets = new ArrayList<>();
 
             drawerAlphabetsString = "";
-            for(String string : gridArray){
+            for(String string : drawerAppsArray){
                 String text = appLabel(TheNest.this, string);
                 if(!drawerAlphabets.contains(text.substring(0, 1)))
                     drawerAlphabets.add(text.substring(0, 1));
@@ -2971,7 +3177,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         } else {
             drawerTilesFrame3.setVisibility(View.GONE);
         }
-        drawerTilesText.setText(String.valueOf(gridArray.size()));
+        drawerTilesText.setText(String.valueOf(drawerAppsArray.size()));
     }
 
     View linearCView;
@@ -3060,47 +3266,16 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             backgroundTypeC(this, drawerListFrame, background(6), tintA);
     }
 
-    // -----[ DRAWER APPS METHODS ]----- //
-
-    boolean drawerBlink;
-    private void drawerAppsStyle(List<String> list){
-        int_a = 0;
-        int_b = 1;
-        /*if(drawerBlink) {
-            drawerAppsCommonA();
-            drawerBlink = false;
-            drawerAppsScrollView1.setVisibility(View.GONE);
-            drawerAppsScrollView2.setVisibility(View.GONE);
-            drawerAppsScrollView3.setVisibility(View.GONE);
-        }
-        if(drawerTilesText != null)
-            drawerTilesText.setText(String.valueOf(list.size()));
-
-        Handler drawerAppsHandler = new Handler();
-        Runnable drawerAppsRunnable = new Runnable() {
-            @Override
-            public void run() {
-                drawerAppsCommonA();
-
-                if(drawerGridStyle.equals("Tiles")) {
-                    drawerAppsScrollView1.setVisibility(View.VISIBLE);
-                    drawerAppsInitialize(list, 0);
-                }
-                if(drawerGridStyle.equals("List")){
-                    drawerAppsScrollView2.setVisibility(View.VISIBLE);
-                    drawerAppsInitialize(list, 1);
-                }
-                if(drawerGridStyle.equals("Bubbles")){
-                    drawerAppsScrollView3.setVisibility(View.VISIBLE);
-                    drawerAppsInitialize(list, 2);
-                }
-                drawerRefresh = false;
-            }
-        };
-        drawerAppsHandler.postDelayed(drawerAppsRunnable, 25);*/
+    private void drawerAppsCommonC(){
+        drawerAppsGridLayout.removeAllViews();
+        drawerAppsListLayout.removeAllViews();
+        drawerAppsShapeLayout.removeAllViews();
+        drawerAppsInitialize(drawerAppsArray);
     }
 
-    private List<String> gridArray;
+    // -----[ DRAWER APPS METHODS ]----- //
+
+    private List<String> drawerAppsArray;
     private int drawerAppsCount = 0;
     private void drawerAppsList(){
         Handler drawerAppsHandler = new Handler();
@@ -3123,35 +3298,20 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                         });
                     }
 
-                    gridArray = new ArrayList<>();
+                    drawerAppsArray = new ArrayList<>();
                     for (ResolveInfo resolveInfo : drawerPackages){
-                        if(!gridArray.contains(resolveInfo.activityInfo.packageName))
-                            gridArray.add(resolveInfo.activityInfo.packageName);
+                        if(!drawerAppsArray.contains(resolveInfo.activityInfo.packageName))
+                            drawerAppsArray.add(resolveInfo.activityInfo.packageName);
                     }
                     if(fileExist(TheNest.this, "Array - 03")) {
                         List<String> readValues = read(TheNest.this, "Array - 03");
-                        for (Iterator<String> iterator = gridArray.iterator(); iterator.hasNext();) {
+                        for (Iterator<String> iterator = drawerAppsArray.iterator(); iterator.hasNext();) {
                             String value = iterator.next();
                             if (readValues.contains(value))
                                 iterator.remove();
                         }
                     }
-
-                    int_a = 0;
-                    int_b = 1;
-
-                    drawerAppsGridLayout.removeAllViews();
-                    drawerAppsListLayout.removeAllViews();
-                    drawerAppsShapeLayout.removeAllViews();
-                    if(drawerGridStyle.equals("Tiles"))
-                        drawerAppsInitialize(gridArray, 0);
-
-                    if(drawerGridStyle.equals("List"))
-                        drawerAppsInitialize(gridArray, 1);
-
-                    if(drawerGridStyle.equals("Bubbles"))
-                        drawerAppsInitialize(gridArray, 2);
-
+                    drawerAppsCommonC();
                     drawerTilesIndex();
                     drawerRefresh = false;
                 }
@@ -3165,70 +3325,68 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     ImageView drawerListIcon;
     TextView drawerListText;
     List<String> appNames;
-    int int_a = 0;
-    int int_b = 1;
     @SuppressLint("ClickableViewAccessibility")
-    private void drawerAppsInitialize(List<String> list, int type){
+    private void drawerAppsInitialize(List<String> list){
         for (int i = 0; i < list.size(); ++i) {
-            if(i < int_b){
-                int_a = int_b;
-                int_b += 1;
+            if(drawerAppsViewType() == drawerAppsGridLayout)
+                drawerAppsCommonB(R.layout.linear_type_d, drawerAppsGridLayout, R.id.linear_type_d_frame,
+                        R.id.linear_type_d_icon, R.id.linear_type_d_text, 0);
 
-                if(type == 0)
-                    drawerAppsCommonB(R.layout.linear_type_d, drawerAppsGridLayout, R.id.linear_type_d_frame,
-                            R.id.linear_type_d_icon, R.id.linear_type_d_text, 0);
+            if(drawerAppsViewType() == drawerAppsListLayout)
+                drawerAppsCommonB(R.layout.linear_type_e, drawerAppsListLayout, R.id.linear_type_e_frame,
+                        R.id.linear_type_e_icon, R.id.linear_type_e_text, 1);
 
-                if(type == 1)
-                    drawerAppsCommonB(R.layout.linear_type_e, drawerAppsListLayout, R.id.linear_type_e_frame,
-                            R.id.linear_type_e_icon, R.id.linear_type_e_text, 1);
+            if(drawerAppsViewType() == drawerAppsShapeLayout)
+                drawerAppsCommonB(R.layout.linear_type_f, drawerAppsShapeLayout, R.id.linear_type_f_frame,
+                        R.id.linear_type_f_icon, R.id.linear_type_f_text, -1);
 
-                if(type == 2)
-                    drawerAppsCommonB(R.layout.linear_type_f, drawerAppsShapeLayout, R.id.linear_type_f_frame,
-                            R.id.linear_type_f_icon, R.id.linear_type_f_text, -1);
+            drawerListView.setTag(list.get(i));
+            drawerListIcon.setImageBitmap(appIcon(this, list.get(i), 40));
 
-                drawerListIcon.setImageBitmap(appIcon(this, list.get(i), 40));
-                drawerListIcon.setTag(list.get(i));
+            int tint;
+            if(drawerAppsViewType() == drawerAppsListLayout) {
+                tint = tintB;
+            } else {
+                tint = tintA;
+            }
+            textType(this, drawerListText, "", tint, fontBStyle);
 
-                int tint;
-                if(type == 1) {
-                    tint = tintB;
-                } else {
-                    tint = tintA;
+            String app = appLabel(this, list.get(i));
+            if(fileExist(this, "Array - 04")){
+                if(appNames == null || appNames.size() == 0)
+                    appNames = read(this, "Array - 04");
+                for(String label : appNames){
+                    if(label.startsWith(list.get(i)))
+                        app = label.substring(list.get(i).length() + 3).trim();
                 }
+            }
 
-                textType(this, drawerListText, "", tint, fontBStyle);
-
-                String app = appLabel(this, list.get(i));
-                if(fileExist(this, "Array - 04")){
-                    if(appNames == null || appNames.size() == 0)
-                        appNames = read(this, "Array - 04");
-                    for(String label : appNames){
-                        if(label.startsWith(list.get(i)))
-                            app = label.substring(list.get(i).length() + 3).trim();
-                    }
-                }
-
-                if(type == 1){
-                    if(app.length() >= 12){
-                        drawerListText.setText(app.substring(0, 12) + textA(16));
-                    } else {
-                        drawerListText.setText(app);
-                    }
+            if(drawerAppsViewType() == drawerAppsListLayout){
+                if(app.length() >= 12){
+                    drawerListText.setText(app.substring(0, 12) + textA(16));
                 } else {
                     drawerListText.setText(app);
                 }
-
-                customTouchModeA(drawerListFrame, list.get(i), 3, 3);
-                if(type == 0)
-                    drawerAppsGridLayout.addView(drawerListView);
-
-                if(type == 1)
-                    drawerAppsListLayout.addView(drawerListView);
-
-                if(type == 2)
-                    drawerAppsShapeLayout.addView(drawerListView);
+            } else {
+                drawerListText.setText(app);
             }
+
+            customTouchModeA(drawerListFrame, list.get(i), 3, 3);
+            drawerAppsViewType().addView(drawerListView);
         }
+    }
+
+    private ViewGroup drawerAppsViewType(){
+        ViewGroup view = null;
+        if(drawerGridStyle.equals("Tiles"))
+            view = drawerAppsGridLayout;
+
+        if(drawerGridStyle.equals("List"))
+            view = drawerAppsListLayout;
+
+        if(drawerGridStyle.equals("Bubbles"))
+            view = drawerAppsShapeLayout;
+        return view;
     }
 
     //..........
@@ -3448,31 +3606,14 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private void drawerAppletPress_6(){
         if(isAppInstalled(this, drawerAppletString)){
             create(this, "Array - 03", drawerAppletString);
-            gridArray.remove(drawerAppletString);
-
-            ViewGroup view = null;
-            int id = 0;
-            if(drawerGridStyle.equals("Tiles")) {
-                view = drawerAppsGridLayout;
-                id = R.id.linear_type_d_icon;
-            }
-            if(drawerGridStyle.equals("List")){
-                view = drawerAppsListLayout;
-                id = R.id.linear_type_e_icon;
-            }
-            if(drawerGridStyle.equals("Bubbles")){
-                view = drawerAppsShapeLayout;
-                id = R.id.linear_type_f_icon;
-            }
-
-            for(int i = 0; i < view.getChildCount(); ++i){
-                ImageView imageView = view.getChildAt(i).findViewById(id);
-                if(imageView.getTag().toString().equals(drawerAppletString)) {
-                    view.removeView(view.getChildAt(i));
+            drawerAppsArray.remove(drawerAppletString);
+            for(int i = 0; i < drawerAppsViewType().getChildCount(); ++i){
+                if(drawerAppsViewType().getChildAt(i).getTag().toString().equals(drawerAppletString)) {
+                    drawerAppsViewType().removeView(drawerAppsViewType().getChildAt(i));
                 }
             }
             drawerTilesIndex();
-            if(view.getChildCount() == 0)
+            if(drawerAppsViewType().getChildCount() == 0)
                 drawerRefresh();
         }
         drawerAppletClose();
@@ -3566,7 +3707,6 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                 textView.setText(label);
         }
         appNames = read(this, "Array - 04");
-        //appNames = null;
         drawerAppletCurrent(drawerAppletString);
     }
 
@@ -4311,17 +4451,20 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     private void settingsMiscPress_1(){
-        if(settingsMiscBInt == 0){
-            new File(getFilesDir(), "Configurations - 01").delete();
-            new File(getFilesDir(), "Configurations - 02").delete();
-            new File(getFilesDir(), "Configurations - 03").delete();
-            new File(getFilesDir(), "Configurations - 04").delete();
-        }
+        new File(getFilesDir(), "Configurations - 01").delete();
+        new File(getFilesDir(), "Configurations - 02").delete();
+        new File(getFilesDir(), "Configurations - 03").delete();
+        new File(getFilesDir(), "Configurations - 04").delete();
 
         if(settingsMiscBInt == 1){
-            ((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
+            //((ActivityManager) getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
             getCacheDir().delete();
             getFilesDir().delete();
+            new File(getFilesDir(), "CREATED").delete();
+            new File(getFilesDir(), "Array - 01").delete();
+            new File(getFilesDir(), "Array - 02").delete();
+            new File(getFilesDir(), "Array - 03").delete();
+            new File(getFilesDir(), "Array - 04").delete();
         }
         initializeConfigurations();
         restart(TheNest.this);

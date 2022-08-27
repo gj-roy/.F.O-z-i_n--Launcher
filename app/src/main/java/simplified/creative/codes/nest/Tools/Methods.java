@@ -279,6 +279,39 @@ public class Methods {
             return "Is something wrong (*.*)...";
         if(value == 87)
             return "https://github.com/SimpliC-Developer";
+        if(value == 88)
+            return "Welcome";
+        if(value == 89)
+            return "To";
+        if(value == 90)
+            return "Launcher";
+        if(value == 91)
+            return "Next.....";
+        if(value == 92)
+            return "Simplified Creative Codes";
+        if(value == 93)
+            return "Version ------------------------- 1.0";
+        if(value == 94)
+            return "Hi there! (^o^)/ it's me the developer of this app. Now i know this isn't the right place to say this but first" +
+                    " of all i am really happy that you decided to give this app a shot. And i am thankful for that. I know that you" +
+                    " are in rush to try out the app so i will keep this intro short...\n"+
+                    "\n1. Here's the thing you don't need to grant the app some kind of special permission to use it, however there are" +
+                    " some feature which use specific permissions so to use those features the app will remind you to grant it at" +
+                    " that moment.\n" +
+                    "\n2. There isn't any special terms and conditions for the app at this moment however if i feel like adding it than" +
+                    " you might find them in the future updates.\n" +
+                    "\n3. Custom apps like these are a bit annoying to make which follows the different ui than other apps so there might" +
+                    " be some bugs which i may not be aware of in that case if you do encounter some app breaking bug than i would" +
+                    " appreciate it if you could let me know by github or email.\n" +
+                    "\n4. This app is totally free so you don't have to worry about ads or in - app purchases.\n" +
+                    "\nAnd that's all for now thanks for bearing with me and reading through it. I hope you will love the app. Now then go" +
+                    " ahead!";
+        if(value == 95)
+            return "Now you can press this button to end the setup and launch the home screen.";
+        if(value == 96)
+            return "Drawer Button";
+        if(value == 97)
+            return "Settings Button";
         return "";
     }
 
@@ -739,6 +772,24 @@ public class Methods {
             } else {
                 return "Permissions";
             }
+        if(value == 76)
+            if(fontAMode.equals("SimpliC")){
+                return "de.ve_lo-pe/R   ./NOTES";
+            } else {
+                return "Developer Notes";
+            }
+        if(value == 77)
+            if(fontAMode.equals("SimpliC")){
+                return "/A.ll_   D.o-n_E..";
+            } else {
+                return "All Done...";
+            }
+        if(value == 78)
+            if(fontAMode.equals("SimpliC")){
+                return "T-i_p/s...";
+            } else {
+                return "Tips...";
+            }
         return "";
     }
 
@@ -864,6 +915,8 @@ public class Methods {
             return R.drawable.icon_59;
         if (value == 60)
             return R.drawable.icon_60;
+        if (value == 61)
+            return R.drawable.icon_61;
         return 0;
     }
 
