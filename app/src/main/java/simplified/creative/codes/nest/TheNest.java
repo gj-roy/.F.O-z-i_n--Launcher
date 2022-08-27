@@ -2175,6 +2175,14 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         homeFolderBText2.setText("");
     }
 
+    private void homeFolderCommonD(){
+        if(folderListArray.size() >= 10){
+            homeFolderBText2.setText(textA(8) + " " + folderListArray.size());
+        } else {
+            homeFolderBText2.setText(textA(15) + " " + folderListArray.size());
+        }
+    }
+
     // -----[ HOME FOLDER RARE METHODS ]----- //
 
     List<String> folderListArray;
@@ -2194,12 +2202,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                         homeFolderCommonB();
                     } else {
                         homeFolderD();
-                        if(folderListArray.size() >= 10){
-                            homeFolderBText2.setText(textA(8) + " " + folderListArray.size());
-                        } else {
-                            homeFolderBText2.setText(textA(15) + " " + folderListArray.size());
-                        }
-
+                        homeFolderCommonD();
                         if(homeFolderDListView.getChildCount() != folderListArray.size()){
                             if(folderSortingOrder.equals("Alphabetically")){
                                 Collections.sort(folderListArray, new Comparator<String>() {
@@ -2225,8 +2228,16 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     private void homeFolderRemove(String appletAppPackage){
         edit(this, "Array - 01",  appletAppPackage,"REMOVED");
-        homeFolderInitialize(25);
-        settingsHomeEBoolean = true;
+        folderListArray.remove(appletAppPackage);
+        for(int i = 0; i < homeFolderDListView.getChildCount(); ++i){
+            TextView textView = homeFolderDListView.getChildAt(i).findViewById(R.id.linear_type_g_text);
+            if(textView.getText().equals(appLabel(this, appletAppPackage)))
+                homeFolderDListView.removeView(homeFolderDListView.getChildAt(i));
+        }
+        homeFolderCommonD();
+        if(homeFolderDListView.getChildCount() == 0)
+            homeFolderInitialize(0);
+        settingsHomeEInt = 0;
     }
 
     View folderListView;
@@ -2658,8 +2669,18 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     private void homeShortcutRemove(String appletAppPackage){
         edit(this, "Array - 02",  appletAppPackage,"REMOVED");
-        homeShortcutInitialize(5);
-        settingsHomeHBoolean = true;
+        shortcutListArray.remove(appletAppPackage);
+        if(homeShortcutBAppLayout.getChildCount() <= 4) {
+            homeShortcutInitialize(0);
+        } else {
+            homeShortcutBText.setText(String.valueOf(shortcutListArray.size()));
+            for(int i = 0; i < homeShortcutBAppLayout.getChildCount(); ++i){
+                TextView textView = homeShortcutBAppLayout.getChildAt(i).findViewById(R.id.linear_type_a_text);
+                if(textView.getText().toString().trim().equals(appLabel(this, appletAppPackage)))
+                    homeShortcutBAppLayout.removeView(homeShortcutBAppLayout.getChildAt(i));
+            }
+        }
+        settingsHomeHInt = 0;
     }
 
     View shortcutListView;
@@ -2685,9 +2706,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             } else {
                 homeShortcutBFrame1.setVisibility(View.GONE);
             }
+            textType(this, shortcutListText, " " + appLabel(this, list.get(i)), tintA, fontBStyle);
             if(list.size() == 1){
-                shortcutListText.setVisibility(View.VISIBLE);
-                textType(this, shortcutListText, "  " + appLabel(this, list.get(i)), tintA, fontBStyle);
+                //shortcutListText.setVisibility(View.VISIBLE);
             } else {
                 shortcutListText.setVisibility(View.GONE);
             }
@@ -2708,7 +2729,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private void drawerScreenStateA(int mode){
         if (theNestDrawerLayout.findViewById(R.id.drawer_applet) != null && !isAppInstalled(this, drawerAppletString)) {
             if(mode == 0)
-                drawerRefresh(false);
+                drawerRefresh();
             drawerAppletClose();
         }
         if (theNestDrawerLayout.findViewById(R.id.drawer_applet) != null && (drawerAppletCFrame6 != null
@@ -2880,7 +2901,6 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             if (drawerAppletLayout != null && theNestDrawerLayout.findViewById(R.id.drawer_applet) != null)
                 theNestDrawerLayout.removeView(drawerTilesView);
         }
-        drawerTilesIndex();
     }
 
     // -----[ DRAWER TILES BUTTONS ]----- //
@@ -2895,7 +2915,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     private boolean drawerRefresh;
     private void drawerTilesPress_0(){
-        drawerRefresh(true);
+        drawerRefresh();
     }
 
     private void drawerTilesPress_1(){
@@ -2906,34 +2926,39 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                     || label.startsWith(drawerAlphabetsString.toUpperCase()))
                 temporary.add(string);
         }
-        drawerBlink = false;
         drawerAppsStyle(temporary);
+        //int_a = 0;
+        //int_b = 1;
+
+        drawerAppsGridLayout.removeAllViews();
+        drawerAppsListLayout.removeAllViews();
+        drawerAppsShapeLayout.removeAllViews();
+        if(drawerGridStyle.equals("Tiles"))
+            drawerAppsInitialize(temporary, 0);
+
+        if(drawerGridStyle.equals("List"))
+            drawerAppsInitialize(temporary, 1);
+
+        if(drawerGridStyle.equals("Bubbles"))
+            drawerAppsInitialize(temporary, 2);
     }
 
     // -----[ DRAWER TILES METHODS ]----- //
 
-    private void drawerRefresh(boolean blink){
+    private void drawerRefresh(){
         if(!drawerRefresh){
             drawerRefresh = true;
             drawerAppsCount = 0;
-            drawerBlink = blink;
+            drawerAppsCommonA();
             drawerAppsList();
-            drawerTilesIndex();
         }
     }
 
     List<String> drawerAlphabets;
     private void drawerTilesIndex(){
         if(drawerBrowseMode.equals("Index")){
-            if(drawerAlphabets != null)
-                drawerAlphabets.clear();
-
             drawerAlphabets = new ArrayList<>();
 
-            if(!drawerAlphabetsString.isEmpty()){
-                drawerBlink = true;
-                drawerAppsStyle(gridArray);
-            }
             drawerAlphabetsString = "";
             for(String string : gridArray){
                 String text = appLabel(TheNest.this, string);
@@ -3026,8 +3051,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         drawerListView = inflater.inflate(id_a, (ViewGroup) view, false);
         drawerListFrame = drawerListView.findViewById(id_b);
         drawerListIcon = drawerListView.findViewById(id_c);
-        if(id_c != -1)
-            drawerListText = drawerListView.findViewById(id_d);
+        drawerListText = drawerListView.findViewById(id_d);
 
         if(mode == 0)
             backgroundTypeA(this, drawerListFrame, background(8), tintA, 3);
@@ -3042,7 +3066,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private void drawerAppsStyle(List<String> list){
         int_a = 0;
         int_b = 1;
-        if(drawerBlink) {
+        /*if(drawerBlink) {
             drawerAppsCommonA();
             drawerBlink = false;
             drawerAppsScrollView1.setVisibility(View.GONE);
@@ -3073,47 +3097,67 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                 drawerRefresh = false;
             }
         };
-        drawerAppsHandler.postDelayed(drawerAppsRunnable, 25);
+        drawerAppsHandler.postDelayed(drawerAppsRunnable, 25);*/
     }
 
     private List<String> gridArray;
     private int drawerAppsCount = 0;
     private void drawerAppsList(){
-        Intent intent = new Intent(Intent.ACTION_MAIN, null);
-        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        Handler drawerAppsHandler = new Handler();
+        Runnable drawerAppsRunnable = new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(Intent.ACTION_MAIN, null);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-        List<ResolveInfo> drawerPackages = getPackageManager().queryIntentActivities(intent, PackageManager.GET_META_DATA);
-        if(drawerAppsCount == 0 || drawerAppsCount != drawerPackages.size()){
-            drawerAppsCount = drawerPackages.size();
+                List<ResolveInfo> drawerPackages = getPackageManager().queryIntentActivities(intent, PackageManager.GET_META_DATA);
+                if(drawerAppsCount != drawerPackages.size()){
+                    drawerAppsCount = drawerPackages.size();
 
-            if(drawerSortingOrder.equals("Alphabetically")){
-                Collections.sort(drawerPackages, new Comparator<ResolveInfo>() {
-                    @Override
-                    public int compare(ResolveInfo info_a, ResolveInfo info_b) {
-                        return info_a.loadLabel(getPackageManager()).toString().compareTo(info_b.loadLabel(getPackageManager()).toString());
+                    if(drawerSortingOrder.equals("Alphabetically")){
+                        Collections.sort(drawerPackages, new Comparator<ResolveInfo>() {
+                            @Override
+                            public int compare(ResolveInfo info_a, ResolveInfo info_b) {
+                                return info_a.loadLabel(getPackageManager()).toString().compareTo(info_b.loadLabel(getPackageManager()).toString());
+                            }
+                        });
                     }
-                });
-            }
-            if(gridArray != null)
-                gridArray.clear();
 
-            gridArray = new ArrayList<>();
+                    gridArray = new ArrayList<>();
+                    for (ResolveInfo resolveInfo : drawerPackages){
+                        if(!gridArray.contains(resolveInfo.activityInfo.packageName))
+                            gridArray.add(resolveInfo.activityInfo.packageName);
+                    }
+                    if(fileExist(TheNest.this, "Array - 03")) {
+                        List<String> readValues = read(TheNest.this, "Array - 03");
+                        for (Iterator<String> iterator = gridArray.iterator(); iterator.hasNext();) {
+                            String value = iterator.next();
+                            if (readValues.contains(value))
+                                iterator.remove();
+                        }
+                    }
 
-            for (ResolveInfo resolveInfo : drawerPackages){
-                if(!gridArray.contains(resolveInfo.activityInfo.packageName))
-                    gridArray.add(resolveInfo.activityInfo.packageName);
-            }
+                    int_a = 0;
+                    int_b = 1;
 
-            if(fileExist(TheNest.this, "Array - 03")) {
-                List<String> readValues = read(TheNest.this, "Array - 03");
-                for (Iterator<String> iterator = gridArray.iterator(); iterator.hasNext();) {
-                    String value = iterator.next();
-                    if (readValues.contains(value))
-                        iterator.remove();
+                    drawerAppsGridLayout.removeAllViews();
+                    drawerAppsListLayout.removeAllViews();
+                    drawerAppsShapeLayout.removeAllViews();
+                    if(drawerGridStyle.equals("Tiles"))
+                        drawerAppsInitialize(gridArray, 0);
+
+                    if(drawerGridStyle.equals("List"))
+                        drawerAppsInitialize(gridArray, 1);
+
+                    if(drawerGridStyle.equals("Bubbles"))
+                        drawerAppsInitialize(gridArray, 2);
+
+                    drawerTilesIndex();
+                    drawerRefresh = false;
                 }
             }
-            drawerAppsStyle(gridArray);
-        }
+        };
+        drawerAppsHandler.postDelayed(drawerAppsRunnable, 100);
     }
 
     View drawerListView;
@@ -3125,10 +3169,11 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     int int_b = 1;
     @SuppressLint("ClickableViewAccessibility")
     private void drawerAppsInitialize(List<String> list, int type){
-        for (int i = int_a; i < list.size(); ++i) {
+        for (int i = 0; i < list.size(); ++i) {
             if(i < int_b){
                 int_a = int_b;
                 int_b += 1;
+
                 if(type == 0)
                     drawerAppsCommonB(R.layout.linear_type_d, drawerAppsGridLayout, R.id.linear_type_d_frame,
                             R.id.linear_type_d_icon, R.id.linear_type_d_text, 0);
@@ -3139,45 +3184,47 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
                 if(type == 2)
                     drawerAppsCommonB(R.layout.linear_type_f, drawerAppsShapeLayout, R.id.linear_type_f_frame,
-                            R.id.linear_type_f_icon, -1, -1);
+                            R.id.linear_type_f_icon, R.id.linear_type_f_text, -1);
 
                 drawerListIcon.setImageBitmap(appIcon(this, list.get(i), 40));
+                drawerListIcon.setTag(list.get(i));
 
-                if(type == 0 || type == 1){
-                    int tint = 0;
-                    if(type == 0)
-                        tint = tintA;
+                int tint;
+                if(type == 1) {
+                    tint = tintB;
+                } else {
+                    tint = tintA;
+                }
 
-                    if(type == 1)
-                        tint = tintB;
+                textType(this, drawerListText, "", tint, fontBStyle);
 
-                    textType(this, drawerListText, "", tint, fontBStyle);
-
-                    String app = appLabel(this, list.get(i));
-                    if(fileExist(this, "Array - 04")){
-                        if(appNames == null || appNames.size() == 0)
-                            appNames = read(this, "Array - 04");
-                        for(String label : appNames){
-                            if(label.startsWith(list.get(i)))
-                                app = label.substring(list.get(i).length() + 3).trim();
-                        }
-                    }
-                    if(type == 0)
-                        drawerListText.setText(app);
-
-                    if(type == 1){
-                        if(app.length() >= 12){
-                            drawerListText.setText(app.substring(0, 12) + textA(16));
-                        } else {
-                            drawerListText.setText(app);
-                        }
+                String app = appLabel(this, list.get(i));
+                if(fileExist(this, "Array - 04")){
+                    if(appNames == null || appNames.size() == 0)
+                        appNames = read(this, "Array - 04");
+                    for(String label : appNames){
+                        if(label.startsWith(list.get(i)))
+                            app = label.substring(list.get(i).length() + 3).trim();
                     }
                 }
+
+                if(type == 1){
+                    if(app.length() >= 12){
+                        drawerListText.setText(app.substring(0, 12) + textA(16));
+                    } else {
+                        drawerListText.setText(app);
+                    }
+                } else {
+                    drawerListText.setText(app);
+                }
+
                 customTouchModeA(drawerListFrame, list.get(i), 3, 3);
                 if(type == 0)
                     drawerAppsGridLayout.addView(drawerListView);
+
                 if(type == 1)
                     drawerAppsListLayout.addView(drawerListView);
+
                 if(type == 2)
                     drawerAppsShapeLayout.addView(drawerListView);
             }
@@ -3401,7 +3448,32 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private void drawerAppletPress_6(){
         if(isAppInstalled(this, drawerAppletString)){
             create(this, "Array - 03", drawerAppletString);
-            drawerRefresh(false);
+            gridArray.remove(drawerAppletString);
+
+            ViewGroup view = null;
+            int id = 0;
+            if(drawerGridStyle.equals("Tiles")) {
+                view = drawerAppsGridLayout;
+                id = R.id.linear_type_d_icon;
+            }
+            if(drawerGridStyle.equals("List")){
+                view = drawerAppsListLayout;
+                id = R.id.linear_type_e_icon;
+            }
+            if(drawerGridStyle.equals("Bubbles")){
+                view = drawerAppsShapeLayout;
+                id = R.id.linear_type_f_icon;
+            }
+
+            for(int i = 0; i < view.getChildCount(); ++i){
+                ImageView imageView = view.getChildAt(i).findViewById(id);
+                if(imageView.getTag().toString().equals(drawerAppletString)) {
+                    view.removeView(view.getChildAt(i));
+                }
+            }
+            drawerTilesIndex();
+            if(view.getChildCount() == 0)
+                drawerRefresh();
         }
         drawerAppletClose();
     }
@@ -3474,11 +3546,27 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     // -----[ DRAWER APPLET COMMON ]----- //
 
     private void drawerAppletCommonA(String label){
-        for(int i = 0; i < drawerAppsGridLayout.getChildCount(); ++i){
-            TextView textView = drawerAppsGridLayout.getChildAt(i).findViewById(R.id.linear_type_d_text);
+        ViewGroup view = null;
+        int id = 0;
+        if(drawerGridStyle.equals("Tiles")) {
+            view = drawerAppsGridLayout;
+            id = R.id.linear_type_d_text;
+        }
+        if(drawerGridStyle.equals("List")){
+            view = drawerAppsListLayout;
+            id = R.id.linear_type_e_text;
+        }
+        if(drawerGridStyle.equals("Bubbles")){
+            view = drawerAppsShapeLayout;
+            id = R.id.linear_type_f_text;
+        }
+        for(int i = 0; i < view.getChildCount(); ++i){
+            TextView textView = view.getChildAt(i).findViewById(id);
             if(textView.getText().equals(drawerAppLabel))
                 textView.setText(label);
         }
+        appNames = read(this, "Array - 04");
+        //appNames = null;
         drawerAppletCurrent(drawerAppletString);
     }
 
@@ -5051,7 +5139,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         hiddenAppsInitialize();
         if(drawerAppsLayout != null)
-            drawerRefresh(false);
+            drawerRefresh();
         settingsDrawerCommonB();
     }
 
@@ -5104,7 +5192,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         configurationsC();
         settingsDrawerOptions();
         if(drawerAppsLayout != null)
-            drawerRefresh(false);
+            drawerRefresh();
     }
 
     private void settingsDrawerCommonB(){
@@ -6132,8 +6220,11 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             touchTip(this, textC(67), 2);
         }
         homeFolderArray.remove(folderApp);
-        settingsHomeEListView.removeAllViews();
-        homeFolderList(homeFolderArray, settingsHomeEListView);
+        for(int i = 0; i < settingsHomeEListView.getChildCount(); ++i){
+            TextView textView = settingsHomeEListView.getChildAt(i).findViewById(R.id.linear_type_g_text);
+            if(textView.getText().equals(appLabel(this, folderApp)))
+                settingsHomeEListView.removeView(settingsHomeEListView.getChildAt(i));
+        }
     }
 
     // -----[ HOME FOLDER COMMON ]----- //
@@ -6192,7 +6283,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     List<String> homeFolderArray;
-    private boolean settingsHomeEBoolean;
+    private int settingsHomeEInt = 0;
     private void homeFolderInitialize(){
         Handler settingsHomeEHandler = new Handler();
         Runnable settingsHomeERunnable = new Runnable() {
@@ -6201,8 +6292,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                 Intent intent = new Intent(Intent.ACTION_MAIN, null);
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
                 List<ResolveInfo> apps = getPackageManager().queryIntentActivities(intent, PackageManager.GET_META_DATA);
-                if(settingsHomeEListView.getChildCount() != apps.size() || settingsHomeEBoolean){
-                    settingsHomeEBoolean = false;
+                if(settingsHomeEInt != apps.size()){
+                    settingsHomeEInt = apps.size();
 
                     if(folderSortingOrder.equals("Alphabetically")){
                         Collections.sort(apps, new Comparator<ResolveInfo>() {
@@ -6220,9 +6311,10 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
                     if(fileExist(TheNest.this, "Array - 01")) {
                         List<String> readValues = read(TheNest.this, "Array - 01");
-                        for(int i  = 0; i < homeFolderArray.size(); ++i){
-                            if(readValues.contains(homeFolderArray.get(i)))
-                                homeFolderArray.remove(homeFolderArray.get(i));
+                        for (Iterator<String> iterator = homeFolderArray.iterator(); iterator.hasNext();) {
+                            String value = iterator.next();
+                            if (readValues.contains(value))
+                                iterator.remove();
                         }
                     }
                     settingsHomeEListView.removeAllViews();
@@ -6680,8 +6772,11 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             touchTip(this, textC(67), 2);
         }
         homeShortcutArray.remove(shortcutApp);
-        settingsHomeHListView.removeAllViews();
-        homeShortcutList(homeShortcutArray, settingsHomeHListView);
+        for(int i = 0; i < settingsHomeHListView.getChildCount(); ++i){
+            TextView textView = settingsHomeHListView.getChildAt(i).findViewById(R.id.linear_type_g_text);
+            if(textView.getText().equals(appLabel(this, shortcutApp)))
+                settingsHomeHListView.removeView(settingsHomeHListView.getChildAt(i));
+        }
 
         if(homeShortcutBLayout == null || homeShortcutLayout.findViewById(R.id.home_shortcut_b) == null) {
             homeShortcutLayout.removeAllViews();
@@ -6720,7 +6815,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
     }
 
-    private boolean settingsHomeHBoolean;
+    private int settingsHomeHInt = 0;
     List<String> homeShortcutArray;
     private void homeShortcutInitialize(){
         Handler settingsHomeHHandler = new Handler();
@@ -6731,8 +6826,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
                 List<ResolveInfo> apps = getPackageManager().queryIntentActivities(intent, PackageManager.GET_META_DATA);
 
-                if(settingsHomeHListView.getChildCount() != apps.size() || settingsHomeHBoolean){
-                    settingsHomeHBoolean = false;
+                if(settingsHomeHInt != apps.size()){
+                    settingsHomeHInt = apps.size();
                     homeShortcutArray = new ArrayList<>();
 
                     for (ResolveInfo resolveInfo : apps) {
