@@ -100,95 +100,19 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         setContentView(R.layout.the_nest_root_layout);
         inflater = LayoutInflater.from(TheNest.this);
         theNestRootLayout = findViewById(R.id.the_nest_root_layout);
-
-        //try {
-        //    toast(this, String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").
-        //            format(new Date(getPackageManager().getPackageInfo(getOpPackageName(), 0).lastUpdateTime))));
-        //} catch (Exception e){}
-
-        if(!fileExist(this, "CREATED")){
-            initializeConfigurations();
-            configurationsA();
-            additionalScreen();
-        } else {
-            instanceCreated = true;
-            configurationsA();
-            homeScreen();
-        }
-        safetyCheck();
-    }
-
-    private void safetyCheck(){
-        int value = 0;
-
-        if(getPackageName().equals("simplified.creative.codes.nest"))
-            ++value;
-
-        if(android.os.Build.VERSION.SDK_INT >= 21 && android.os.Build.VERSION.SDK_INT <= 30)
-            ++value;
-
-        if(BuildConfig.VERSION_CODE == 1 && BuildConfig.VERSION_NAME.equals("TheNest"))
-            ++value;
-
-        try {
-            if(getPackageManager().getApplicationInfo("simplified.creative.codes.nest", 0)
-                    .loadLabel(getPackageManager()).equals("Fozin"))
-                ++value;
-        } catch (Exception e){}
-
-        try {
-            Bitmap icon = ((BitmapDrawable) getPackageManager().getApplicationIcon
-                    ("simplified.creative.codes.nest")).getBitmap();
-            if(icon.sameAs(((BitmapDrawable) getDrawable(R.drawable.icon_19)).getBitmap()))
-                ++value;
-        } catch (Exception e){}
-
-        try {
-            if(getPackageManager().getPackageInfo("simplified.creative.codes.nest", 0).installLocation == -1)
-                ++value;
-        } catch (Exception e){}
-
-        try {
-            if(getPackageManager().getPackageInfo("simplified.creative.codes.nest", 0).signatures.length == 1)
-                ++value;
-        } catch (Exception e){}
-
-        try {
-            final String string_a = "AF6E5CAEA1A45DF388E2D5B3E80AF1F76D5108D7";
-            for (Signature signature : getPackageManager().getPackageInfo("simplified.creative.codes.nest",
-                    PackageManager.GET_SIGNATURES).signatures) {
-                MessageDigest digest = MessageDigest.getInstance("SHA1");
-                digest.update(signature.toByteArray());
-                byte[] array = digest.digest();
-
-                final char[] hexArray = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-                char[] hexChars = new char[array.length * 2];
-                for (int i = 0; i < array.length; i++) {
-                    int j = array[i] & 0xFF;
-                    hexChars[i * 2] = hexArray[j >>> 4];
-                    hexChars[i * 2 + 1] = hexArray[j & 0x0F];
-                }
-                if(String.valueOf(hexChars).equalsIgnoreCase(string_a))
-                    ++value;
-            }
-        } catch (Exception e){}
-
-        if(getResources().getDisplayMetrics().widthPixels > 500 && getResources().getDisplayMetrics().heightPixels < 2500)
-            ++value;
-        toast(this, String.valueOf(getResources().getDisplayMetrics().heightPixels));
-
+        initialize();
     }
 
     private boolean configurationsMatched;
     private boolean instanceCreated;
     private void startCycle(){
-        if(instanceCreated){
+        if(instanceCreated && configurationsMatched){
             homeScreenStateA();
         }
     }
 
     private void stopCycle(){
-        if(instanceCreated){
+        if(instanceCreated && configurationsMatched){
             if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
                 homeScreenStateB();
 
@@ -207,14 +131,14 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     private void pauseCycle(){
-        if(instanceCreated){
+        if(instanceCreated && configurationsMatched){
             if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
                 homeScreenStateB();
         }
     }
 
     private void resumeCycle(){
-        if(instanceCreated){
+        if(instanceCreated && configurationsMatched){
             this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
             if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
                 homeScreenStateA();
@@ -225,7 +149,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     private void backClick(){
-        if(instanceCreated){
+        if(instanceCreated && configurationsMatched){
             if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null) {
                 if(homeAppletLayout.findViewById(R.id.home_applet_a) == null){
                     homeApplet(1);
@@ -498,6 +422,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     @SuppressLint("ClickableViewAccessibility")
     private void userInterfaceA(){
         getWindow().getDecorView().setBackgroundColor(ContextCompat.getColor(this, background));
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.transparent));
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.transparent));
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
             if(!statusBar.equals("Enabled") && !navigationBar.equals("Enabled")){
@@ -675,6 +601,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                                     additionalInfoPress_0();
                                 if(count == 3)
                                     additionalInfoPress_1();
+                                if(count == 4)
+                                    additionalErrorPress_0();
                             }
                         }
                         if(mode == 0){
@@ -982,6 +910,74 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     /*
+       --------------------------
+       [                        ]
+       [     INITIALIZATION     ]
+       [                        ]
+       --------------------------
+    */
+
+    private void initialize(){
+        safetyCheck();
+        if(configurationsMatched){
+            if(!fileExist(this, "CREATED")){
+                initializeConfigurations();
+                configurationsA();
+                additionalScreen();
+            } else {
+                instanceCreated = true;
+                configurationsA();
+                homeScreen();
+            }
+        } else {
+            initializeConfigurations();
+            configurationsA();
+            additionalError();
+        }
+    }
+
+    private void safetyCheck(){
+        if(getPackageName().equals(textB(99))){
+
+            if(android.os.Build.VERSION.SDK_INT >= 21 && android.os.Build.VERSION.SDK_INT <= 30){
+
+                if(BuildConfig.VERSION_CODE == 1 && BuildConfig.VERSION_NAME.equals("TheNest")){
+                    try {
+                        if(getPackageManager().getApplicationInfo(textB(99), 0).loadLabel(getPackageManager()).equals("Fozin")){
+
+                            Bitmap icon = ((BitmapDrawable) getPackageManager().getApplicationIcon(textB(99))).getBitmap();
+                            if(icon.sameAs(((BitmapDrawable) getDrawable(R.drawable.icon_19)).getBitmap())){
+
+                                if(getPackageManager().getPackageInfo(textB(99), 0).installLocation == -1){
+                                    configurationsMatched = true;
+
+                                    for (Signature signature : getPackageManager().getPackageInfo(textB(99),
+                                            PackageManager.GET_SIGNATURES).signatures) {
+                                        MessageDigest digest = MessageDigest.getInstance("SHA1");
+                                        digest.update(signature.toByteArray());
+                                        byte[] array = digest.digest();
+
+                                        final char[] hexArray = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
+                                                '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+                                        char[] hexChars = new char[array.length * 2];
+                                        for (int i = 0; i < array.length; i++) {
+                                            int j = array[i] & 0xFF;
+                                            hexChars[i * 2] = hexArray[j >>> 4];
+                                            hexChars[i * 2 + 1] = hexArray[j & 0x0F];
+                                        }
+                                        if(String.valueOf(hexChars).equalsIgnoreCase(textB(100)))
+                                            configurationsMatched = true;
+                                    }
+                                }
+                            }
+                        }
+                    } catch (Exception e){}
+                }
+            }
+        }
+    }
+
+    /*
        -------------------------------
        [                             ]
        [     ADDITIONAL - SCREEN     ]
@@ -1039,7 +1035,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             theNestAdditionalLayout.addView(additionalWelcomeView);
 
             layoutParamsTypeA(this, additionalWelcomeLayout, new int[]{direction(2)});
-            setSize(this, additionalWelcomeLayout, size(2), size(2));
+            setSize(this, additionalWelcomeLayout, size(2), size(1));
             setMargins(this, additionalWelcomeLayout, 20, 20, 20, 20);
         }
     }
@@ -1048,6 +1044,11 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         theNestAdditionalLayout.removeView(additionalWelcomeView);
         additionalNotes();
     }
+
+    //..........
+    //--------------- ADDITIONAL --------------- []
+    //------------------ NOTES ----------------- []
+    //``````````
 
     View additionalNotesView;
     RelativeLayout additionalNotesLayout, additionalNotesFrame1, additionalNotesFrame2;
@@ -1098,6 +1099,11 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         theNestAdditionalLayout.removeView(additionalNotesView);
         additionalInfo();
     }
+
+    //..........
+    //--------------- ADDITIONAL --------------- []
+    //------------------ info ------------------ []
+    //``````````
 
     View additionalInfoView;
     RelativeLayout additionalInfoLayout, additionalInfoFrame1, additionalInfoFrame2, additionalInfoFrame3;
@@ -1166,6 +1172,58 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             imageTypeA(this, additionalInfoIcon2, icon(43), tintB, 50);
             additionalInfoText4.setText(textB(97));
         }
+    }
+
+    //..........
+    //--------------- ADDITIONAL --------------- []
+    //----------------- ERROR ------------------ []
+    //``````````
+
+    View additionalErrorView;
+    RelativeLayout additionalErrorLayout, additionalErrorFrame1, additionalErrorFrame2, additionalErrorFrame3;
+    ImageView additionalErrorIcon1, additionalErrorIcon2, additionalErrorAngle;
+    TextView additionalErrorLine1, additionalErrorLine2, additionalErrorText1, additionalErrorText2, additionalErrorText3;
+    private void additionalError(){
+        if(additionalErrorView == null){
+            additionalErrorView = inflater.inflate(R.layout.additional_error, null);
+            additionalErrorLayout = additionalErrorView.findViewById(R.id.additional_error);
+            additionalErrorFrame1 = additionalErrorView.findViewById(R.id.additional_error_frame_1);
+            additionalErrorFrame2 = additionalErrorView.findViewById(R.id.additional_error_frame_2);
+            additionalErrorFrame3 = additionalErrorView.findViewById(R.id.additional_error_frame_3);
+            additionalErrorAngle = additionalErrorView.findViewById(R.id.additional_error_angle);
+            additionalErrorIcon1 = additionalErrorView.findViewById(R.id.additional_error_icon_1);
+            additionalErrorText1 = additionalErrorView.findViewById(R.id.additional_error_text_1);
+            additionalErrorText2 = additionalErrorView.findViewById(R.id.additional_error_text_2);
+            additionalErrorText3 = additionalErrorView.findViewById(R.id.additional_error_text_3);
+            additionalErrorLine1 = additionalErrorView.findViewById(R.id.additional_error_line_1);
+            additionalErrorLine2 = additionalErrorView.findViewById(R.id.additional_error_line_2);
+
+            backgroundTypeA(this, additionalErrorFrame1, background(12), tintA, 3);
+            backgroundTypeA(this, additionalErrorFrame2, background(5), tintA, 3);
+            backgroundTypeC(this, additionalErrorFrame3, background(3), tintA);
+
+            imageTypeA(this, additionalErrorAngle, drawable(2), tintA, 40);
+            imageTypeA(this, additionalErrorIcon1, icon(32), tintA, 50);
+
+            textType(this, additionalErrorText1, textC(67), tintA, fontAStyle);
+            textType(this, additionalErrorText2, textC(12), tintA, fontBStyle);
+            textType(this, additionalErrorText3, textB(98), tintB, fontBStyle);
+            textType(this, additionalErrorLine1, textA(9), tintA, Typeface.BOLD);
+            textType(this, additionalErrorLine2, textA(9), tintA, Typeface.BOLD);
+
+            customTouchModeB(additionalErrorFrame2, "", -1, -1, 4);
+        }
+        if(theNestRootLayout.findViewById(R.id.additional_error) == null){
+            theNestRootLayout.addView(additionalErrorView);
+
+            layoutParamsTypeA(this, additionalErrorLayout, new int[]{direction(2)});
+            setSize(this, additionalErrorLayout, size(2), size(2));
+            setMargins(this, additionalErrorLayout, 20, 20, 20, 20);
+        }
+    }
+
+    private void additionalErrorPress_0(){
+        Methods.startActivity(this, textB(99), Intent.ACTION_DELETE);
     }
 
     /*

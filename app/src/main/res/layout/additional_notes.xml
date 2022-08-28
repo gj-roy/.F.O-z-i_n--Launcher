@@ -95,6 +95,8 @@
             android:textSize="20sp"/>
 
     <ScrollView
+            android:fadingEdgeLength="15dp"
+            android:requiresFadingEdge="vertical"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_toEndOf="@+id/additional_notes_line_1"

@@ -312,6 +312,28 @@ public class Methods {
             return "Drawer Button";
         if(value == 97)
             return "Settings Button";
+        if(value == 98)
+            return "Okay so u-um please don't panic and listen to me carefully, it seems like there are somethings which doesn't add" +
+                    " up here. What i mean is that somethings or in technical term some configurations which the app was expecting" +
+                    " were different on your device so that's the reason you cannot proceed any further. I am really sorry for this" +
+                    " but i have to confirm somethings...\n" +
+                    "\n1. Is your android version below lollipop or above android 11? Cause at this moment only the android versions" +
+                    " from lollipop to android 11 are supported.\n" +
+                    "\n2. Did you download the app from the internet? Cause in that case i would recommend you to download it only from" +
+                    " either the play store or my github repo.\n" +
+                    "\nif you are sure that there weren't any problem from your side eg- before the app was working but suddenly now" +
+                    " you are seeing this message than in that case please send me a email or tell me on the github and i will look into" +
+                    " it. How? and What? you should tell? well here is an example...\n" +
+                    "\n1. Device Name - \n" +
+                    "\n2. Android Version - \n" +
+                    "\n3. App Version - \n" +
+                    "\n4. Message - (if you want to say something)\n" +
+                    "\nAnd that's all i hope you will follow this format it will make things a lot easier for me. Once again i am truly" +
+                    " sorry for this, so for now if you want you can uninstall the app from the above button. It's fine no problem at all. :)";
+        if(value == 99)
+            return "simplified.creative.codes.nest";
+        if(value == 100)
+            return "AF6E5CAEA1A45DF388E2D5B3E80AF1F76D5108D7";
         return "";
     }
 

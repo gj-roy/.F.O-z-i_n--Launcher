@@ -99,6 +99,7 @@
         <entry key="app/src/main/res/drawable/widget_border_1.xml" value="0.258984375" />
         <entry key="app/src/main/res/drawable/widget_border_2.xml" value="0.258984375" />
         <entry key="app/src/main/res/layout/additional_a.xml" value="0.19296448087431695" />
+        <entry key="app/src/main/res/layout/additional_error.xml" value="0.19296448087431695" />
         <entry key="app/src/main/res/layout/additional_info.xml" value="0.19296448087431695" />
         <entry key="app/src/main/res/layout/additional_notes.xml" value="0.19296448087431695" />
         <entry key="app/src/main/res/layout/additional_screen_a.xml" value="0.19296448087431695" />
