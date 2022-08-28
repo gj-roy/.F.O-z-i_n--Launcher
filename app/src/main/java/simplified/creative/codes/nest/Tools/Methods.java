@@ -915,8 +915,6 @@ public class Methods {
             return R.drawable.icon_59;
         if (value == 60)
             return R.drawable.icon_60;
-        if (value == 61)
-            return R.drawable.icon_61;
         return 0;
     }
 

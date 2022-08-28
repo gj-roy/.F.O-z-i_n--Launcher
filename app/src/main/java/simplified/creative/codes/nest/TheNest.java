@@ -13,9 +13,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
+import android.content.pm.*;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
@@ -33,6 +31,9 @@ import simplified.creative.codes.nest.Tools.ContentsB;
 import simplified.creative.codes.nest.Tools.Methods;
 
 import java.io.*;
+import java.security.MessageDigest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static android.view.View.OnTouchListener;
@@ -100,24 +101,94 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         inflater = LayoutInflater.from(TheNest.this);
         theNestRootLayout = findViewById(R.id.the_nest_root_layout);
 
+        //try {
+        //    toast(this, String.valueOf(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").
+        //            format(new Date(getPackageManager().getPackageInfo(getOpPackageName(), 0).lastUpdateTime))));
+        //} catch (Exception e){}
+
         if(!fileExist(this, "CREATED")){
             initializeConfigurations();
             configurationsA();
             additionalScreen();
         } else {
+            instanceCreated = true;
             configurationsA();
             homeScreen();
         }
+        safetyCheck();
     }
 
+    private void safetyCheck(){
+        int value = 0;
+
+        if(getPackageName().equals("simplified.creative.codes.nest"))
+            ++value;
+
+        if(android.os.Build.VERSION.SDK_INT >= 21 && android.os.Build.VERSION.SDK_INT <= 30)
+            ++value;
+
+        if(BuildConfig.VERSION_CODE == 1 && BuildConfig.VERSION_NAME.equals("TheNest"))
+            ++value;
+
+        try {
+            if(getPackageManager().getApplicationInfo("simplified.creative.codes.nest", 0)
+                    .loadLabel(getPackageManager()).equals("Fozin"))
+                ++value;
+        } catch (Exception e){}
+
+        try {
+            Bitmap icon = ((BitmapDrawable) getPackageManager().getApplicationIcon
+                    ("simplified.creative.codes.nest")).getBitmap();
+            if(icon.sameAs(((BitmapDrawable) getDrawable(R.drawable.icon_19)).getBitmap()))
+                ++value;
+        } catch (Exception e){}
+
+        try {
+            if(getPackageManager().getPackageInfo("simplified.creative.codes.nest", 0).installLocation == -1)
+                ++value;
+        } catch (Exception e){}
+
+        try {
+            if(getPackageManager().getPackageInfo("simplified.creative.codes.nest", 0).signatures.length == 1)
+                ++value;
+        } catch (Exception e){}
+
+        try {
+            final String string_a = "AF6E5CAEA1A45DF388E2D5B3E80AF1F76D5108D7";
+            for (Signature signature : getPackageManager().getPackageInfo("simplified.creative.codes.nest",
+                    PackageManager.GET_SIGNATURES).signatures) {
+                MessageDigest digest = MessageDigest.getInstance("SHA1");
+                digest.update(signature.toByteArray());
+                byte[] array = digest.digest();
+
+                final char[] hexArray = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+                char[] hexChars = new char[array.length * 2];
+                for (int i = 0; i < array.length; i++) {
+                    int j = array[i] & 0xFF;
+                    hexChars[i * 2] = hexArray[j >>> 4];
+                    hexChars[i * 2 + 1] = hexArray[j & 0x0F];
+                }
+                if(String.valueOf(hexChars).equalsIgnoreCase(string_a))
+                    ++value;
+            }
+        } catch (Exception e){}
+
+        if(getResources().getDisplayMetrics().widthPixels > 500 && getResources().getDisplayMetrics().heightPixels < 2500)
+            ++value;
+        toast(this, String.valueOf(getResources().getDisplayMetrics().heightPixels));
+
+    }
+
+    private boolean configurationsMatched;
+    private boolean instanceCreated;
     private void startCycle(){
-        if(fileExist(this, "CREATED")){
+        if(instanceCreated){
             homeScreenStateA();
         }
     }
 
     private void stopCycle(){
-        if(fileExist(this, "CREATED")){
+        if(instanceCreated){
             if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
                 homeScreenStateB();
 
@@ -136,14 +207,14 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     private void pauseCycle(){
-        if(fileExist(this, "CREATED")){
+        if(instanceCreated){
             if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
                 homeScreenStateB();
         }
     }
 
     private void resumeCycle(){
-        if(fileExist(this, "CREATED")){
+        if(instanceCreated){
             this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
             if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null)
                 homeScreenStateA();
@@ -154,7 +225,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     private void backClick(){
-        if(fileExist(this, "CREATED")){
+        if(instanceCreated){
             if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) != null) {
                 if(homeAppletLayout.findViewById(R.id.home_applet_a) == null){
                     homeApplet(1);
