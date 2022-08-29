@@ -2,3 +2,4 @@ Hello there! (^o^)/ i am the developer of this app. What's my name? hmm... well 
 
 Playstore Link -
 
+![ScreenShot](https://raw.github.com/SimpliC-Developer/.F.O-z-i_n-Launcher-/main/)
