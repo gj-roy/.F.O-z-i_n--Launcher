@@ -15,4 +15,4 @@ Visit -
 ## About the app...
 
 [banner_b](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg)
-<img src="https://i.imgur.com/ZWnhY9T.png](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg" width=50% height=50%>
+<img src="https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg" width=50% height=50%>
