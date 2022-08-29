@@ -16,6 +16,28 @@ Visit -
 
 ![banner_b](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg)
 
->**Unique** ( Annoying to code )----------**Simple** ( Easily understandable )----------**Compact** ( Stylish i guess )
+>**Unique** *( Annoying to code )*----------**Simple** *( Easily understandable )*----------**Compact** *( Stylish i guess )*
 
-Yup! the banner says it all. Fozin launcher, even though it follows a **unique** user interface **i** tried to make it as **simple** and **compact** as possible. The app 
+Yup! the banner says it all. Fozin launcher, even though it follows a **unique** user interface **i** tried to make it as **simple** and **compact** as possible. The app still lacks a lot of funtionalities compared to other matured launcher apps out there and i know some may ask that why i haven't added this or that feature i don't have a good answer to that question cause the thing is i am still in the learning phase and i am still figuring things out so i really hope you will understand my reasons of why i made the app the way it is. Anyway with all that said and done why don't i tell you about what this app can really do...
+
+## Features of the app...( Version 0.0.F.S )
+
+1. You can take the backup of the .apk file of any installed app. Something like an in - built app & backup fetaure. Conveninent right :)
+
+2. There are two types of widgets you will find in the app - Installed widgets on the device & **SimpliC's** in - built widgets. What's the difference well    why don't you see for yourself. hehe
+
+3. You can customize **various** *( not to many though )* things like drawer app's list style, fozin's color themes, fon'ts style ets.
+
+4. Just like widget's there are two modes of fonts present in the app - SimpliC's mode & Normal mode. NOTE - font's mode is different from font's style.
+
+5. Fozin handles the wallpaper a bit differently it's a bit complicated to explain but i am sure you will be able to figure it out quite easily.
+
+6. Fozin does't uses any **animations** *( yes it's a fetaure )*. How? and why?. I believe animations to be resource hungry which can slow down the app on    lower end devices. Not every one has 8 gb ram device afterall.
+
+7. Well i don't think if it's a feature or not but fozin is very small in size maybe around 5 - 10 mb.
+
+Now now don't judge too soon. I know at this moment the list doesn't looks too appealing however i am **sure** *( reality - 75% hope )* that the list will become quite big as the time passes by.
+
+## Wanna know more about Fozin? Sure! here you go...
+
+**Version - 0.0.F.S**
