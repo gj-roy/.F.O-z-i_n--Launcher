@@ -1,6 +1,6 @@
 # SimpliC's .F.O-z-i_n Launcher
 
-![banner_j](https://user-images.githubusercontent.com/107284795/187282632-a7870b09-b413-4e29-a7a5-0024523c46d6.jpg)
+![banner_e](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_e.jpg)
 
 ## What's SimpliC?
 
