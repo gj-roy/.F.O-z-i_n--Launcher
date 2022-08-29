@@ -2,5 +2,5 @@ Hello there! (^o^)/ i am the developer of this app. What's my name? hmm... well 
 
 Playstore Link -
 
-![ScreenShot](https://raw.github.com/SimpliC-Developer/.F.O-z-i_n-Launcher-/main/20220829_215043.jpg)
-![background_2](https://user-images.githubusercontent.com/107284795/187255544-870200ae-6712-407e-a258-29acbe8ad90c.png)
+![20220829_215043](https://user-images.githubusercontent.com/107284795/187255870-9a29b489-3663-496f-9d89-c82b93cc6900.jpg)
+
