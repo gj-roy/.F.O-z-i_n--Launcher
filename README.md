@@ -16,3 +16,9 @@ Visit -
 
 ########[banner_b](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg)
 <img src="https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg" width="500" height="500">
+
+
+<img src="https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_c.jpg" width="500" height="500">
+
+
+<img src="https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_d.jpg" width="500" height="500">
