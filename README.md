@@ -17,8 +17,8 @@ Visit -
 ![banner_b](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg)
 
 **Unique** ( Annoying to code )
-**Simple** ( Easily understandable )
-**Compact** ( Stylish i guess )
-**-\(*o*)/-**
+\n**Simple** ( Easily understandable )
+\n**Compact** ( Stylish i guess )
+\n**-\(*o*)/-**
 
 Yup! the banner says it all. Fozin launcher, even though it follows a **unique** user interface **i** tried to make it as **simple** and **compact** as possible. The app 
