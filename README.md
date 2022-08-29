@@ -14,4 +14,4 @@ Visit -
 
 ## About the app...
 
-![banner_a](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_a.jpg)
+![banner_b](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg)
