@@ -22,7 +22,7 @@ Yup! the banner says it all. Fozin launcher, even though it follows a **unique**
 
 ## Features of the app...( Version 0.0.F.S )
 
-1. You can take the backup of the .apk file of any installed app. Something like an in - built app & backup fetaure. Conveninent right :)
+1. You can take the backup of the .apk file of any installed app. Something like an in - built app & backup fetaure. Convenient right :)
 
 2. There are two types of widgets you will find in the app - Installed widgets on the device & **SimpliC's** in - built widgets. What's the difference well    why don't you see for yourself. hehe
 
