@@ -16,4 +16,9 @@ Visit -
 
 ![banner_b](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg)
 
-Yup! the banner says it all. Fozin launcher, even though it follows a **unique**(annoying to code) user interface **i** tried to make it as **simple**(easily understanda) and **compact**(stylish i guess) as possible.
+> **Unique** ( Annoying to code )
+> **Simple** ( Easily understandable )
+> **Compact** ( Stylish i guess )
+> -\(*o*)/-
+
+Yup! the banner says it all. Fozin launcher, even though it follows a **unique** user interface **i** tried to make it as **simple** and **compact** as possible. The app 
