@@ -46,12 +46,12 @@ Now now don't judge too soon. I know at this moment the list doesn't looks too a
 
 ## Wanna know more about Fozin? Sure! here you go...
 
-1. **Version - 0.0.F.S**  *( F means Fozin & S means SimpliC )*
-2. **Codename - The Nest**  *( Based after a comfy bird's nest )*
-3. **Maintainer - ∆×••⟨[]⟩**  *( Runaway alien from area 51 )*
-4. **Developers - SimpliC**  *( My current alias... YEAH! )*
-5. **Minimum android version - 5.1 Lollipop**  *( Yup! it really won't work below this )*
-6. **Maximum android version - 11**  *( Again won't work if the android is above 11 )*
-7. **App size - 5 mb**  *( May change in future )*
-8. **Permissions needed - STOREAGE Read / Write**  *( Not necessary to grant if you want to use the app )*
+- **Version - 0.0.F.S**  *( F means Fozin & S means SimpliC )*
+- **Codename - The Nest**  *( Based after a comfy bird's nest )*
+- **Maintainer - ∆×••⟨[]⟩**  *( Runaway alien from area 51 )*
+- **Developers - SimpliC**  *( My current alias... YEAH! )*
+- **Minimum android version - 5.1 Lollipop**  *( Yup! it really won't work below this )*
+- **Maximum android version - 11**  *( Again won't work if the android is above 11 )*
+- **App size - 5 mb**  *( May change in future )*
+- **Permissions needed - STOREAGE Read / Write**  *( Not necessary to grant if you want to use the app )*
 
