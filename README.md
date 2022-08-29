@@ -40,8 +40,8 @@ Now now don't judge too soon. I know at this moment the list doesn't looks too a
 
 ## Wanna know more about Fozin? Sure! here you go...
 
-^**Version - 0.0.F.S**  *( F means Fozin & S means SimpliC )*
-^**Codename - The Nest**  *( Based after a comfy bird's nest )*
+[^]**Version - 0.0.F.S**  *( F means Fozin & S means SimpliC )*
+[^]**Codename - The Nest**  *( Based after a comfy bird's nest )*
 ^**Maintainer - ∆×••⟨[]⟩**  *( Runaway alien from area 51 )*
 ^**Developers - SimpliC**  *( My current alias... YEAH! )*
 ^**Minimum android version - 5.1 Lollipop**  *( Yup! it really won't work below this )*
