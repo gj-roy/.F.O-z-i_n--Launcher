@@ -4,3 +4,4 @@ Playstore Link -
 
 ![20220829_215043](https://user-images.githubusercontent.com/107284795/187255870-9a29b489-3663-496f-9d89-c82b93cc6900.jpg)
 
+![banner_j](https://user-images.githubusercontent.com/107284795/187282632-a7870b09-b413-4e29-a7a5-0024523c46d6.jpg)
