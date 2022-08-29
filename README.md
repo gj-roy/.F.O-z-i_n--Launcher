@@ -1,4 +1,4 @@
-# [-----------------------<  SimpliC's .F.O-z-i_n Launcher  >-----------------------]
+# [----------------------<  SimpliC's .F.O-z-i_n Launcher  >----------------------]
 
 ![banner_e](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_e.jpg)
 
