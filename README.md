@@ -1,4 +1,4 @@
-#SimpliC's .F.O-z-i_n Launcher
+# SimpliC's .F.O-z-i_n Launcher
 
 ![banner_j](https://user-images.githubusercontent.com/107284795/187282632-a7870b09-b413-4e29-a7a5-0024523c46d6.jpg)
 
