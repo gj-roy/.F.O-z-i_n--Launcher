@@ -63,3 +63,7 @@ Now then what do you think? Wanna give **Fozin** a try? Hehe oh well i won't pes
 - **Android Version -** *( your current android version )*
 - **Bug Encountered -** *( try to keep it short. eg - drawer crashed when i pressed on refresh button )*
 - **Message -** *( if you want to say something you can say it here )* 
+
+NOTE - If you can attach the logcat file than it would help me much more *( around 90% )* then simply telling me abbout the bug in the message. Currently fozin cannot take the logcat on it's own so you will have to use other apps or much better a pc to do it. How? u-um for that you can just search on the internet.
+
+## •/]>  Closing Words...
