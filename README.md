@@ -34,9 +34,15 @@ Yup! the banner says it all. Fozin launcher, even though it follows a **unique**
 
 6. Fozin does't uses any **animations** *( yes it's a fetaure )*. How? and why?. I believe animations to be resource hungry which can slow down the app on    lower end devices. Not every one has 8 gb ram device afterall.
 
-7. Well i don't think if it's a feature or not but fozin is very small in size maybe around 5 - 10 mb.
+7. SimpliC uses something called status it's basically what it sounds like. Status shows you some details about the device eg - battery, wifi etc. NOTE -      Status is different from the widgets;
+
+8. Well i don't think if it's a feature or not but fozin is very small in size maybe around 5 - 10 mb.
 
 Now now don't judge too soon. I know at this moment the list doesn't looks too appealing however i am **sure** *( reality - 75% hope )* that the list will become quite big as the time passes by.
+
+## A picture of the app while in use...( HOME Screen )
+
+![banner_k](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_k.jpg)
 
 ## Wanna know more about Fozin? Sure! here you go...
 
