@@ -42,7 +42,7 @@ Now now don't judge too soon. I know at this moment the list doesn't looks too a
 
 ## A picture of the app while in use...( HOME Screen )
 
-![banner_f](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_f.jpg)
+![banner_f](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_f.png)
 
 ## Wanna know more about Fozin? Sure! here you go...
 
