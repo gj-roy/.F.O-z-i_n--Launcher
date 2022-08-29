@@ -14,7 +14,7 @@ Visit -
 
 ## •/]> About the app...
 
-![banner_b](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_b.jpg)
+![banner_g](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_g.jpg)
 
 >**Unique** *( Annoying to code )*----------**Simple** *( Easily understandable )*----------**Compact** *( Stylish i guess )*
 
@@ -42,7 +42,7 @@ Now now don't judge too soon. I know at this moment the list doesn't looks too a
 
 ## •/]> A picture of the app while in use...( HOME Screen )
 
-![banner_f](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_f.png)
+![banner_f](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_f.jpg)
 
 ## •/]> Wanna know more about Fozin? Sure! here you go...
 
