@@ -2,7 +2,7 @@
 
 ![banner_e](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_e.jpg)
 
-## [-•] What's SimpliC?
+## •/]> What's SimpliC?
 
 So you wanna know what's simplic? Well it's not somethings grand like a big brand or anything hehe cough*. Just think of it as some thing like the name of a website or just a project's parent folder. I hope it makes things a bit clear.
 
