@@ -941,7 +941,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
             if(android.os.Build.VERSION.SDK_INT >= 21 && android.os.Build.VERSION.SDK_INT <= 30){
 
-                if(BuildConfig.VERSION_CODE == 1 && BuildConfig.VERSION_NAME.equals("TheNest")){
+                if(BuildConfig.VERSION_CODE == 1 && BuildConfig.VERSION_NAME.equals(textB(101))){
                     try {
                         if(getPackageManager().getApplicationInfo(textB(99), 0).loadLabel(getPackageManager()).equals("Fozin")){
 

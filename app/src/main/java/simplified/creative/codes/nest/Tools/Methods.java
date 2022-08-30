@@ -118,7 +118,7 @@ public class Methods {
         if(value == 14)
             return "App Name - Fozin";
         if(value == 15)
-            return "App Version - 0.1";
+            return "App Version - " + textB(101);
         if(value == 16)
             return "App Codename - The Nest";
         if(value == 17)
@@ -334,6 +334,8 @@ public class Methods {
             return "simplified.creative.codes.nest";
         if(value == 100)
             return "AF6E5CAEA1A45DF388E2D5B3E80AF1F76D5108D7";
+        if(value == 101)
+            return "0.0.F.S";
         return "";
     }
 
