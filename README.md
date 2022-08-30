@@ -63,14 +63,14 @@ Lets leave that on fate :)
 
 ## •/]> A bit of your help...( pwease )
 
-Now then what do you think? Wanna give **Fozin** a try? Hehe oh well i won't pester you okay. However in case you do decide to try out the app there is something i might need your help with. And no i am not talking about weird things like donations, coffee cup or whatnot. The thing is as i have mentioned before from time to time i work alone as an indie dev *( alright fine! just started )*. So because of that and because of **Fozin's** blessed **ui** it's a headache to keep the track of bugs. I did try to make sure there are as less bugs as possible however let's be real there is noting called a bug free or a hack proof software *( app in this case )*. My point is you may encounter some bugs which i might not be aware of and as i have said before *( 1st paragraph )* i would really appreciate it if you can provide me with a bit of your assistance on that part. How? well you can tell me about it here on github or on my gamil. What? pfft well obviously about the **bug**. But please be elegant about how you tell me that. Okay incase you woint pointers here's a small template....
+Now then what do you think? Wanna give **Fozin** a try? Hehe oh well i won't pester you okay. However in case you do decide to try out the app there is something i might need your help with. And no i am not talking about weird things like donations, coffee cup or whatnot. The thing is as i have mentioned before from time to time i work alone as an indie dev *( alright fine! just started )*. So because of that and because of **Fozin's** blessed **ui** it's a headache to keep the track of bugs. I did try to make sure there are as less bugs as possible however let's be real there is noting called a bug free or a hack proof software *( app in this case )*. My point is you may encounter some bugs which i might not be aware of and as i have said before *( 1st paragraph )* i would really appreciate it if you can provide me with a bit of your assistance on that part. How? well you can tell me about it here on github or on my gamil. What? pfft well obviously about the **bug**. But please be elegant about how you tell me that. Incase you want pointers here's a small template....
 
 - **Device Name -** *( model name + brand name )*
 - **Android Version -** *( your current android version )*
 - **Bug Encountered -** *( try to keep it short. eg - drawer crashed when i pressed on refresh button )*
 - **Message -** *( if you want to say something you can say it here )* 
 
-NOTE - If you can attach the logcat file than it would help me much more *( around 90% )* then simply telling me abbout the bug in the message. Currently fozin cannot take the logcat on it's own so you will have to use other apps or much better a pc to do it. How? u-um for that you can just search on the internet.
+NOTE - If you can attach the logcat file than it would help me much more *( around 90% )* then simply telling me about the bug in the message. Currently fozin cannot take the logcat on it's own so you will have to use other apps or much better a pc to do it. How? u-um for that you can just search on the internet.
 
 ## •/]>  Closing Words...
 
