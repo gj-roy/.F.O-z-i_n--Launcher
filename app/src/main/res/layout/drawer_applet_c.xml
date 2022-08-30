@@ -92,4 +92,65 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+            android:layout_marginStart="-25dp"
+            android:layout_toEndOf="@+id/drawer_applet_c_angle"
+            android:layout_centerInParent="true"
+            android:id="@+id/drawer_applet_c_frame_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <RelativeLayout
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/drawer_applet_c_frame_7"
+                android:layout_width="60dp"
+                android:layout_height="60dp">
+
+            <ImageView
+                    android:layout_centerInParent="true"
+                    android:id="@+id/drawer_applet_c_icon_5"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"/>
+
+        </RelativeLayout>
+
+        <TextView
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/drawer_applet_c_frame_7"
+                android:layout_marginTop="35dp"
+                android:layout_alignParentTop="true"
+                android:id="@+id/drawer_applet_c_text_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"/>
+
+        <ScrollView
+                android:layout_below="@+id/drawer_applet_c_frame_7"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:overScrollMode="never"
+                android:id="@+id/drawer_applet_c_scroll_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+            <TextView
+                    android:textAlignment="center"
+                    android:id="@+id/drawer_applet_c_text_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"/>
+        </ScrollView>
+
+    </RelativeLayout>
+
 </RelativeLayout>

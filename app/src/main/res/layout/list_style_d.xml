@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/list_type_e"
+                android:id="@+id/list_style_d"
                 android:orientation="horizontal">
 
     <ImageView
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
             android:layout_alignParentStart="true"
-            android:id="@+id/list_type_f_icon"
+            android:id="@+id/list_style_d_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"/>
 
@@ -19,8 +19,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:layout_marginTop="20dp"
-            android:layout_toEndOf="@+id/list_type_f_icon"
-            android:id="@+id/list_type_f_text_1"
+            android:layout_toEndOf="@+id/list_style_d_icon"
+            android:id="@+id/list_style_d_text_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"/>
@@ -31,8 +31,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="5dp"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/list_type_f_icon"
-            android:id="@+id/list_type_f_text_2"
+            android:layout_below="@+id/list_style_d_icon"
+            android:id="@+id/list_style_d_text_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"/>

@@ -29,7 +29,7 @@
         <RelativeLayout
                 android:layout_marginStart="-5dp"
                 android:layout_alignParentStart="true"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
                 android:layout_below="@+id/drawer_tiles_frame_1"
                 android:id="@+id/drawer_tiles_frame_2"
                 android:layout_width="80dp"
@@ -46,14 +46,15 @@
         </RelativeLayout>
 
         <RelativeLayout
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/drawer_tiles_frame_2"
                 android:gravity="center"
                 android:id="@+id/drawer_tiles_frame_3"
                 android:layout_width="50dp"
-                android:layout_height="100dp">
+                android:layout_height="200dp">
 
             <ScrollView
                     android:layout_marginBottom="10dp"

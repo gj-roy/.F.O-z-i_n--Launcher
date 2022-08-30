@@ -67,6 +67,12 @@ public class Methods {
             return "(#, A..)";
         if(value == 15)
             return "••";
+        if(value == 16)
+            return "...";
+        if(value == 17)
+            return "⟩>";
+        if(value == 18)
+            return "<[]";
         return "";
     }
 
@@ -109,7 +115,6 @@ public class Methods {
                     " i wanna give it a shot. Anyways enough talking about me. I will appreciate it a lot if you can tell me any suggestions you have or" +
                     " if you experienced any problems while using this app. (^ ^) That's all for now. Oh!! right, also Thanks for using Fozin Launcher. So See you around" +
                     " until next time...";
-
         if(value == 14)
             return "App Name - Fozin";
         if(value == 15)
@@ -127,7 +132,7 @@ public class Methods {
         if(value == 21)
             return "Maintainer - ∆×••⟨[]⟩";
         if(value == 22)
-            return "So you want to know what are the things this app can do. Oh! well, that's a SECRET ;)";
+            return "So you want to know what are the things this app can do. Oh! well, that's a SECRET ;) Yup! not gonna tell.";
         if(value == 23)
             return "• Storage permission is needed for creating apk backups. So if" +
                     " you don't want to you can just disable the storage permissions. However in return you won't be" +
@@ -155,7 +160,7 @@ public class Methods {
         if(value == 34)
             return "What do you wanna do about navigation bar. Show or Hide.";
         if(value == 35)
-            return "Well then, what do you want to see first after opening the settings screen. [ Restart ] needed. ";
+            return "Well then, what do you want to see first after opening the settings screen. NOTE - Auto means the last opened tab will be shown. ";
         if(value == 36)
             return "Guess what! you can also change the list styles of settings tabs. Surprised right?.";
         if(value == 37)
@@ -224,9 +229,10 @@ public class Methods {
         if(value == 67)
             return "NOTE - Selecting this option will show the current device wallpaper on the wallpaper panel.";
         if(value == 68)
-            return "Your current options, take your pick...";
+            return "Your current options, take your pick... NOTE - To enable / disable a wallpaper just tap on it.";
         if(value == 69)
-            return "The device wallpaper mode has already been enabled so there is no need to enable it again.";
+            return "The device wallpaper mode has already been enabled so there is no need to enable it again. NOTE - You can disable it " +
+                    "from the wallpaper panel on home screen.";
         if(value == 70)
             return "As you can see folder is disabled ( Hidden ) right now, so adding and removing apps is not possible unless you enable it back on.";
         if(value == 71)
@@ -261,6 +267,73 @@ public class Methods {
             return "Ahem!, well i know it sounds weird but to see the device wallpaper you have to grant STORAGE permission first. And" +
                     " the reason you are seeing this message cause the app doesn't have that permission yet. So WHY? do you need that" +
                     " permission oh well i don't know either. Sigh* complicated stuff.";
+        if(value == 83)
+            return "U-um Hi! ... huh? no response? well that's no fun. Hehe. Alright i won't beat around the bush. So the thing is, as the" +
+                    " name suggests backup it means it will take the backup of the selected app in the apk format. And to do that the app needs" +
+                    " read and write STORAGE permission. If you won't grant the app that permission than you can't use this feature.";
+        if(value == 84)
+            return "simplicdeveloper2062@gmail.com";
+        if(value == 85)
+            return "(^o^)/ Over Here...";
+        if(value == 86)
+            return "Is something wrong (*.*)...";
+        if(value == 87)
+            return "https://github.com/SimpliC-Developer";
+        if(value == 88)
+            return "Welcome";
+        if(value == 89)
+            return "To";
+        if(value == 90)
+            return "Launcher";
+        if(value == 91)
+            return "Next.....";
+        if(value == 92)
+            return "Simplified Creative Codes";
+        if(value == 93)
+            return "Version ------------------------- 1.0";
+        if(value == 94)
+            return "Hi there! (^o^)/ it's me the developer of this app. Now i know this isn't the right place to say this but first" +
+                    " of all i am really happy that you decided to give this app a shot. And i am thankful for that. I know that you" +
+                    " are in rush to try out the app so i will keep this intro short...\n"+
+                    "\n1. Here's the thing you don't need to grant the app some kind of special permission to use it, however there are" +
+                    " some feature which use specific permissions so to use those features the app will remind you to grant it at" +
+                    " that moment.\n" +
+                    "\n2. There isn't any special terms and conditions for the app at this moment however if i feel like adding it than" +
+                    " you might find them in the future updates.\n" +
+                    "\n3. Custom apps like these are a bit annoying to make which follows the different ui than other apps so there might" +
+                    " be some bugs which i may not be aware of in that case if you do encounter some app breaking bug than i would" +
+                    " appreciate it if you could let me know by github or email.\n" +
+                    "\n4. This app is totally free so you don't have to worry about ads or in - app purchases.\n" +
+                    "\nAnd that's all for now thanks for bearing with me and reading through it. I hope you will love the app. Now then go" +
+                    " ahead!";
+        if(value == 95)
+            return "Now you can press this button to end the setup and launch the home screen.";
+        if(value == 96)
+            return "Drawer Button";
+        if(value == 97)
+            return "Settings Button";
+        if(value == 98)
+            return "Okay so u-um please don't panic and listen to me carefully, it seems like there are somethings which doesn't add" +
+                    " up here. What i mean is that somethings or in technical term some configurations which the app was expecting" +
+                    " were different on your device so that's the reason you cannot proceed any further. I am really sorry for this" +
+                    " but i have to confirm somethings...\n" +
+                    "\n1. Is your android version below lollipop or above android 11? Cause at this moment only the android versions" +
+                    " from lollipop to android 11 are supported.\n" +
+                    "\n2. Did you download the app from the internet? Cause in that case i would recommend you to download it only from" +
+                    " either the play store or my github repo.\n" +
+                    "\nif you are sure that there weren't any problem from your side eg- before the app was working but suddenly now" +
+                    " you are seeing this message than in that case please send me a email or tell me on the github and i will look into" +
+                    " it. How? and What? you should tell? well here is an example...\n" +
+                    "\n1. Device Name - \n" +
+                    "\n2. Android Version - \n" +
+                    "\n3. App Version - \n" +
+                    "\n4. Message - (if you want to say something)\n" +
+                    "\nAnd that's all i hope you will follow this format it will make things a lot easier for me. Once again i am truly" +
+                    " sorry for this, so for now if you want you can uninstall the app from the above button. It's fine no problem at all. :)";
+        if(value == 99)
+            return "simplified.creative.codes.nest";
+        if(value == 100)
+            return "AF6E5CAEA1A45DF388E2D5B3E80AF1F76D5108D7";
         return "";
     }
 
@@ -721,6 +794,30 @@ public class Methods {
             } else {
                 return "Permissions";
             }
+        if(value == 76)
+            if(fontAMode.equals("SimpliC")){
+                return "de.ve_lo-pe/R   ./NOTES";
+            } else {
+                return "Developer Notes";
+            }
+        if(value == 77)
+            if(fontAMode.equals("SimpliC")){
+                return "/A.ll_   D.o-n_E..";
+            } else {
+                return "All Done...";
+            }
+        if(value == 78)
+            if(fontAMode.equals("SimpliC")){
+                return "T-i_p/s...";
+            } else {
+                return "Tips...";
+            }
+        if(value == 79)
+            if(fontAMode.equals("SimpliC")){
+                return "L--oA/d_ing";
+            } else {
+                return "Loading";
+            }
         return "";
     }
 
@@ -846,6 +943,8 @@ public class Methods {
             return R.drawable.icon_59;
         if (value == 60)
             return R.drawable.icon_60;
+        if (value == 61)
+            return R.drawable.icon_61;
         return 0;
     }
 
@@ -998,22 +1097,11 @@ public class Methods {
         }
     }
 
-    public static void imageTypeD(Context context, ImageView imageView, Drawable drawable, int dimen) {
+    public static void imageTypeD(ImageView imageView, Drawable drawable, int dimen) {
         Bitmap source = (((BitmapDrawable) drawable).getBitmap());
         Bitmap bitmap = Bitmap.createScaledBitmap(source, dimen, dimen, true);
         source.recycle();
         imageView.setImageBitmap(bitmap);
-    }
-
-    public static void customTypeA(Context context, SeekBar bar, int color, int progress){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            bar.getProgressDrawable().setColorFilter(new BlendModeColorFilter(ContextCompat.getColor(context, color), BlendMode.SRC_ATOP));
-            bar.getThumb().setColorFilter(new BlendModeColorFilter(ContextCompat.getColor(context, color), BlendMode.SRC_ATOP));
-        } else {
-            bar.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_ATOP);
-            bar.getThumb().setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_ATOP);
-        }
-        bar.setMax(progress);
     }
 
     public static void customTypeB(Context context, EditText editText, String hint, int color, int style){
@@ -1023,7 +1111,11 @@ public class Methods {
         editText.setTypeface(null, style);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            drawableTintColor(context, editText.getTextCursorDrawable(), color);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                editText.getTextCursorDrawable().setColorFilter(new BlendModeColorFilter(ContextCompat.getColor(context, color), BlendMode.SRC_ATOP));
+            } else {
+                editText.getTextCursorDrawable().setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_ATOP);
+            }
         } else {
             try {
                 Field field = TextView.class.getDeclaredField("mCursorDrawableRes");
@@ -1059,7 +1151,7 @@ public class Methods {
         return out;
     }
 
-    public static void layoutParamsTypeA(Context context, View view, int[] params){
+    public static void layoutParamsTypeA(View view, int[] params){
         if(view != null){
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
             for (int i = 0; i < layoutParams.getRules().length; i++) {
@@ -1073,7 +1165,7 @@ public class Methods {
         }
     }
 
-    public static void layoutParamsTypeB(Context context, View view, int[] params, int direction, int id){
+    public static void layoutParamsTypeB(View view, int[] params, int direction, int id){
         if(view != null){
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
             for (int i = 0; i < layoutParams.getRules().length; i++) {
@@ -1088,7 +1180,7 @@ public class Methods {
         }
     }
 
-    public static void layoutParamsTypeC(Context context, View view, int[] params, int direction_a, int id_a, int direction_b, int id_b){
+    public static void layoutParamsTypeC(View view, int[] params, int direction_a, int id_a, int direction_b, int id_b){
         if(view != null){
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
             for (int i = 0; i < layoutParams.getRules().length; i++) {
@@ -1100,23 +1192,6 @@ public class Methods {
                 }
             layoutParams.addRule(direction_a, id_a);
             layoutParams.addRule(direction_b, id_b);
-            view.setLayoutParams(layoutParams);
-        }
-    }
-
-    public static void layoutParamsTypeD(Context context, View view, int[] params, int direction_a, int id_a, int direction_b, int id_b, int direction_c, int id_c){
-        if(view != null){
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-            for (int i = 0; i < layoutParams.getRules().length; i++) {
-                layoutParams.removeRule(i);
-            }
-            if(params != null)
-                for (int i : params) {
-                    layoutParams.addRule(i);
-                }
-            layoutParams.addRule(direction_a, id_a);
-            layoutParams.addRule(direction_b, id_b);
-            layoutParams.addRule(direction_c, id_c);
             view.setLayoutParams(layoutParams);
         }
     }
@@ -1126,7 +1201,7 @@ public class Methods {
         marginParams.setMargins(density(context, start), density(context, top), density(context, end), density(context, bottom));
     }
 
-    public static void setSize(Context context, View view, int width, int height){
+    public static void setSize(View view, int width, int height){
         view.getLayoutParams().width = width;
         view.getLayoutParams().height = height;
         view.requestLayout();
@@ -1197,12 +1272,12 @@ public class Methods {
         if(state){
             imageView.setAlpha(1.0f);
             imageTypeB(context, imageView, background(4), ui);
-            layoutParamsTypeA(context, imageView, new int[]{direction(2), direction(5)});
+            layoutParamsTypeA(imageView, new int[]{direction(2), direction(5)});
             setMargins(context, imageView, 0, 0, 5, 0);
         } else {
             imageView.setAlpha(.5f);
             imageTypeB(context, imageView, background(4), ui);
-            layoutParamsTypeA(context, imageView, new int[]{direction(2), direction(6)});
+            layoutParamsTypeA(imageView, new int[]{direction(2), direction(6)});
             setMargins(context, imageView, 0, 0, 0, 5);
         }
     }
@@ -1240,10 +1315,6 @@ public class Methods {
         return context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName;
     }
 
-    public static void appName(Context context, TextView textView, String appPackage){
-        textView.setText(appLabel(context, appPackage));
-    }
-
     public static String appLabel(Context context, String string){;
         try {
             return (String) context.getPackageManager().getApplicationInfo(string, 0).loadLabel(context.getPackageManager());
@@ -1253,19 +1324,11 @@ public class Methods {
         return "";
     }
 
-    public static void appIcon(Context context, ImageView imageView, String appPackage, int dimen){
+    public static Bitmap appIcon(Context context, String appPackage, int dimen){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            imageView.setImageBitmap(roundedBitmap(adaptiveIcon(context, appPackage, dimen)));
+            return roundedBitmap(adaptiveIcon(context, appPackage, dimen));
         } else {
-            imageView.setImageBitmap(roundedBitmap(drawableIcon(context, appPackage, dimen)));
-        }
-    }
-
-    public static void drawableTintColor(Context context, Drawable drawable, int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            drawable.setColorFilter(new BlendModeColorFilter(ContextCompat.getColor(context, color), BlendMode.SRC_ATOP));
-        } else {
-            drawable.setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_ATOP);
+            return roundedBitmap(drawableIcon(context, appPackage, dimen));
         }
     }
 
@@ -1391,12 +1454,7 @@ public class Methods {
 
     public static void touchVibrate(Context context, View view){
         view.setAlpha(1.0f);
-        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-            vibrator.vibrate(100);
-        }
+        vibrate(context);
     }
 
     public static void touchStop(View view){
@@ -1412,6 +1470,15 @@ public class Methods {
             try {
                 onTouchHandler.removeCallbacks(onTouchRunnable);
             } catch (Exception e){}
+        }
+    }
+
+    public static void vibrate(Context context){
+        Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(100);
         }
     }
 
@@ -1481,16 +1548,8 @@ public class Methods {
         return readValues;
     }
 
-    public static void create(Context context, String folderName, String fileName, String value){
-        File folder = new File(context.getFilesDir(), folderName);
-        File file = new File(context.getFilesDir(), folderName + fileName);
-
-        if(!folder.getName().isEmpty()){
-            if(!fileExist(context, folderName)) {
-                folder.mkdirs();
-            }
-        }
-
+    public static void create(Context context, String fileName, String value){
+        File file = new File(context.getFilesDir(), fileName);
         try {
             FileWriter writer = new FileWriter(file,true);
             writer.write(value + "\r\n");
