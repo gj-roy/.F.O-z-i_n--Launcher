@@ -53,6 +53,14 @@ Now now don't judge too soon. I know at this moment the list doesn't looks too a
 - **App size - 5 mb**  *( May change in future )*
 - **Permissions needed - STOREAGE Read / Write**  *( Not necessary to grant if you want to use the app )*
 
+## •/]> About the source...
+
+Okay so as you can see **Fozin** is an open - source project. So in other words if you want you can download the source code and make you own version of the app. How to do it? well you can just clone the repo using \"git clone https://github.com/SimpliC-Developer/.F.O-z-i_n-Launcher- -b main"\ or just download the \"Fozin Source.zip"\ from the releases page. Then you are good to go. However please don't forget to include the **LICENSE** file in your custom version of **Fozin**. To make things a bit easier, the app uses Apache - 2.0 license. The app doesn't needs any special development environment. You can just use android studio or intellij idea or whatever suits your preferences for it.
+
+## •/]> About contributing, pull - request etc...
+
+Lets leave that on fate :)
+
 ## •/]> A bit of your help...( pwease )
 
 Now then what do you think? Wanna give **Fozin** a try? Hehe oh well i won't pester you okay. However in case you do decide to try out the app there is something i might need your help with. And no i am not talking about weird things like donations, coffee cup or whatnot. The thing is as i have mentioned before from time to time i work alone as an indie dev *( alright fine! just started )*. So because of that and because of **Fozin's** blessed **ui** it's a headache to keep the track of bugs. I did try to make sure there are as less bugs as possible however let's be real there is noting called a bug free or a hack proof software *( app in this case )*. My point is you may encounter some bugs which i might not be aware of and as i have said before *( 1st paragraph ) i would really appreciate it if you can provide me with a bit of your assistance on that part. How? well you can tell me about it here on github or on my gamil. What? pfft well obviously about the **bug**. But please be elegant about how you tell me that. Okay incase you woint pointers here's a small template....
