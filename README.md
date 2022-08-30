@@ -38,7 +38,7 @@ Yup! the banner says it all. Fozin launcher, even though it follows a **unique**
 
 Now now don't judge too soon. I know at this moment the list doesn't looks too appealing however i am **sure** *( reality - 75% hope )* that the list will become quite big as the time passes by.
 
-## •/]> A picture of the app while in use...( HOME Screen )
+## •/]> A picture of the app while in use...( -H.O/M.E- Screen )
 
 ![banner_f](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_f.jpg)
 
