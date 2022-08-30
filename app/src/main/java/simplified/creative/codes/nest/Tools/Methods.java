@@ -812,6 +812,12 @@ public class Methods {
             } else {
                 return "Tips...";
             }
+        if(value == 79)
+            if(fontAMode.equals("SimpliC")){
+                return "L--oA/d_ing";
+            } else {
+                return "Loading";
+            }
         return "";
     }
 
@@ -937,6 +943,8 @@ public class Methods {
             return R.drawable.icon_59;
         if (value == 60)
             return R.drawable.icon_60;
+        if (value == 61)
+            return R.drawable.icon_61;
         return 0;
     }
 
@@ -1089,22 +1097,11 @@ public class Methods {
         }
     }
 
-    public static void imageTypeD(Context context, ImageView imageView, Drawable drawable, int dimen) {
+    public static void imageTypeD(ImageView imageView, Drawable drawable, int dimen) {
         Bitmap source = (((BitmapDrawable) drawable).getBitmap());
         Bitmap bitmap = Bitmap.createScaledBitmap(source, dimen, dimen, true);
         source.recycle();
         imageView.setImageBitmap(bitmap);
-    }
-
-    public static void customTypeA(Context context, SeekBar bar, int color, int progress){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            bar.getProgressDrawable().setColorFilter(new BlendModeColorFilter(ContextCompat.getColor(context, color), BlendMode.SRC_ATOP));
-            bar.getThumb().setColorFilter(new BlendModeColorFilter(ContextCompat.getColor(context, color), BlendMode.SRC_ATOP));
-        } else {
-            bar.getProgressDrawable().setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_ATOP);
-            bar.getThumb().setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_ATOP);
-        }
-        bar.setMax(progress);
     }
 
     public static void customTypeB(Context context, EditText editText, String hint, int color, int style){
@@ -1114,7 +1111,11 @@ public class Methods {
         editText.setTypeface(null, style);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            drawableTintColor(context, editText.getTextCursorDrawable(), color);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                editText.getTextCursorDrawable().setColorFilter(new BlendModeColorFilter(ContextCompat.getColor(context, color), BlendMode.SRC_ATOP));
+            } else {
+                editText.getTextCursorDrawable().setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_ATOP);
+            }
         } else {
             try {
                 Field field = TextView.class.getDeclaredField("mCursorDrawableRes");
@@ -1150,7 +1151,7 @@ public class Methods {
         return out;
     }
 
-    public static void layoutParamsTypeA(Context context, View view, int[] params){
+    public static void layoutParamsTypeA(View view, int[] params){
         if(view != null){
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
             for (int i = 0; i < layoutParams.getRules().length; i++) {
@@ -1164,7 +1165,7 @@ public class Methods {
         }
     }
 
-    public static void layoutParamsTypeB(Context context, View view, int[] params, int direction, int id){
+    public static void layoutParamsTypeB(View view, int[] params, int direction, int id){
         if(view != null){
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
             for (int i = 0; i < layoutParams.getRules().length; i++) {
@@ -1179,7 +1180,7 @@ public class Methods {
         }
     }
 
-    public static void layoutParamsTypeC(Context context, View view, int[] params, int direction_a, int id_a, int direction_b, int id_b){
+    public static void layoutParamsTypeC(View view, int[] params, int direction_a, int id_a, int direction_b, int id_b){
         if(view != null){
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
             for (int i = 0; i < layoutParams.getRules().length; i++) {
@@ -1191,23 +1192,6 @@ public class Methods {
                 }
             layoutParams.addRule(direction_a, id_a);
             layoutParams.addRule(direction_b, id_b);
-            view.setLayoutParams(layoutParams);
-        }
-    }
-
-    public static void layoutParamsTypeD(Context context, View view, int[] params, int direction_a, int id_a, int direction_b, int id_b, int direction_c, int id_c){
-        if(view != null){
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-            for (int i = 0; i < layoutParams.getRules().length; i++) {
-                layoutParams.removeRule(i);
-            }
-            if(params != null)
-                for (int i : params) {
-                    layoutParams.addRule(i);
-                }
-            layoutParams.addRule(direction_a, id_a);
-            layoutParams.addRule(direction_b, id_b);
-            layoutParams.addRule(direction_c, id_c);
             view.setLayoutParams(layoutParams);
         }
     }
@@ -1217,7 +1201,7 @@ public class Methods {
         marginParams.setMargins(density(context, start), density(context, top), density(context, end), density(context, bottom));
     }
 
-    public static void setSize(Context context, View view, int width, int height){
+    public static void setSize(View view, int width, int height){
         view.getLayoutParams().width = width;
         view.getLayoutParams().height = height;
         view.requestLayout();
@@ -1288,12 +1272,12 @@ public class Methods {
         if(state){
             imageView.setAlpha(1.0f);
             imageTypeB(context, imageView, background(4), ui);
-            layoutParamsTypeA(context, imageView, new int[]{direction(2), direction(5)});
+            layoutParamsTypeA(imageView, new int[]{direction(2), direction(5)});
             setMargins(context, imageView, 0, 0, 5, 0);
         } else {
             imageView.setAlpha(.5f);
             imageTypeB(context, imageView, background(4), ui);
-            layoutParamsTypeA(context, imageView, new int[]{direction(2), direction(6)});
+            layoutParamsTypeA(imageView, new int[]{direction(2), direction(6)});
             setMargins(context, imageView, 0, 0, 0, 5);
         }
     }
@@ -1331,10 +1315,6 @@ public class Methods {
         return context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY).activityInfo.packageName;
     }
 
-    public static void appName(Context context, TextView textView, String appPackage){
-        textView.setText(appLabel(context, appPackage));
-    }
-
     public static String appLabel(Context context, String string){;
         try {
             return (String) context.getPackageManager().getApplicationInfo(string, 0).loadLabel(context.getPackageManager());
@@ -1349,14 +1329,6 @@ public class Methods {
             return roundedBitmap(adaptiveIcon(context, appPackage, dimen));
         } else {
             return roundedBitmap(drawableIcon(context, appPackage, dimen));
-        }
-    }
-
-    public static void drawableTintColor(Context context, Drawable drawable, int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            drawable.setColorFilter(new BlendModeColorFilter(ContextCompat.getColor(context, color), BlendMode.SRC_ATOP));
-        } else {
-            drawable.setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_ATOP);
         }
     }
 
@@ -1574,26 +1546,6 @@ public class Methods {
             reader.close();
         } catch (Exception e){}
         return readValues;
-    }
-
-    public static void createA(Context context, String folderName, String fileName, String value){
-        File folder = new File(context.getFilesDir(), folderName);
-        File file = new File(context.getFilesDir(), folderName + fileName);
-
-        if(!folder.getName().isEmpty()){
-            if(!fileExist(context, folderName)) {
-                folder.mkdirs();
-            }
-        }
-
-        try {
-            FileWriter writer = new FileWriter(file,true);
-            writer.write(value + "\r\n");
-            writer.flush();
-            writer.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public static void create(Context context, String fileName, String value){

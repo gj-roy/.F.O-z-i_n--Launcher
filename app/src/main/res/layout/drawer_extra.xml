@@ -1,0 +1,36 @@
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/drawer_extra">
+
+    <RelativeLayout
+            android:layout_centerInParent="true"
+            android:id="@+id/drawer_extra_frame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <ImageView
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_centerInParent="true"
+                android:id="@+id/drawer_extra_icon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
+
+    </RelativeLayout>
+
+    <TextView
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/drawer_extra_frame"
+            android:layout_centerInParent="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:id="@+id/drawer_extra_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"/>
+
+</RelativeLayout>

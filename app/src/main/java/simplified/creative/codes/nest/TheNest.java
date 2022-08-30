@@ -338,7 +338,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestRootLayout.findViewById(R.id.the_nest_additional_layout) == null){
             theNestRootLayout.addView(theNestAdditionalView);
-            setSize(this, theNestAdditionalLayout, size(2), size(2));
+            setSize(theNestAdditionalLayout, size(2), size(2));
         }
         additionalWelcome();
     }
@@ -350,7 +350,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestRootLayout.findViewById(R.id.the_nest_home_layout) == null){
             theNestRootLayout.addView(theNestHomeView);
-            setSize(this, theNestHomeLayout, size(2), size(2));
+            setSize(theNestHomeLayout, size(2), size(2));
         }
         homeScreenState = 1;
         configurationsB();
@@ -375,7 +375,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestRootLayout.findViewById(R.id.the_nest_drawer_layout) == null){
             theNestRootLayout.addView(theNestDrawerView);
-            setSize(this, theNestDrawerLayout, size(2), size(2));
+            setSize(theNestDrawerLayout, size(2), size(2));
         }
         configurationsC();
 
@@ -395,7 +395,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestRootLayout.findViewById(R.id.the_nest_settings_layout) == null){
             theNestRootLayout.addView(theNestSettingsView);
-            setSize(this, theNestSettingsLayout, size(2), size(2));
+            setSize(theNestSettingsLayout, size(2), size(2));
         }
         configurationsD();
 
@@ -869,30 +869,30 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private void centerPositions(){
         if(wallpaperState.equals("Enabled")){
             if(statusState.equals("Enabled")){
-                layoutParamsTypeC(this, homeWallpaperLayout, new int[]{direction(5)}, direction(8), R.id.home_tooltip, direction(9), R.id.home_status);
+                layoutParamsTypeC(homeWallpaperLayout, new int[]{direction(5)}, direction(8), R.id.home_tooltip, direction(9), R.id.home_status);
             } else {
-                layoutParamsTypeB(this, homeWallpaperLayout, new int[]{direction(5)}, direction(8), R.id.home_tooltip);
+                layoutParamsTypeB(homeWallpaperLayout, new int[]{direction(5)}, direction(8), R.id.home_tooltip);
             }
         }
         if(statusState.equals("Enabled")){
             if(wallpaperState.equals("Enabled")){
-                layoutParamsTypeB(this, homeStatusLayout, new int[]{direction(6)}, direction(8), R.id.home_tooltip);
+                layoutParamsTypeB(homeStatusLayout, new int[]{direction(6)}, direction(8), R.id.home_tooltip);
             } else {
-                layoutParamsTypeB(this, homeStatusLayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
+                layoutParamsTypeB(homeStatusLayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
             }
         }
         if(folderState.equals("Enabled")){
             if(wallpaperState.equals("Enabled")){
-                layoutParamsTypeB(this, homeFolderALayout, new int[]{direction(5)}, direction(8), R.id.home_wallpaper);
+                layoutParamsTypeB(homeFolderALayout, new int[]{direction(5)}, direction(8), R.id.home_wallpaper);
                 homeFolderALayout.setBackground(null);
                 setMargins(this, homeFolderAIcon, 0, 0, 0, 0);
             } else {
                 if(statusState.equals("Enabled")){
-                    layoutParamsTypeB(this, homeFolderALayout, new int[]{direction(1)}, direction(8), R.id.home_status);
+                    layoutParamsTypeB(homeFolderALayout, new int[]{direction(1)}, direction(8), R.id.home_status);
                     backgroundTypeA(this, homeFolderALayout,background(8), tintA, 3);
                     setMargins(this, homeFolderAIcon, 20, 20, 20, 20);
                 } else {
-                    layoutParamsTypeB(this, homeFolderALayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
+                    layoutParamsTypeB(homeFolderALayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
                     backgroundTypeA(this, homeFolderALayout, background(5), tintA, 3);
                     setMargins(this, homeFolderAIcon, 30, 30, 30, 30);
                 }
@@ -1034,8 +1034,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         if(theNestAdditionalLayout.findViewById(R.id.additional_welcome) == null){
             theNestAdditionalLayout.addView(additionalWelcomeView);
 
-            layoutParamsTypeA(this, additionalWelcomeLayout, new int[]{direction(2)});
-            setSize(this, additionalWelcomeLayout, size(2), size(1));
+            layoutParamsTypeA(additionalWelcomeLayout, new int[]{direction(2)});
+            setSize(additionalWelcomeLayout, size(2), size(1));
             setMargins(this, additionalWelcomeLayout, 20, 20, 20, 20);
         }
     }
@@ -1089,8 +1089,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         if(theNestAdditionalLayout.findViewById(R.id.additional_notes) == null){
             theNestAdditionalLayout.addView(additionalNotesView);
 
-            layoutParamsTypeA(this, additionalNotesLayout, new int[]{direction(2)});
-            setSize(this, additionalNotesLayout, size(2), size(2));
+            layoutParamsTypeA(additionalNotesLayout, new int[]{direction(2)});
+            setSize(additionalNotesLayout, size(2), size(2));
             setMargins(this, additionalNotesLayout, 20, 20, 20, 20);
         }
     }
@@ -1106,8 +1106,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     //``````````
 
     View additionalInfoView;
-    RelativeLayout additionalInfoLayout, additionalInfoFrame1, additionalInfoFrame2, additionalInfoFrame3;
-    ImageView additionalInfoIcon1, additionalInfoIcon2, additionalInfoIcon3, additionalInfoLine, additionalInfoAngle;
+    RelativeLayout additionalInfoLayout, additionalInfoFrame1, additionalInfoFrame2;
+    ImageView additionalInfoIcon1, additionalInfoIcon2, additionalInfoLine, additionalInfoAngle;
     TextView additionalInfoText1, additionalInfoText2, additionalInfoText3, additionalInfoText4;
     private void additionalInfo(){
         if(additionalInfoView == null){
@@ -1142,8 +1142,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         if(theNestAdditionalLayout.findViewById(R.id.additional_info) == null){
             theNestAdditionalLayout.addView(additionalInfoView);
 
-            layoutParamsTypeA(this, additionalInfoLayout, new int[]{direction(2)});
-            setSize(this, additionalInfoLayout, size(1), size(1));
+            layoutParamsTypeA(additionalInfoLayout, new int[]{direction(2)});
+            setSize(additionalInfoLayout, size(1), size(1));
             setMargins(this, additionalInfoLayout, 20, 20, 20, 20);
             additionalInfoTips();
         }
@@ -1181,7 +1181,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     View additionalErrorView;
     RelativeLayout additionalErrorLayout, additionalErrorFrame1, additionalErrorFrame2, additionalErrorFrame3;
-    ImageView additionalErrorIcon1, additionalErrorIcon2, additionalErrorAngle;
+    ImageView additionalErrorIcon1, additionalErrorAngle;
     TextView additionalErrorLine1, additionalErrorLine2, additionalErrorText1, additionalErrorText2, additionalErrorText3;
     private void additionalError(){
         if(additionalErrorView == null){
@@ -1216,8 +1216,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         if(theNestRootLayout.findViewById(R.id.additional_error) == null){
             theNestRootLayout.addView(additionalErrorView);
 
-            layoutParamsTypeA(this, additionalErrorLayout, new int[]{direction(2)});
-            setSize(this, additionalErrorLayout, size(2), size(2));
+            layoutParamsTypeA(additionalErrorLayout, new int[]{direction(2)});
+            setSize(additionalErrorLayout, size(2), size(2));
             setMargins(this, additionalErrorLayout, 20, 20, 20, 20);
         }
     }
@@ -1367,8 +1367,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private void homeEdgeCommon(int id, View view, RelativeLayout layout, int a, int b, int end){
         if(theNestHomeLayout.findViewById(id) == null){
             theNestHomeLayout.addView(view);
-            layoutParamsTypeA(this, layout, new int[]{direction(a), direction(b)});
-            setSize(this, layout, size(1), size(1));
+            layoutParamsTypeA(layout, new int[]{direction(a), direction(b)});
+            setSize(layout, size(1), size(1));
             setMargins(this, layout, 0, 0, 0, end);
         }
     }
@@ -1411,8 +1411,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         if(theNestHomeLayout.findViewById(R.id.home_widget) == null){
             theNestHomeLayout.addView(homeWidgetView);
 
-            layoutParamsTypeA(this, homeWidgetLayout, new int[]{direction(3), direction(6)});
-            setSize(this, homeWidgetLayout, size(1), size(1));
+            layoutParamsTypeA(homeWidgetLayout, new int[]{direction(3), direction(6)});
+            setSize(homeWidgetLayout, size(1), size(1));
             setMargins(this, homeWidgetLayout, 45, 0, 40, 50);
         }
     }
@@ -1477,7 +1477,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(homeWidgetLayout.findViewById(R.id.home_widget_c) == null){
             homeWidgetLayout.addView(homeWidgetCView);
-            setSize(this, homeWidgetCLayout, density(this, 185), density(this, 130));
+            setSize(homeWidgetCLayout, density(this, 185), density(this, 130));
         }
     }
 
@@ -1505,7 +1505,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(homeWidgetLayout.findViewById(R.id.home_widget_d) == null){
             homeWidgetLayout.addView(homeWidgetDView);
-            setSize(this, homeWidgetDLayout, density(this, 170), density(this, 130));
+            setSize(homeWidgetDLayout, density(this, 170), density(this, 130));
             homeWidgetClockB();
         }
     }
@@ -1623,7 +1623,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             widgetWidth = 400;
             widgetHeight = 150;
         }
-        setSize(this, homeWidgetBView, density(this, widgetWidth), density(this, widgetHeight));
+        setSize(homeWidgetBView, density(this, widgetWidth), density(this, widgetHeight));
 
         if(hostView != null && homeWidgetResource != null){
             int widgetW = 0;
@@ -1741,7 +1741,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestHomeLayout.findViewById(R.id.home_applet) == null){
             theNestHomeLayout.addView(homeAppletView);
-            setSize(this, homeAppletLayout, size(1), size(1));
+            setSize(homeAppletLayout, size(1), size(1));
             homeAppletPositions();
         }
     }
@@ -1803,7 +1803,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(homeAppletLayout.findViewById(R.id.home_applet_b) == null){
             homeAppletLayout.addView(homeAppletBView);
-            layoutParamsTypeA(this, homeAppletBLayout, new int[]{direction(2)});
+            layoutParamsTypeA(homeAppletBLayout, new int[]{direction(2)});
         }
     }
 
@@ -1969,7 +1969,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             try {
                 homeWallpaperManager.forgetLoadedWallpaper();
             } catch (Exception e){}
-            imageTypeD(this, homeWallpaperCImage, homeWallpaperManager.getDrawable(), 200);
+            imageTypeD(homeWallpaperCImage, homeWallpaperManager.getDrawable(), 200);
         }
     }
 
@@ -1977,10 +1977,10 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     private void homeAppletPositions(){
         if(theNestHomeLayout.findViewById(R.id.home_widget) == null) {
-            layoutParamsTypeA(this, homeAppletLayout, new int[]{direction(1), direction(3)});
+            layoutParamsTypeA(homeAppletLayout, new int[]{direction(1), direction(3)});
             setMargins(this, homeAppletLayout, 45, 0, 40, 60);
         } else {
-            layoutParamsTypeB(this, homeAppletLayout, new int[]{direction(1)}, direction(8), R.id.home_widget);
+            layoutParamsTypeB(homeAppletLayout, new int[]{direction(1)}, direction(8), R.id.home_widget);
             setMargins(this, homeAppletLayout, 20, 0, 20, 20);
         }
     }
@@ -2081,7 +2081,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestHomeLayout.findViewById(R.id.home_tooltip) == null){
             theNestHomeLayout.addView(homeTooltipView);
-            layoutParamsTypeB(this, homeTooltipLayout, new int[]{direction(1)}, direction(8), R.id.home_applet);
+            layoutParamsTypeB(homeTooltipLayout, new int[]{direction(1)}, direction(8), R.id.home_applet);
             homeTooltipStateA(homeTooltipLayout.getContext());
         }
     }
@@ -2089,13 +2089,13 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     public static void homeTooltipStateA(Context context){
         homeTooltipText.setText("");
         setMargins(context, homeTooltipLayout, 0, 0, 0, 0);
-        setSize(context, homeTooltipLayout, 0, 0);
+        setSize(homeTooltipLayout, 0, 0);
     }
 
     public static void homeTooltipStateB(Context context, String tooltip){
         textType(context, homeTooltipText, tooltip, tintB, fontAStyle);
         setMargins(context, homeTooltipLayout, 20, 0, 20, 20);
-        setSize(context, homeTooltipLayout, size(1), density(context, 35));
+        setSize(homeTooltipLayout, size(1), density(context, 35));
     }
 
     public static Handler homeTooltipHandler = new Handler();
@@ -2144,7 +2144,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         if(theNestHomeLayout.findViewById(R.id.home_wallpaper) == null){
             theNestHomeLayout.addView(homeWallpaperView);
             setMargins(this, homeWallpaperLayout,20,0,20, 20);
-            setSize(this, homeWallpaperLayout, size(1), size(1));
+            setSize(homeWallpaperLayout, size(1), size(1));
         }
     }
 
@@ -2186,7 +2186,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(homeWallpaperLayout.findViewById(R.id.home_wallpaper_b) == null){
             homeWallpaperLayout.addView(homeWallpaperBView);
-            setSize(this, homeWallpaperBLayout, density(this, 200), size(1));
+            setSize(homeWallpaperBLayout, density(this, 200), size(1));
         }
         homeWallpaperBIcon.setImageBitmap(appIcon(this, homeWallpaperInfo.getPackageName(), 50));
         homeWallpaperBText1.setText(homeWallpaperInfo.loadLabel(getPackageManager()));
@@ -2207,13 +2207,13 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
             backgroundTypeB(this, homeWallpaperCFrame, drawable(2), background, 30);
             imageTypeA(this, homeWallpaperCIcon, drawable(2), tintA, 30);
-            imageTypeD(this, homeWallpaperCImage, homeWallpaperManager.getDrawable(),200);
+            imageTypeD(homeWallpaperCImage, homeWallpaperManager.getDrawable(),200);
 
             customTouchModeB(homeWallpaperCIcon, textC(9), 0, 2, 0);
         }
         if(homeWallpaperLayout.findViewById(R.id.home_wallpaper_c) == null){
             homeWallpaperLayout.addView(homeWallpaperCView);
-            setSize(this, homeWallpaperCImage, density(this, 200), density(this, 200));
+            setSize(homeWallpaperCImage, density(this, 200), density(this, 200));
         }
     }
 
@@ -2231,7 +2231,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(homeWallpaperLayout.findViewById(R.id.home_wallpaper_d) == null){
             homeWallpaperLayout.addView(homeWallpaperDView);
-            setSize(this, homeWallpaperDImage, density(this, 200), density(this, 200));
+            setSize(homeWallpaperDImage, density(this, 200), density(this, 200));
         }
     }
 
@@ -2262,7 +2262,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(homeWallpaperLayout.findViewById(R.id.home_wallpaper_e) == null){
             homeWallpaperLayout.addView(homeWallpaperEView);
-            setSize(this, homeWallpaperELayout, density(this, 200), density(this, 200));
+            setSize(homeWallpaperELayout, density(this, 200), density(this, 200));
         }
     }
 
@@ -2386,9 +2386,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestHomeLayout.findViewById(R.id.home_folder_b) == null){
             theNestHomeLayout.addView(homeFolderBView);
-            layoutParamsTypeB(this, homeFolderBLayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
+            layoutParamsTypeB(homeFolderBLayout, new int[]{direction(1)}, direction(8), R.id.home_tooltip);
             setMargins(this, homeFolderBLayout, 20, 0, 40, 40);
-            setSize(this, homeFolderBLayout, size(1), size(1));
+            setSize(homeFolderBLayout, size(1), size(1));
         }
     }
 
@@ -2411,9 +2411,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         if(homeFolderBLayout.findViewById(R.id.home_folder_c) == null) {
             homeFolderBLayout.addView(homeFolderCView);
             homeFolderBLayout.removeView(homeFolderDView);
-            layoutParamsTypeB(this, homeFolderCLayout, new int[]{direction(5)}, direction(8), R.id.home_folder_b_icon_2);
+            layoutParamsTypeB(homeFolderCLayout, new int[]{direction(5)}, direction(8), R.id.home_folder_b_icon_2);
             setMargins(this, homeFolderCLayout, 10, 0, 0, 0);
-            setSize(this, homeFolderCLayout, size(1), size(1));
+            setSize(homeFolderCLayout, size(1), size(1));
         }
     }
 
@@ -2433,9 +2433,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         if(homeFolderBLayout.findViewById(R.id.home_folder_d) == null) {
             homeFolderBLayout.removeView(homeFolderCView);
             homeFolderBLayout.addView(homeFolderDView);
-            layoutParamsTypeB(this, homeFolderDLayout, new int[]{direction(5)}, direction(8), R.id.home_folder_b_icon_2);
+            layoutParamsTypeB(homeFolderDLayout, new int[]{direction(5)}, direction(8), R.id.home_folder_b_icon_2);
             setMargins(this, homeFolderDLayout, 10, 0, 0, 0);
-            setSize(this, homeFolderDLayout, size(1), size(1));
+            setSize(homeFolderDLayout, size(1), size(1));
         }
     }
 
@@ -2641,7 +2641,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestHomeLayout.findViewById(R.id.home_status) == null){
             theNestHomeLayout.addView(homeStatusView);
-            setSize(this, homeStatusLayout, size(1), size(1));
+            setSize(homeStatusLayout, size(1), size(1));
             setMargins(this, homeStatusLayout, 20, 0, 0, 20);
         }
     }
@@ -2662,7 +2662,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(homeStatusLayout.findViewById(R.id.home_status_a) == null){
             homeStatusLayout.addView(homeStatusAView);
-            setSize(this, homeStatusALayout, density(this, 100), size(1));
+            setSize(homeStatusALayout, density(this, 100), size(1));
         }
     }
 
@@ -2795,8 +2795,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestHomeLayout.findViewById(R.id.home_drawer) == null){
             theNestHomeLayout.addView(homeDrawerView);
-            layoutParamsTypeB(this, homeDrawerLayout, new int[]{direction(6)}, direction(7),  R.id.home_edge_c);
-            setSize(this, homeDrawerLayout, size(1), size(1));
+            layoutParamsTypeB(homeDrawerLayout, new int[]{direction(6)}, direction(7),  R.id.home_edge_c);
+            setSize(homeDrawerLayout, size(1), size(1));
         }
     }
 
@@ -2813,7 +2813,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(homeDrawerLayout.findViewById(R.id.home_drawer_a) == null){
             homeDrawerLayout.addView(homeDrawerAView);
-            layoutParamsTypeA(this, homeDrawerALayout, new int[]{direction(3)});
+            layoutParamsTypeA(homeDrawerALayout, new int[]{direction(3)});
         }
     }
 
@@ -2847,7 +2847,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             icon = icon(56);
 
         imageTypeA(this, imageView, icon, tintA, dimen + 20);
-        setSize(this, imageView, density(this, dimen), density(this, dimen));
+        setSize(imageView, density(this, dimen), density(this, dimen));
         imageView.setAlpha(drawerAlpha);
 
         if(imageView == homeDrawerAIcon){
@@ -2903,8 +2903,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestHomeLayout.findViewById(R.id.home_shortcut) == null){
             theNestHomeLayout.addView(homeShortcutView);
-            layoutParamsTypeC(this, homeShortcutLayout, new int[]{direction(5)}, direction(9), R.id.home_edge_c, direction(7), R.id.home_edge_c);
-            setSize(this, homeShortcutLayout, size(1), size(1));
+            layoutParamsTypeC(homeShortcutLayout, new int[]{direction(5)}, direction(9), R.id.home_edge_c, direction(7), R.id.home_edge_c);
+            setSize(homeShortcutLayout, size(1), size(1));
             setMargins(this, homeShortcutLayout, 0, -57, 20, -100);
         }
     }
@@ -3047,9 +3047,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
             shortcutListIcon.setImageBitmap(appIcon(this, list.get(i), 40));
             if(list.size() >= 5){
-                setSize(this, homeShortcutBFrame2, density(this, 270), size(1));
+                setSize(homeShortcutBFrame2, density(this, 270), size(1));
             } else {
-                setSize(this, homeShortcutBFrame2, size(1), size(1));
+                setSize(homeShortcutBFrame2, size(1), size(1));
             }
             if(list.size() >= 3){
                 homeShortcutBFrame1.setVisibility(View.VISIBLE);
@@ -3087,6 +3087,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             if(drawerAppletPermission())
                 drawerAppOptions();
         }
+        drawerExtra();
     }
 
     //..........
@@ -3153,11 +3154,11 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     private void drawerEdgePositions(){
         if (theNestDrawerLayout.findViewById(R.id.drawer_tiles) != null) {
-            layoutParamsTypeB(this, drawerEdgeALayout, new int[]{direction(3), direction(5)}, direction(7), R.id.drawer_tiles);
-            layoutParamsTypeB(this, drawerEdgeBLayout, new int[]{direction(4), direction(5)}, direction(8), R.id.drawer_tiles);
+            layoutParamsTypeB(drawerEdgeALayout, new int[]{direction(3), direction(5)}, direction(7), R.id.drawer_tiles);
+            layoutParamsTypeB(drawerEdgeBLayout, new int[]{direction(4), direction(5)}, direction(8), R.id.drawer_tiles);
         } else {
-            layoutParamsTypeB(this, drawerEdgeALayout, new int[]{direction(3), direction(5)}, direction(7), R.id.drawer_applet);
-            layoutParamsTypeB(this, drawerEdgeBLayout, new int[]{direction(4), direction(5)}, direction(8), R.id.drawer_applet);
+            layoutParamsTypeB(drawerEdgeALayout, new int[]{direction(3), direction(5)}, direction(7), R.id.drawer_applet);
+            layoutParamsTypeB(drawerEdgeBLayout, new int[]{direction(4), direction(5)}, direction(8), R.id.drawer_applet);
         }
     }
 
@@ -3180,7 +3181,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestDrawerLayout.findViewById(R.id.drawer_tooltip) == null){
             theNestDrawerLayout.addView(drawerTooltipView);
-            layoutParamsTypeB(this, drawerTooltipLayout, new int[]{direction(3), direction(6)}, direction(10), R.id.drawer_edge_a);
+            layoutParamsTypeB(drawerTooltipLayout, new int[]{direction(3), direction(6)}, direction(10), R.id.drawer_edge_a);
             drawerTooltipStateA(this);
         }
     }
@@ -3195,13 +3196,13 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     public static void drawerTooltipStateA(Context context){
         drawerTooltipText.setText("");
         setMargins(context, drawerTooltipLayout, 35, 0, 0, 0);
-        setSize(context, drawerTooltipLayout, 0, 0);
+        setSize(drawerTooltipLayout, 0, 0);
     }
 
     public static void drawerTooltipStateB(Context context, String tooltip){
         textType(context, drawerTooltipText, tooltip, tintB, fontAStyle);
         setMargins(context, drawerTooltipLayout, 20, 0, 20, 20);
-        setSize(context, drawerTooltipLayout, size(1), size(1));
+        setSize(drawerTooltipLayout, size(1), size(1));
     }
 
     public static Handler drawerTooltipHandler= new Handler();
@@ -3246,7 +3247,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if (theNestDrawerLayout.findViewById(R.id.drawer_tiles) == null) {
             theNestDrawerLayout.addView(drawerTilesView);
-            layoutParamsTypeA(this, drawerTilesLayout, new int[]{direction(5), direction(2)});
+            layoutParamsTypeA(drawerTilesLayout, new int[]{direction(5), direction(2)});
             setMargins(this, drawerTilesLayout, 10, 5, 20, 0);
             if (drawerAppletLayout != null && theNestDrawerLayout.findViewById(R.id.drawer_applet) != null)
                 theNestDrawerLayout.removeView(drawerTilesView);
@@ -3274,7 +3275,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                     || label.startsWith(drawerAlphabetsString.toUpperCase()))
                 temporary.add(string);
         }
-        drawerAppsCommonC();
+        drawerAppsCommonC(temporary);
     }
 
     // -----[ DRAWER TILES METHODS ]----- //
@@ -3282,6 +3283,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private boolean drawerRefresh;
     private void drawerRefresh(){
         if(!drawerRefresh){
+            //theNestDrawerLayout.addView(drawerExtraView);
             drawerRefresh = true;
             drawerAppsCount = 0;
             drawerAppsCommonA();
@@ -3349,7 +3351,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if (theNestDrawerLayout.findViewById(R.id.drawer_apps) == null) {
             theNestDrawerLayout.addView(drawerAppsView);
-            layoutParamsTypeB(this, drawerAppsLayout, new int[]{direction(6), direction(4)}, direction(8), R.id.drawer_tooltip);
+            layoutParamsTypeB(drawerAppsLayout, new int[]{direction(6), direction(4)}, direction(8), R.id.drawer_tooltip);
             setMargins(this, drawerAppsLayout, 20, 50, 0, 0);
         }
         drawerAppsList();
@@ -3395,11 +3397,11 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             backgroundTypeC(this, drawerListFrame, background(6), tintA);
     }
 
-    private void drawerAppsCommonC(){
+    private void drawerAppsCommonC(List<String> list){
         drawerAppsGridLayout.removeAllViews();
         drawerAppsListLayout.removeAllViews();
         drawerAppsShapeLayout.removeAllViews();
-        drawerAppsInitialize(drawerAppsArray);
+        drawerAppsInitialize(list);
     }
 
     // -----[ DRAWER APPS METHODS ]----- //
@@ -3440,9 +3442,10 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                                 iterator.remove();
                         }
                     }
-                    drawerAppsCommonC();
+                    drawerAppsCommonC(drawerAppsArray);
                     drawerTilesIndex();
                     drawerRefresh = false;
+                    theNestDrawerLayout.removeView(drawerExtraView);
                 }
             }
         };
@@ -3520,6 +3523,37 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     //..........
     //-------------------- DRAWER -------------------- []
+    //-------------------- EXTRA --------------------- []
+    //``````````
+
+    private View drawerExtraView;
+    private RelativeLayout drawerExtraLayout, drawerExtraFrame;
+    ImageView drawerExtraIcon;
+    TextView drawerExtraText;
+    private void drawerExtra() {
+        if (drawerExtraView == null) {
+            drawerExtraView = inflater.inflate(R.layout.drawer_extra, null);
+            drawerExtraLayout = drawerExtraView.findViewById(R.id.drawer_extra);
+            drawerExtraFrame = drawerExtraView.findViewById(R.id.drawer_extra_frame);
+            drawerExtraIcon = drawerExtraView.findViewById(R.id.drawer_extra_icon);
+            drawerExtraText = drawerExtraView.findViewById(R.id.drawer_extra_text);
+
+            drawerExtraLayout.setBackgroundColor(ContextCompat.getColor(this, background));
+            backgroundTypeA(this, drawerExtraFrame, background(8), tintA, 3);
+            imageTypeA(this, drawerExtraIcon, icon(61), tintA, 120);
+            textType(this, drawerExtraText, textC(79), tintA, fontAStyle);
+        }
+        if(drawerAppsArray == null || drawerAppsArray.size() == 0){
+            if (theNestDrawerLayout.findViewById(R.id.drawer_extra) == null) {
+                theNestDrawerLayout.addView(drawerExtraView);
+                setSize(drawerExtraLayout, size(2), size(2));
+                setMargins(this, drawerExtraLayout, 0, 0, 0, 0);
+            }
+        }
+    }
+
+    //..........
+    //-------------------- DRAWER -------------------- []
     //-------------------- APPLET -------------------- []
     //``````````
 
@@ -3532,8 +3566,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if (theNestDrawerLayout.findViewById(R.id.drawer_applet) == null) {
             theNestDrawerLayout.addView(drawerAppletView);
-            layoutParamsTypeA(this, drawerAppletLayout, new int[]{direction(5), direction(2)});
-            setSize(this, drawerAppletLayout, size(1), size(1));
+            layoutParamsTypeA(drawerAppletLayout, new int[]{direction(5), direction(2)});
+            setSize(drawerAppletLayout, size(1), size(1));
             setMargins(this, drawerAppletLayout, 20, 20, 20, 20);
             drawerAppletA();
         }
@@ -3572,7 +3606,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if (drawerAppletLayout.findViewById(R.id.drawer_applet_a) == null) {
             drawerAppletLayout.addView(drawerAppletAView);
-            layoutParamsTypeA(this, drawerAppletALayout, new int[]{direction(2)});
+            layoutParamsTypeA(drawerAppletALayout, new int[]{direction(2)});
         }
     }
 
@@ -3610,10 +3644,10 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if (drawerAppletALayout.findViewById(R.id.drawer_applet_b) == null) {
             drawerAppletALayout.addView(drawerAppletBView);
-            layoutParamsTypeC(this, drawerAppletBLayout, new int[]{direction(1)},
+            layoutParamsTypeC(drawerAppletBLayout, new int[]{direction(1)},
                     direction(10), R.id.drawer_applet_a_frame_2,
                     direction(12), R.id.drawer_applet_a_frame_2);
-            setSize(this, drawerAppletBLayout, size(1), size(1));
+            setSize(drawerAppletBLayout, size(1), size(1));
             setMargins(this, drawerAppletBLayout, 0, -10, 10, 0);
             drawerAppletBEditText.setText(drawerAppLabel);
         }
@@ -3674,10 +3708,10 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if (drawerAppletALayout.findViewById(R.id.drawer_applet_c) == null) {
             drawerAppletALayout.addView(drawerAppletCView);
-            layoutParamsTypeC(this, drawerAppletCLayout, new int[]{direction(1)},
+            layoutParamsTypeC(drawerAppletCLayout, new int[]{direction(1)},
                     direction(10), R.id.drawer_applet_a_frame_3,
                     direction(12), R.id.drawer_applet_a_frame_3);
-            setSize(this, drawerAppletCLayout, size(1), size(1));
+            setSize(drawerAppletCLayout, size(1), size(1));
             setMargins(this, drawerAppletCLayout, 0, -45, 10, 0);
             drawerAppOptions();
         }
@@ -4019,8 +4053,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_buttons) == null){
             theNestSettingsLayout.addView(settingsButtonsView);
-            layoutParamsTypeA(this, settingsButtonsLayout, new int[]{direction(3), direction(5)});
-            setSize(this, settingsButtonsLayout, size(1), size(1));
+            layoutParamsTypeA(settingsButtonsLayout, new int[]{direction(3), direction(5)});
+            setSize(settingsButtonsLayout, size(1), size(1));
             setMargins(this, settingsButtonsLayout, 20, 0, 20, 20);
         }
     }
@@ -4105,7 +4139,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_tooltip) == null){
             theNestSettingsLayout.addView(settingsTooltipView);
-            layoutParamsTypeB(this, settingsTooltipLayout, new int[]{direction(4), direction(5)}, direction(9), R.id.settings_edge_b);
+            layoutParamsTypeB(settingsTooltipLayout, new int[]{direction(4), direction(5)}, direction(9), R.id.settings_edge_b);
             settingsTooltipStateA(this);
         }
     }
@@ -4120,13 +4154,13 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     public static void settingsTooltipStateA(Context context){
         settingsTooltipText.setText("");
         setMargins(context, settingsTooltipLayout, 0, 40, 0, 0);
-        setSize(context, settingsTooltipLayout, 0, 0);
+        setSize(settingsTooltipLayout, 0, 0);
     }
 
     public static void settingsTooltipStateB(Context context, String tooltip){
         textType(context, settingsTooltipText, tooltip, tintB, fontAStyle);
         setMargins(context, settingsTooltipLayout, 0, 20, 20, 20);
-        setSize(context, settingsTooltipLayout, size(1), size(1));
+        setSize(settingsTooltipLayout, size(1), size(1));
     }
 
     public static Handler settingsTooltipHandler= new Handler();
@@ -4183,7 +4217,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_edge_a) == null){
             theNestSettingsLayout.addView(settingsEdgeAView);
-            layoutParamsTypeB(this, settingsEdgeALayout, new int[]{direction(6)}, direction(8), R.id.settings_buttons);
+            layoutParamsTypeB(settingsEdgeALayout, new int[]{direction(6)}, direction(8), R.id.settings_buttons);
             setMargins(this, settingsEdgeALayout, 20, 0, 0, 20);
         }
     }
@@ -4214,7 +4248,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_edge_b) == null){
             theNestSettingsLayout.addView(settingsEdgeBView);
-            layoutParamsTypeA(this, settingsEdgeBLayout, new int[]{direction(4), direction(6)});
+            layoutParamsTypeA(settingsEdgeBLayout, new int[]{direction(4), direction(6)});
             setMargins(this, settingsEdgeBLayout, 0, 20, 0, 20);
         }
     }
@@ -4319,8 +4353,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_about) == null){
             theNestSettingsLayout.addView(settingsAboutView);
-            layoutParamsTypeC(this, settingsAboutLayout, new int[]{direction(5)}, direction(8), R.id.settings_edge_a, direction(7), R.id.settings_tooltip);
-            setSize(this, settingsAboutLayout, size(2), size(2));
+            layoutParamsTypeC(settingsAboutLayout, new int[]{direction(5)}, direction(8), R.id.settings_edge_a, direction(7), R.id.settings_tooltip);
+            setSize(settingsAboutLayout, size(2), size(2));
             setMargins(this, settingsAboutLayout, -40, 20, 20, 60);
             settingsEdgeAText.setText(textC(38));
         }
@@ -4396,8 +4430,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_misc) == null){
             theNestSettingsLayout.addView(settingsMiscView);
-            layoutParamsTypeC(this, settingsMiscLayout, new int[]{direction(5)}, direction(8), R.id.settings_edge_a, direction(7), R.id.settings_tooltip);
-            setSize(this, settingsMiscLayout, size(2), size(2));
+            layoutParamsTypeC(settingsMiscLayout, new int[]{direction(5)}, direction(8), R.id.settings_edge_a, direction(7), R.id.settings_tooltip);
+            setSize(settingsMiscLayout, size(2), size(2));
             setMargins(this, settingsMiscLayout, -40, 20, 20, 60);
             settingsEdgeAText.setText(textC(39));
         }
@@ -4418,7 +4452,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_a) == null){
             settingsMiscLayout.addView(settingsMiscAView);
-            setSize(this, settingsMiscALayout, size(2), size(2));
+            setSize(settingsMiscALayout, size(2), size(2));
         }
     }
 
@@ -4544,8 +4578,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_b) == null){
             settingsMiscLayout.addView(settingsMiscBView);
-            layoutParamsTypeA(this, settingsMiscBLayout, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscBLayout, size(2), size(1));
+            layoutParamsTypeA(settingsMiscBLayout, new int[]{direction(2), direction(3)});
+            setSize(settingsMiscBLayout, size(2), size(1));
             setMargins(this, settingsMiscBLayout, 20, 20, 20, 20);
             setMargins(this, settingsMiscBAngle, 20, 0, 15, 0);
             miscResetMode();
@@ -4559,7 +4593,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         settingsMiscBText2.setText(textB(int_b));
         buttonModeC(this, settingsMiscBFrame1, settingsMiscBIcon1, boolean_a);
         buttonModeC(this, settingsMiscBFrame2, settingsMiscBIcon2, boolean_b);
-        layoutParamsTypeC(this, settingsMiscBAngle, new int[]{0}, direction(8), id, direction(13), id);
+        layoutParamsTypeC(settingsMiscBAngle, new int[]{0}, direction(8), id, direction(13), id);
     }
 
     // -----[ MISC RESET METHODS ]----- //
@@ -4656,8 +4690,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_c) == null){
             settingsMiscLayout.addView(settingsMiscCView);
-            layoutParamsTypeA(this, settingsMiscCLayout, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscCLayout, size(2), size(1));
+            layoutParamsTypeA(settingsMiscCLayout, new int[]{direction(2), direction(3)});
+            setSize(settingsMiscCLayout, size(2), size(1));
             setMargins(this, settingsMiscCLayout, 20, 20, 20, 20);
             setMargins(this, settingsMiscCAngle, 20, 0, 15, 0);
             miscBarsMode();
@@ -4707,7 +4741,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         buttonModeC(this, settingsMiscCFrame1, settingsMiscCIcon1, boolean_a);
         buttonModeC(this, settingsMiscCFrame2, settingsMiscCIcon2, boolean_b);
-        layoutParamsTypeC(this, settingsMiscCAngle, new int[]{0}, direction(8), id, direction(13), id);
+        layoutParamsTypeC(settingsMiscCAngle, new int[]{0}, direction(8), id, direction(13), id);
     }
 
     private void miscBarsCommonB(String state, String type){
@@ -4782,8 +4816,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_d) == null){
             settingsMiscLayout.addView(settingsMiscDView);
-            layoutParamsTypeA(this, settingsMiscDLayout, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscDLayout, size(2), size(1));
+            layoutParamsTypeA(settingsMiscDLayout, new int[]{direction(2), direction(3)});
+            setSize(settingsMiscDLayout, size(2), size(1));
             setMargins(this, settingsMiscDLayout, 20, 20, 20, 20);
             setMargins(this, settingsMiscDAngle, 20, 0, 15, 0);
             miscTabsMode();
@@ -4895,7 +4929,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         settingsMiscDText2.setText(textB(int_b));
         buttonModeC(this, settingsMiscDFrame1, settingsMiscDIcon1, boolean_a);
         buttonModeC(this, settingsMiscDFrame2, settingsMiscDIcon2, boolean_b);
-        layoutParamsTypeC(this, settingsMiscDAngle, new int[]{0}, direction(8), id, direction(13), id);
+        layoutParamsTypeC(settingsMiscDAngle, new int[]{0}, direction(8), id, direction(13), id);
         settingsMiscDFrame5.setVisibility(sight);
         if(mode == 0)
             settingsMiscDText3.setText(settingsTab);
@@ -4995,8 +5029,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_e) == null){
             settingsMiscLayout.addView(settingsMiscEView);
-            layoutParamsTypeA(this, settingsMiscELayout, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscELayout, size(2), size(1));
+            layoutParamsTypeA(settingsMiscELayout, new int[]{direction(2), direction(3)});
+            setSize(settingsMiscELayout, size(2), size(1));
             setMargins(this, settingsMiscELayout, 20, 20, 20, 20);
         }
     }
@@ -5088,8 +5122,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             settingsMiscFText6 = settingsMiscFView.findViewById(R.id.settings_misc_f_text_6);
 
             backgroundTypeC(this, settingsMiscFFrame3, background(3), tintA);
-            backgroundTypeA(this, settingsMiscFFrame4, background(8), tintA, 10);
-            backgroundTypeA(this, settingsMiscFFrame5, background(8), tintA, 10);
+            backgroundTypeA(this, settingsMiscFFrame4, background(12), tintA, 3);
+            backgroundTypeA(this, settingsMiscFFrame5, background(12), tintA, 3);
             backgroundTypeC(this, settingsMiscFFrame6, background(4), tintA);
 
             imageTypeA(this, settingsMiscFAngle, drawable(2), tintA, 30);
@@ -5121,8 +5155,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsMiscLayout.findViewById(R.id.settings_misc_f) == null){
             settingsMiscLayout.addView(settingsMiscFView);
-            layoutParamsTypeA(this, settingsMiscFLayout, new int[]{direction(2), direction(3)});
-            setSize(this, settingsMiscFLayout, size(2), size(1));
+            layoutParamsTypeA(settingsMiscFLayout, new int[]{direction(2), direction(3)});
+            setSize(settingsMiscFLayout, size(2), size(1));
             setMargins(this, settingsMiscFLayout, 20, 20, 20, 20);
             setMargins(this, settingsMiscFAngle, 20, 0, 15, 0);
             miscFontsMode();
@@ -5209,7 +5243,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         settingsMiscFText2.setText(textB(int_b));
         buttonModeC(this, settingsMiscFFrame1, settingsMiscFIcon1, boolean_a);
         buttonModeC(this, settingsMiscFFrame2, settingsMiscFIcon2, boolean_b);
-        layoutParamsTypeC(this, settingsMiscFAngle, new int[]{0}, direction(8),id, direction(13), id);
+        layoutParamsTypeC(settingsMiscFAngle, new int[]{0}, direction(8),id, direction(13), id);
         miscFontsCommonB(style);
         settingsMiscFFrame5.setVisibility(sight);
         settingsMiscFText6.setText(textC(59));
@@ -5240,8 +5274,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_drawer) == null){
             theNestSettingsLayout.addView(settingsDrawerView);
-            layoutParamsTypeC(this, settingsDrawerLayout, new int[]{direction(5)}, direction(8), R.id.settings_edge_a, direction(7), R.id.settings_tooltip);
-            setSize(this, settingsDrawerLayout, size(2), size(2));
+            layoutParamsTypeC(settingsDrawerLayout, new int[]{direction(5)}, direction(8), R.id.settings_edge_a, direction(7), R.id.settings_tooltip);
+            setSize(settingsDrawerLayout, size(2), size(2));
             setMargins(this, settingsDrawerLayout, -40, 20, 20, 60);
             settingsEdgeAText.setText(textC(41));
             if(settingsDrawerLayout.getChildCount() == 0)
@@ -5320,16 +5354,16 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsDrawerLayout.findViewById(R.id.settings_drawer_a) == null){
             settingsDrawerLayout.addView(settingsDrawerAView);
-            setSize(this, settingsDrawerALayout, size(2), size(2));
+            setSize(settingsDrawerALayout, size(2), size(2));
             settingsDrawerOptions();
         }
     }
 
     View settingsDrawerBView;
     RelativeLayout settingsDrawerBLayout, settingsDrawerBFrame1, settingsDrawerBFrame2, settingsDrawerBFrame3,
-            settingsDrawerBFrame4, settingsDrawerBFrame5;
-    ImageView settingsDrawerBIcon1, settingsDrawerBIcon2, settingsDrawerBIcon3, settingsDrawerBIcon4;
-    TextView settingsDrawerBText1, settingsDrawerBText2, settingsDrawerBText3;
+            settingsDrawerBFrame4, settingsDrawerBFrame5, settingsDrawerBFrame6, settingsDrawerBFrame7;
+    ImageView settingsDrawerBIcon1, settingsDrawerBIcon2, settingsDrawerBIcon3, settingsDrawerBIcon4, settingsDrawerBIcon5;
+    TextView settingsDrawerBText1, settingsDrawerBText2, settingsDrawerBText3, settingsDrawerBText4;
     LinearLayout settingsDrawerBListView;
     ScrollView settingsDrawerBScrollView;
     private void settingsDrawerB(){
@@ -5342,34 +5376,42 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             settingsDrawerBFrame3 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_frame_3);
             settingsDrawerBFrame4 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_frame_4);
             settingsDrawerBFrame5 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_frame_5);
+            settingsDrawerBFrame6 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_frame_6);
+            settingsDrawerBFrame7 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_frame_7);
             settingsDrawerBText1 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_text_1);
             settingsDrawerBText2 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_text_2);
             settingsDrawerBText3 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_text_3);
+            settingsDrawerBText4 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_text_4);
             settingsDrawerBIcon1 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_icon_1);
             settingsDrawerBIcon2 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_icon_2);
             settingsDrawerBIcon3 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_icon_3);
             settingsDrawerBIcon4 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_icon_4);
+            settingsDrawerBIcon5 = settingsDrawerBView.findViewById(R.id.settings_drawer_b_icon_5);
             settingsDrawerBListView = settingsDrawerBView.findViewById(R.id.settings_drawer_b_list_view);
 
             backgroundTypeC(this, settingsDrawerBFrame2, background(7), tintA);
             backgroundTypeA(this, settingsDrawerBFrame4, background(9), tintA, 3);
+            backgroundTypeA(this, settingsDrawerBFrame7, background(8), tintA, 3);
 
             imageTypeA(this, settingsDrawerBIcon1, icon(32), tintB, 40);
             imageTypeA(this, settingsDrawerBIcon2, icon(33), tintA, 75);
             imageTypeA(this, settingsDrawerBIcon4, icon(31), tintA, 85);
+            imageTypeA(this, settingsDrawerBIcon5, icon(61), tintA, 50);
 
             textType(this, settingsDrawerBText1, "", tintA, Typeface.BOLD);
             textType(this, settingsDrawerBText2, "", tintA, fontBStyle);
             textType(this, settingsDrawerBText3, "", tintA, Typeface.BOLD);
+            textType(this, settingsDrawerBText4, textC(79), tintA, fontAStyle);
 
             customTouchModeB(settingsDrawerBIcon2, textC(48), 2, 3, 1);
             customTouchModeB(settingsDrawerBFrame4, "", 2, 3, 3);
             customTouchModeB(settingsDrawerBIcon4, textC(49), 2, 3, 4);
             settingsDrawerBFrame3.setVisibility(View.GONE);
+            settingsDrawerBFrame6.setVisibility(View.GONE);
         }
         if(settingsDrawerLayout.findViewById(R.id.settings_drawer_b) == null){
             settingsDrawerLayout.addView(settingsDrawerBView);
-            setSize(this, settingsDrawerBLayout, size(2), size(2));
+            setSize(settingsDrawerBLayout, size(2), size(2));
             setMargins(this, settingsDrawerBLayout, 20, 20, 20, 20);
             hiddenAppsInitialize();
         }
@@ -5518,6 +5560,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                         settingsDrawerCommonC(0, 1.0f, 46);
 
                         if(settingsDrawerBListView.getChildCount() != hiddenListArray.size()){
+                            //settingsDrawerBFrame6.setVisibility(View.VISIBLE);
                             settingsDrawerBListView.removeAllViews();
                             hiddenAppsInitialize(hiddenListArray, settingsDrawerBListView);
                         }
@@ -5553,6 +5596,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
             customTouchModeA(hiddenListView, list.get(i), -1, 5);
             layout.addView(hiddenListView);
+
+            if(i < list.size())
+                settingsDrawerBFrame6.setVisibility(View.GONE);
         }
     }
 
@@ -5570,8 +5616,8 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(theNestSettingsLayout.findViewById(R.id.settings_home) == null){
             theNestSettingsLayout.addView(settingsHomeView);
-            layoutParamsTypeC(this, settingsHomeLayout, new int[]{direction(5)}, direction(8), R.id.settings_edge_a, direction(7), R.id.settings_tooltip);
-            setSize(this, settingsHomeLayout, size(2), size(2));
+            layoutParamsTypeC(settingsHomeLayout, new int[]{direction(5)}, direction(8), R.id.settings_edge_a, direction(7), R.id.settings_tooltip);
+            setSize(settingsHomeLayout, size(2), size(2));
             setMargins(this, settingsHomeLayout, -40, 20, 20, 60);
             settingsEdgeAText.setText(textC(40));
             if(settingsHomeLayout.getChildCount() == 0)
@@ -5594,7 +5640,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_a) == null){
             settingsHomeLayout.addView(settingsHomeAView);
-            setSize(this, settingsHomeALayout, size(2), size(2));
+            setSize(settingsHomeALayout, size(2), size(2));
         }
     }
 
@@ -5757,7 +5803,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_b) == null){
             settingsHomeLayout.addView(settingsHomeBView);
-            setSize(this, settingsHomeBLayout, size(2), size(2));
+            setSize(settingsHomeBLayout, size(2), size(2));
             setMargins(this, settingsHomeBLayout, 20, 20, 20, 20);
             homeWidgetState();
         }
@@ -6095,7 +6141,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_c) == null){
             settingsHomeLayout.addView(settingsHomeCView);
-            setSize(this, settingsHomeCLayout, size(2), size(2));
+            setSize(settingsHomeCLayout, size(2), size(2));
             setMargins(this, settingsHomeCLayout, 20, 20, 20, 20);
         }
     }
@@ -6218,7 +6264,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_d) == null){
             settingsHomeLayout.addView(settingsHomeDView);
-            setSize(this, settingsHomeDLayout, size(2), size(2));
+            setSize(settingsHomeDLayout, size(2), size(2));
             setMargins(this, settingsHomeDLayout, 20, 20, 20, 20);
             homeWallpaperState();
         }
@@ -6382,9 +6428,10 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     View settingsHomeEView;
     RelativeLayout settingsHomeELayout, settingsHomeEFrame1, settingsHomeEFrame2, settingsHomeEFrame3, settingsHomeEFrame4,
-            settingsHomeEFrame5, settingsHomeEFrame6;
-    TextView settingsHomeEText1, settingsHomeEText2, settingsHomeEText3, settingsHomeEText4, settingsHomeEText5;
-    ImageView settingsHomeECircle, settingsHomeEIcon1, settingsHomeEIcon2, settingsHomeEIcon3;
+            settingsHomeEFrame5, settingsHomeEFrame6, settingsHomeEFrame7, settingsHomeEFrame8;
+    TextView settingsHomeEText1, settingsHomeEText2, settingsHomeEText3, settingsHomeEText4, settingsHomeEText5,
+            settingsHomeEText6;
+    ImageView settingsHomeECircle, settingsHomeEIcon1, settingsHomeEIcon2, settingsHomeEIcon3, settingsHomeEIcon4;
     LinearLayout settingsHomeEListView;
     ScrollView settingsHomeEScrollView;
     private void settingsHomeE(){
@@ -6396,34 +6443,41 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             settingsHomeEIcon1 = settingsHomeEView.findViewById(R.id.settings_home_e_icon_1);
             settingsHomeEIcon2 = settingsHomeEView.findViewById(R.id.settings_home_e_icon_2);
             settingsHomeEIcon3 = settingsHomeEView.findViewById(R.id.settings_home_e_icon_3);
+            settingsHomeEIcon4 = settingsHomeEView.findViewById(R.id.settings_home_e_icon_4);
             settingsHomeEFrame1 = settingsHomeEView.findViewById(R.id.settings_home_e_frame_1);
             settingsHomeEFrame2 = settingsHomeEView.findViewById(R.id.settings_home_e_frame_2);
             settingsHomeEFrame3 = settingsHomeEView.findViewById(R.id.settings_home_e_frame_3);
             settingsHomeEFrame4 = settingsHomeEView.findViewById(R.id.settings_home_e_frame_4);
             settingsHomeEFrame5 = settingsHomeEView.findViewById(R.id.settings_home_e_frame_5);
             settingsHomeEFrame6 = settingsHomeEView.findViewById(R.id.settings_home_e_frame_6);
+            settingsHomeEFrame7 = settingsHomeEView.findViewById(R.id.settings_home_e_frame_7);
+            settingsHomeEFrame8 = settingsHomeEView.findViewById(R.id.settings_home_e_frame_8);
             settingsHomeEText1 = settingsHomeEView.findViewById(R.id.settings_home_e_text_1);
             settingsHomeEText2 = settingsHomeEView.findViewById(R.id.settings_home_e_text_2);
             settingsHomeEText3 = settingsHomeEView.findViewById(R.id.settings_home_e_text_3);
             settingsHomeEText4 = settingsHomeEView.findViewById(R.id.settings_home_e_text_4);
             settingsHomeEText5 = settingsHomeEView.findViewById(R.id.settings_home_e_text_5);
+            settingsHomeEText6 = settingsHomeEView.findViewById(R.id.settings_home_e_text_6);
             settingsHomeEListView = settingsHomeEView.findViewById(R.id.settings_home_e_list_view);
 
             backgroundTypeA(this, settingsHomeEFrame2, background(7), ui, 3);
             backgroundTypeA(this, settingsHomeEFrame4, background(5), tintA, 3);
             backgroundTypeA(this, settingsHomeEFrame5, background(7), tintA, 10);
             backgroundTypeC(this, settingsHomeEFrame6, background(10), tintA);
+            backgroundTypeA(this, settingsHomeEFrame8, background(8), tintA, 3);
 
             imageTypeB(this, settingsHomeECircle, background(4), ui);
             imageTypeA(this, settingsHomeEIcon1, icon(33), tintA, 75);
             imageTypeA(this, settingsHomeEIcon2, icon(57), tintA, 50);
             imageTypeA(this, settingsHomeEIcon3, icon(33), tintA, 65);
+            imageTypeA(this, settingsHomeEIcon4, icon(61), tintA, 50);
 
             textType(this, settingsHomeEText1, textC(2), tintA, fontAStyle);
             textType(this, settingsHomeEText2, "", tintA, fontBStyle);
             textType(this, settingsHomeEText3, textC(8), tintA, fontBStyle);
             textType(this, settingsHomeEText4, textB(72), tintA, fontBStyle);
             textType(this, settingsHomeEText5, folderSortingOrder, tintA, fontBStyle);
+            textType(this, settingsHomeEText6, textC(79), tintA, fontAStyle);
 
             customTouchModeB(settingsHomeEIcon1, textC(48), 2, 4, 17);
             customTouchModeB(settingsHomeEIcon3, textC(48), 2, 4, 21);
@@ -6435,7 +6489,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_e) == null){
             settingsHomeLayout.addView(settingsHomeEView);
-            setSize(this, settingsHomeELayout, size(2), size(2));
+            setSize(settingsHomeELayout, size(2), size(2));
             setMargins(this, settingsHomeELayout, 20, 20, 20, 20);
             homeFolderState();
         }
@@ -6614,6 +6668,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
             customTouchModeA(homeFolderView, list.get(i), -1, 7);
             layout.addView(homeFolderView);
+
+            if(i < list.size())
+                settingsHomeEFrame7.setVisibility(View.GONE);
         }
     }
 
@@ -6683,7 +6740,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_f) == null){
             settingsHomeLayout.addView(settingsHomeFView);
-            setSize(this, settingsHomeFLayout, size(2), size(2));
+            setSize(settingsHomeFLayout, size(2), size(2));
             setMargins(this, settingsHomeFLayout, 20, 20, 20, 20);
             homeStatusState();
         }
@@ -6862,7 +6919,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_g) == null){
             settingsHomeLayout.addView(settingsHomeGView);
-            setSize(this, settingsHomeGLayout, size(2), size(2));
+            setSize(settingsHomeGLayout, size(2), size(2));
             setMargins(this, settingsHomeGLayout, 20, 20, 20, 20);
             settingsHomeDrawer();
         }
@@ -6956,9 +7013,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     View settingsHomeHView;
     RelativeLayout settingsHomeHLayout, settingsHomeHFrame1, settingsHomeHFrame2, settingsHomeHFrame3, settingsHomeHFrame4,
-            settingsHomeHFrame5;
-    TextView settingsHomeHText1, settingsHomeHText2, settingsHomeHText3, settingsHomeHText4;
-    ImageView settingsHomeHCircle, settingsHomeHIcon1, settingsHomeHIcon2, settingsHomeHIcon3;
+            settingsHomeHFrame5, settingsHomeHFrame6, settingsHomeHFrame7;
+    TextView settingsHomeHText1, settingsHomeHText2, settingsHomeHText3, settingsHomeHText4, settingsHomeHText5;
+    ImageView settingsHomeHCircle, settingsHomeHIcon1, settingsHomeHIcon2, settingsHomeHIcon3, settingsHomeHIcon4;
     LinearLayout settingsHomeHListView;
     ScrollView settingsHomeHScrollView;
     private void settingsHomeH(){
@@ -6970,30 +7027,37 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             settingsHomeHIcon1 = settingsHomeHView.findViewById(R.id.settings_home_h_icon_1);
             settingsHomeHIcon2 = settingsHomeHView.findViewById(R.id.settings_home_h_icon_2);
             settingsHomeHIcon3 = settingsHomeHView.findViewById(R.id.settings_home_h_icon_3);
+            settingsHomeHIcon4 = settingsHomeHView.findViewById(R.id.settings_home_h_icon_4);
             settingsHomeHFrame1 = settingsHomeHView.findViewById(R.id.settings_home_h_frame_1);
             settingsHomeHFrame2 = settingsHomeHView.findViewById(R.id.settings_home_h_frame_2);
             settingsHomeHFrame3 = settingsHomeHView.findViewById(R.id.settings_home_h_frame_3);
             settingsHomeHFrame4 = settingsHomeHView.findViewById(R.id.settings_home_h_frame_4);
             settingsHomeHFrame5 = settingsHomeHView.findViewById(R.id.settings_home_h_frame_5);
+            settingsHomeHFrame6 = settingsHomeHView.findViewById(R.id.settings_home_h_frame_6);
+            settingsHomeHFrame7 = settingsHomeHView.findViewById(R.id.settings_home_h_frame_7);
             settingsHomeHText1 = settingsHomeHView.findViewById(R.id.settings_home_h_text_1);
             settingsHomeHText2 = settingsHomeHView.findViewById(R.id.settings_home_h_text_2);
             settingsHomeHText3 = settingsHomeHView.findViewById(R.id.settings_home_h_text_3);
             settingsHomeHText4 = settingsHomeHView.findViewById(R.id.settings_home_h_text_4);
+            settingsHomeHText5 = settingsHomeHView.findViewById(R.id.settings_home_h_text_5);
             settingsHomeHListView = settingsHomeHView.findViewById(R.id.settings_home_h_list_view);
 
             backgroundTypeA(this, settingsHomeHFrame2, background(7), ui, 3);
             backgroundTypeA(this, settingsHomeHFrame4, background(5), tintA, 3);
             backgroundTypeC(this, settingsHomeHFrame5, background(10), tintA);
+            backgroundTypeA(this, settingsHomeHFrame7, background(8), tintA, 3);
 
             imageTypeB(this, settingsHomeHCircle, background(4), ui);
             imageTypeA(this, settingsHomeHIcon1, icon(33), tintA, 75);
             imageTypeA(this, settingsHomeHIcon2, icon(57), tintA, 50);
             imageTypeA(this, settingsHomeHIcon3, icon(33), tintA, 65);
+            imageTypeA(this, settingsHomeHIcon4, icon(61), tintA, 50);
 
             textType(this, settingsHomeHText1, textC(4), tintA, fontAStyle);
             textType(this, settingsHomeHText2, "", tintA, fontBStyle);
             textType(this, settingsHomeHText3, textC(8), tintA, fontBStyle);
             textType(this, settingsHomeHText4, textB(81), tintA, fontBStyle);
+            textType(this, settingsHomeHText5, textC(79), tintA, fontAStyle);
 
             customTouchModeB(settingsHomeHIcon1, textC(48), 2, 4, 33);
             customTouchModeB(settingsHomeHIcon3, textC(48), 2, 4, 36);
@@ -7004,7 +7068,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         }
         if(settingsHomeLayout.findViewById(R.id.settings_home_h) == null){
             settingsHomeLayout.addView(settingsHomeHView);
-            setSize(this, settingsHomeHLayout, size(2), size(2));
+            setSize(settingsHomeHLayout, size(2), size(2));
             setMargins(this, settingsHomeHLayout, 20, 20, 20, 20);
             homeShortcutState();
         }
@@ -7139,6 +7203,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
             customTouchModeA(shortcutContentsView, list.get(i), -1, 9);
             layout.addView(shortcutContentsView);
+
+            if(i < list.size())
+                settingsHomeHFrame6.setVisibility(View.GONE);
         }
     }
 }
