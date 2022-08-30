@@ -72,6 +72,3 @@ Phew time sure passes by fast huh! Now that you have reached here i don't think 
 
 - Gmail Link - 
 - Play Store Link -
-- Fozin.apk File Link - 
-
-----------
