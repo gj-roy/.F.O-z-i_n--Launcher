@@ -55,7 +55,7 @@ Now now don't judge too soon. I know at this moment the list doesn't looks too a
 
 ## •/]> About the source...
 
-Okay so as you can see **Fozin** is an open - source project. So in other words if you want you can download the source code and make you own version of the app. How to do it? well you can just clone the repo using \"git clone https://github.com/SimpliC-Developer/.F.O-z-i_n-Launcher- -b main\" or just download the **\"Fozin Source.zip\"** from the releases page. Then you are good to go. However please don't forget to include the **LICENSE** file in your custom version of **Fozin**. To make things a bit easier, the app uses Apache - 2.0 license. The app doesn't needs any special development environment. You can just use android studio or intellij idea or whatever suits your preferences for it.
+Okay so as you can see **Fozin** is an open - source project. So in other words if you want you can download the source code and make you own version of the app. How to do it? well you can just clone the repo using \"git clone https://github.com/SimpliC-Developer/.F.O-z-i_n--Launcher -b main\" or just download the **\"Fozin Source.zip\"** from the releases page. Then you are good to go. However please don't forget to include the **LICENSE** file in your custom version of **Fozin**. To make things a bit easier, the app uses Apache - 2.0 license. The app doesn't needs any special development environment. You can just use android studio or intellij idea or whatever suits your preferences for it.
 
 ## •/]> About contributing, pull - request etc...
 
