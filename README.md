@@ -14,7 +14,7 @@ So you are here finally! **(^o^)/** let's start. As you can tell i am the develo
 
 ![banner_g](https://github.com/SimpliC-Developer/Assets/blob/main/Images/banner_g.jpg)
 
->**Unique** *( Annoying to code )*----------**Simple** *( Easily understandable )*----------**Compact** *( Stylish i guess )*
+>**Unique** *( Annoying to code )*----------**Simple** *( Easily understandable truly made for monkeys )*----------**Compact** *( Stylish i guess )*
 
 Yup! the banner says it all. Fozin launcher, even though it follows a **unique** user interface **i** tried to make it as **simple** and **compact** as possible. The app still lacks a lot of funtionalities compared to other matured launcher apps out there and i know some may ask that why i haven't added this or that feature i don't have a good answer to that question cause the thing is i am still in the learning phase and i am still figuring things out so i really hope you will understand my reasons of why i made the app the way it is. Anyway with all that said and done why don't i tell you about what this app can really do...
 
@@ -71,6 +71,8 @@ Now then what do you think? Wanna give **Fozin** a try? Hehe oh well i won't pes
 - **Message -** *( if you want to say something you can say it here )* 
 
 NOTE - If you can attach the logcat file than it would help me much more *( around 90% )* then simply telling me about the bug in the message. Currently fozin cannot take the logcat on it's own so you will have to use other apps or much better a pc to do it. How? u-um for that you can just search on the internet.
+
+NOTE - If you are new to github *( like me )* then you should start a new **issue**. Please refer to github docs or just search on internet about it and you will find your answers.
 
 ## •/]>  Closing Words...
 
