@@ -4,6 +4,46 @@
         android:layout_height="wrap_content"
         android:id="@+id/drawer_apps">
 
+    <RelativeLayout
+            android:layout_marginEnd="75dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/drawer_apps_frame_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <RelativeLayout
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentTop="true"
+                android:id="@+id/drawer_apps_frame_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <ImageView
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/drawer_apps_icon"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+
+        </RelativeLayout>
+
+        <TextView
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/drawer_apps_frame_2"
+                android:layout_centerHorizontal="true"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:id="@+id/drawer_apps_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"/>
+
+    </RelativeLayout>
+
     <ScrollView
             android:overScrollMode="never"
             android:layout_centerInParent="true"

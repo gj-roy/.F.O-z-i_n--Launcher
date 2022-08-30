@@ -856,6 +856,10 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                                 //-----
                                 if (count == 38)
                                     settingsHomePress_38();
+                                if (count == 42)
+                                    settingsHomePress_42();
+                                if (count == 43)
+                                    settingsHomePress_43();
                             }
                         }
                     }
@@ -1252,11 +1256,11 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                     }
                 }
             }
-            if(homeAppletMode == 2){
+            if(homeAppletView.findViewById(R.id.home_applet_b) != null){
                 if(!isAppInstalled(this, homeAppletBString))
                     homeApplet(1);
             }
-            if(homeAppletMode == 4){
+            if(homeAppletView.findViewById(R.id.home_applet_d) != null){
                 if(homeAppletDInt == 1){
                     if(widgetState.equals("Disabled") || widgetMode.equals("[ NONE ]"))
                         homeApplet(1);
@@ -1711,11 +1715,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     //------------------- APPLET ------------------- []
     //``````````
 
-    private int homeAppletMode;
     private void homeApplet(int mode){
         homeApplet0();
         homeAppletLayout.removeAllViews();
-        homeAppletMode = mode;
 
         if(mode == 1)
             homeAppletA();
@@ -3283,6 +3285,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private boolean drawerRefresh;
     private void drawerRefresh(){
         if(!drawerRefresh){
+            drawerAppsFrame1.setVisibility(View.VISIBLE);
             //theNestDrawerLayout.addView(drawerExtraView);
             drawerRefresh = true;
             drawerAppsCount = 0;
@@ -3334,20 +3337,30 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     //``````````
 
     private View drawerAppsView;
-    private RelativeLayout drawerAppsLayout;
+    private RelativeLayout drawerAppsLayout, drawerAppsFrame1, drawerAppsFrame2;
     ScrollView drawerAppsScrollView1, drawerAppsScrollView2, drawerAppsScrollView3;
+    ImageView drawerAppsIcon;
+    TextView drawerAppsText;
     GridLayout drawerAppsGridLayout, drawerAppsShapeLayout;
     LinearLayout drawerAppsListLayout;
     private void drawerApps() {
         if (drawerAppsView == null) {
             drawerAppsView = inflater.inflate(R.layout.drawer_apps, null);
             drawerAppsLayout = drawerAppsView.findViewById(R.id.drawer_apps);
+            drawerAppsFrame1 = drawerAppsView.findViewById(R.id.drawer_apps_frame_1);
+            drawerAppsFrame2 = drawerAppsView.findViewById(R.id.drawer_apps_frame_2);
+            drawerAppsIcon = drawerAppsView.findViewById(R.id.drawer_apps_icon);
+            drawerAppsText = drawerAppsView.findViewById(R.id.drawer_apps_text);
             drawerAppsScrollView1 = drawerAppsView.findViewById(R.id.drawer_apps_scroll_view_1);
             drawerAppsScrollView2 = drawerAppsView.findViewById(R.id.drawer_apps_scroll_view_2);
             drawerAppsScrollView3 = drawerAppsView.findViewById(R.id.drawer_apps_scroll_view_3);
             drawerAppsGridLayout = drawerAppsView.findViewById(R.id.drawer_apps_grid_layout);
             drawerAppsListLayout = drawerAppsView.findViewById(R.id.drawer_apps_list_layout);
             drawerAppsShapeLayout = drawerAppsView.findViewById(R.id.drawer_apps_shape_layout);
+
+            backgroundTypeA(this, drawerAppsFrame2, background(8), tintA, 3);
+            imageTypeA(this, drawerAppsIcon, icon(61), tintA, 120);
+            textType(this, drawerAppsText, textC(79), tintA, fontAStyle);
         }
         if (theNestDrawerLayout.findViewById(R.id.drawer_apps) == null) {
             theNestDrawerLayout.addView(drawerAppsView);
@@ -3446,6 +3459,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                     drawerTilesIndex();
                     drawerRefresh = false;
                     theNestDrawerLayout.removeView(drawerExtraView);
+                    drawerAppsFrame1.setVisibility(View.GONE);
                 }
             }
         };
@@ -5733,7 +5747,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     TextView settingsHomeBLines, settingsHomeBText1, settingsHomeBText2, settingsHomeBText3, settingsHomeBText4,
             settingsHomeBText5, settingsHomeBText6;
     ImageView settingsHomeBImage, settingsHomeBCircle, settingsHomeBIcon1, settingsHomeBIcon2,
-            settingsHomeBIcon3, settingsHomeBIcon4, settingsHomeBIcon5, settingsHomeBIcon6;
+            settingsHomeBIcon3, settingsHomeBIcon4, settingsHomeBIcon5, settingsHomeBIcon6, settingsHomeBIcon7;
     LinearLayout settingsHomeBListView;
     ScrollView settingsHomeBScrollView;
     private void settingsHomeB(){
@@ -5749,6 +5763,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             settingsHomeBIcon4 = settingsHomeBView.findViewById(R.id.settings_home_b_icon_4);
             settingsHomeBIcon5 = settingsHomeBView.findViewById(R.id.settings_home_b_icon_5);
             settingsHomeBIcon6 = settingsHomeBView.findViewById(R.id.settings_home_b_icon_6);
+            settingsHomeBIcon7 = settingsHomeBView.findViewById(R.id.settings_home_b_icon_7);
             settingsHomeBFrame1 = settingsHomeBView.findViewById(R.id.settings_home_b_frame_1);
             settingsHomeBFrame2 = settingsHomeBView.findViewById(R.id.settings_home_b_frame_2);
             settingsHomeBFrame3 = settingsHomeBView.findViewById(R.id.settings_home_b_frame_3);
@@ -5782,6 +5797,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             imageTypeA(this, settingsHomeBIcon3, icon(31), tintA, 30);
             imageTypeA(this, settingsHomeBIcon4, icon(33), tintB, 65);
             imageTypeA(this, settingsHomeBIcon6, icon(48), tintA, 30);
+            imageTypeA(this, settingsHomeBIcon7, icon(33), tintA, 65);
 
             textType(this, settingsHomeBText1, textC(0), tintA, fontAStyle);
             textType(this, settingsHomeBText2, "", tintA, fontBStyle);
@@ -5793,6 +5809,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
             customTouchModeB(settingsHomeBIcon2, textC(48), 2, 4, 0);
             customTouchModeB(settingsHomeBIcon4, textC(48), 2, 4, 5);
+            customTouchModeB(settingsHomeBIcon7, textC(48), 2, 4, 42);
             customTouchModeB(settingsHomeBFrame2, "", 2, 4, 1);
             customTouchModeB(settingsHomeBFrame4, "", 2, 4, 2);
             customTouchModeB(settingsHomeBFrame5, "", 2, 4, 3);
@@ -5839,15 +5856,15 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     private void settingsHomePress_3(){
-        if(settingsHomeBFrame6.getVisibility() != View.VISIBLE){
-            settingsHomeBFrame6.setVisibility(View.VISIBLE);
-            settingsHomeBFrame1.setVisibility(View.INVISIBLE);
-        } else {
-            settingsHomeBFrame6.setVisibility(View.GONE);
-            settingsHomeBFrame1.setVisibility(View.VISIBLE);
-        }
+        settingsHomeBFrame6.setVisibility(View.VISIBLE);
+        settingsHomeBFrame1.setVisibility(View.INVISIBLE);
         if(settingsHomeBListView.getChildCount() == 0)
             homeWidgetInitialize();
+    }
+
+    private void settingsHomePress_42(){
+        settingsHomeBFrame6.setVisibility(View.INVISIBLE);
+        settingsHomeBFrame1.setVisibility(View.VISIBLE);
     }
 
     private void settingsHomePress_4(){
@@ -5871,7 +5888,6 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private void settingsHomePress_5(){
         settingsHomeBFrame6.setVisibility(View.VISIBLE);
         settingsHomeBFrame7.setVisibility(View.GONE);
-        settingsHomeBFrame3.setVisibility(View.VISIBLE);
         settingsHomeBText4.setVisibility(View.GONE);
     }
 
@@ -5884,7 +5900,6 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private void settingsHomePress_37(){
         settingsHomeBFrame6.setVisibility(View.GONE);
         settingsHomeBFrame7.setVisibility(View.VISIBLE);
-        settingsHomeBFrame3.setVisibility(View.GONE);
         settingsHomeBText4.setVisibility(View.VISIBLE);
         settingsHomeBText5.setText(settingsHomeBString);
 
@@ -5965,18 +5980,13 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         configurationsB();
         if(widgetState.equals("Enabled")) {
             homeWidgetCommonC(true, 57);
+            settingsHomeBFrame1.setVisibility(View.VISIBLE);
+            settingsHomeBFrame3.setVisibility(View.VISIBLE);
 
-            if(settingsHomeBFrame7.getVisibility() != View.VISIBLE){
-                settingsHomeBFrame7.setVisibility(View.GONE);
-                settingsHomeBText4.setVisibility(View.GONE);
+            if(settingsHomeBFrame6.getVisibility() == View.VISIBLE
+                    || settingsHomeBFrame7.getVisibility() == View.VISIBLE)
+                settingsHomeBFrame1.setVisibility(View.GONE);
 
-                settingsHomeBFrame3.setVisibility(View.VISIBLE);
-
-                if(settingsHomeBFrame6.getVisibility() != View.VISIBLE){
-                    settingsHomeBFrame1.setVisibility(View.VISIBLE);
-                    settingsHomeBFrame6.setVisibility(View.GONE);
-                }
-            }
             homeWidgetTabs();
         } else {
             homeWidgetCommonC(false, 56);
@@ -6213,9 +6223,10 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     View settingsHomeDView;
     RelativeLayout settingsHomeDLayout, settingsHomeDFrame1, settingsHomeDFrame2, settingsHomeDFrame3, settingsHomeDFrame4,
-            settingsHomeDFrame5, settingsHomeDFrame6, settingsHomeDFrame7, settingsHomeDFrame8;
+            settingsHomeDFrame5, settingsHomeDFrame6, settingsHomeDFrame7, settingsHomeDFrame8, settingsHomeDFrame9;
     TextView settingsHomeDText1, settingsHomeDText2, settingsHomeDText3, settingsHomeDText4;
-    ImageView settingsHomeDImage, settingsHomeDCircle, settingsHomeDIcon1, settingsHomeDIcon2, settingsHomeDIcon3;
+    ImageView settingsHomeDImage, settingsHomeDCircle, settingsHomeDIcon1, settingsHomeDIcon2, settingsHomeDIcon3,
+            settingsHomeDIcon4;
     ScrollView settingsHomeDScrollView;
     private void settingsHomeD(){
         if(settingsHomeDView == null){
@@ -6227,6 +6238,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             settingsHomeDIcon1 = settingsHomeDView.findViewById(R.id.settings_home_d_icon_1);
             settingsHomeDIcon2 = settingsHomeDView.findViewById(R.id.settings_home_d_icon_2);
             settingsHomeDIcon3 = settingsHomeDView.findViewById(R.id.settings_home_d_icon_3);
+            settingsHomeDIcon4 = settingsHomeDView.findViewById(R.id.settings_home_d_icon_4);
             settingsHomeDFrame1 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_1);
             settingsHomeDFrame2 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_2);
             settingsHomeDFrame3 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_3);
@@ -6235,6 +6247,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             settingsHomeDFrame6 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_6);
             settingsHomeDFrame7 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_7);
             settingsHomeDFrame8 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_8);
+            settingsHomeDFrame9 = settingsHomeDView.findViewById(R.id.settings_home_d_frame_9);
             settingsHomeDText1 = settingsHomeDView.findViewById(R.id.settings_home_d_text_1);
             settingsHomeDText2 = settingsHomeDView.findViewById(R.id.settings_home_d_text_2);
             settingsHomeDText3 = settingsHomeDView.findViewById(R.id.settings_home_d_text_3);
@@ -6248,6 +6261,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             imageTypeA(this, settingsHomeDImage, drawable(1), R.color.transparent, 70);
             imageTypeB(this, settingsHomeDCircle, background(4), ui);
             imageTypeA(this, settingsHomeDIcon1, icon(33), tintA, 75);
+            imageTypeA(this, settingsHomeDIcon4, icon(33), tintA, 65);
 
             textType(this, settingsHomeDText1, textC(1), tintA, fontAStyle);
             textType(this, settingsHomeDText2, "", tintA, fontBStyle);
@@ -6255,6 +6269,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             textType(this, settingsHomeDText4, "", tintA, fontBStyle);
 
             customTouchModeB(settingsHomeDIcon1, textC(48), 2, 4, 11);
+            customTouchModeB(settingsHomeDIcon4, textC(48), 2, 4, 43);
             customTouchModeB(settingsHomeDFrame2, "", 2, 4, 12);
             customTouchModeB(settingsHomeDFrame4, "", 2, 4, 13);
             customTouchModeB(settingsHomeDFrame5, "", 2, 4, 14);
@@ -6300,15 +6315,15 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     }
 
     private void settingsHomePress_14(){
-        if(settingsHomeDFrame6.getVisibility() != View.VISIBLE){
-            settingsHomeDFrame6.setVisibility(View.VISIBLE);
-            settingsHomeDFrame1.setVisibility(View.INVISIBLE);
-        } else {
-            settingsHomeDFrame6.setVisibility(View.GONE);
-            settingsHomeDFrame1.setVisibility(View.VISIBLE);
-        }
+        settingsHomeDFrame6.setVisibility(View.VISIBLE);
+        settingsHomeDFrame1.setVisibility(View.INVISIBLE);
         if(!initialized)
             homeWallpaperInitialize();
+    }
+
+    private void settingsHomePress_43(){
+        settingsHomeDFrame6.setVisibility(View.INVISIBLE);
+        settingsHomeDFrame1.setVisibility(View.VISIBLE);
     }
 
     private void settingsHomePress_15(){
