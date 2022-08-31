@@ -92,6 +92,6 @@ NOTE - If you are new to github *( like me )* then you should start a new **issu
 
 Phew time sure passes by fast huh! Now that you have reached here i don't think there is anything else left to tell you about either the **Fozin** app or me. You can find my gmail account down below so in - case you want to reach out to me you can also use that as an alternative. This time it's really a good bye. So take care until next time :)
 
-## •/]>  Resources...
+## •/]>  Wanna reach me?...
 
 - **Gmail -** simplicdeveloper2062@gmail.com 
