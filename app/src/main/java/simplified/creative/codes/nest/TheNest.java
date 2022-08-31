@@ -211,6 +211,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
             create(this, "Configurations - 02", "Drawer Size - C");
             create(this, "Configurations - 02", "Drawer Alpha - 1.0f");
             create(this, "Configurations - 02", "Shortcut State - Enabled");
+            create(this, "Configurations - 02", "Widget Creation - Denied");
             create(this, "Configurations - 02", " ");
             create(this, "Configurations - 02", "---------- > ---------- > ---------- >");
         }
@@ -280,6 +281,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
     private float drawerAlpha;
     private String drawerSize;
     private String shortcutState;
+    private String widgetCreation;
     private void configurationsB(){
         List<String> readValues = read(this, "Configurations - 02");
         widgetState = readValues.get(3).substring(15).trim();
@@ -301,6 +303,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         drawerSize = readValues.get(19).substring(14).trim();
         drawerAlpha = Float.parseFloat(readValues.get(20).substring(15).trim());
         shortcutState = readValues.get(21).substring(17).trim();
+        widgetCreation = readValues.get(22).substring(18).trim();
     }
 
     public static String drawerGridStyle;
@@ -1662,7 +1665,9 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                     homeWidgetLayout.addView(homeWidgetBView);
                 }
                 if(homeWidgetInfo != null && homeWidgetInfo.resizeMode != AppWidgetProviderInfo.RESIZE_NONE)
-                    hostView.updateAppWidgetSize(null, widgetW, widgetH, dimen_a, dimen_b);
+                    try {
+                        hostView.updateAppWidgetSize(null, widgetW, widgetH, dimen_a, dimen_b);
+                    } catch (Exception e){}
                 homeWidgetResource.removeAllViews();
                 homeWidgetResource.addView(hostView);
             }
@@ -5952,10 +5957,12 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
         hostView = null;
         settingsHomeBBoolean = true;
         //one time run fix
-        /*Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, info.provider);
-        startActivityForResult(intent, 0);*/
+        if(widgetCreation.equals("Denied")){
+            Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, info.provider);
+            startActivityForResult(intent, 1000);
+        }
     }
 
     private void homeWidgetCommonB(int int_a, int int_b){
@@ -6080,8 +6087,18 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                     Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE);
                     intent.setComponent(info.configure);
                     intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
-                    homeWidgetManager.bindAppWidgetIdIfAllowed(widgetID, info.provider);
-                    homeWidgetHost.startAppWidgetConfigureActivityForResult(this, widgetID, intent.getFlags(), 2062, null);
+                    if(widgetCreation.equals("Denied")){
+                        Intent bind = new Intent(AppWidgetManager.ACTION_APPWIDGET_BIND);
+                        bind.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
+                        bind.putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, info.provider);
+                        startActivityForResult(bind, 1000);
+                    }
+                    try {
+                        homeWidgetManager.bindAppWidgetIdIfAllowed(widgetID, info.provider);
+                    } catch (Exception e){}
+                    try {
+                        homeWidgetHost.startAppWidgetConfigureActivityForResult(this, widgetID, intent.getFlags(), 2062, null);
+                    } catch (Exception e){}
                     //startActivityForResult(intent, 2062);
                 } else {
                     homeWidgetCommonA(info);
@@ -6092,9 +6109,15 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK)
+        if (resultCode == RESULT_OK){
             if (requestCode == 2062)
                 homeWidgetCreate(data);
+        }
+        if (requestCode == 1000){
+            edit(this, "Configurations - 02", "Widget Creation - " + widgetCreation,
+                    "Widget Creation - Allowed");
+            configurationsB();
+        }
     }
 
     private void homeWidgetCreate(Intent data) {

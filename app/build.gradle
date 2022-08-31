@@ -15,18 +15,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
-    signingConfigs {
-        release {
-            storeFile file("/home/user/Files/Android/APP Development/Keystore/∆×••⟨[]⟩.keystore")
-            keyAlias "∆×••⟨[]⟩"
-            storePassword "simplic----------developer"
-            keyPassword "simplic----------developer"
-        }
-    }
-
     buildTypes {
         release {
-            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
