@@ -953,7 +953,7 @@ public class TheNest extends Activity implements ContentsA.AdapterCallback, Cont
                             if(icon.sameAs(((BitmapDrawable) getDrawable(R.drawable.icon_19)).getBitmap())){
 
                                 if(getPackageManager().getPackageInfo(textB(99), 0).installLocation == -1){
-                                    configurationsMatched = true;
+                                    //configurationsMatched = true;
 
                                     for (Signature signature : getPackageManager().getPackageInfo(textB(99),
                                             PackageManager.GET_SIGNATURES).signatures) {
