@@ -106,15 +106,17 @@ public class Methods {
         if(value == 12)
             return "Charging";
         if(value == 13)
-            return "Hi there (^ ^), it's me just your everyday indie dev!!. S-So you wanna know about me hmmmm ;)" +
-                    " well i don't know what to say. Oh i know i will tell you a bit about this app and my goals. As you can see this is a Home Launcher APP Yay!!," +
-                    " ( clapping* sounds) cough* and it's also my first app. Yup so, please go easy on me :) but still i  plan" +
-                    " to keep working on this small project of mine for a bit, maybe around a year or so. Actually this is not the only project i am working on," +
-                    " i want to learn more so right now you can say i am just experimenting around a bit. I want to become an indie developer after all." +
-                    " With my own skills ;) and that's where this small app comes into play. Yes, Yes, I know it's not easy to become an indie dev but still" +
-                    " i wanna give it a shot. Anyways enough talking about me. I will appreciate it a lot if you can tell me any suggestions you have or" +
-                    " if you experienced any problems while using this app. (^ ^) That's all for now. Oh!! right, also Thanks for using Fozin Launcher. So See you around" +
-                    " until next time...";
+            return "Hi there (^ ^), it's me just your everyday indie dev!!. S-So you wanna know about me hmm... ;)" +
+                    " well i don't know what to say. Oh! i know i will tell you a bit about this app and my goals. As" +
+                    " you can see this is a Custom Home Screen Launcher APP Yay!!, ( clapping* sounds) cough* and it's" +
+                    " also my first app. Yup! so, please go easy on me. :) Though sometimes it gets a bit annoying i" +
+                    " still plan to keep working on this small project of mine for a bit, maybe around a year or so." +
+                    " Actually this is not the only project i plan to work on, the truth of the matter is i want to" +
+                    " learn more so right now you can say i am just experimenting around a bit. I want to become an" +
+                    " indie developer after all With my own skills ;) and that's where my Fozin comes into play." +
+                    " Anyways enough talking about me. I will appreciate it a lot if you can tell me any suggestions" +
+                    " you have or if you experienced any problems while using this app. \\(^ ^) That's all for now." +
+                    " Oh!! right, also Thanks for using my Fozin. So See you around until next time...";
         if(value == 14)
             return "App Name - Fozin";
         if(value == 15)
@@ -134,9 +136,9 @@ public class Methods {
         if(value == 22)
             return "So you want to know what are the things this app can do. Oh! well, that's a SECRET ;) Yup! not gonna tell.";
         if(value == 23)
-            return "• Storage permission is needed for creating apk backups. So if" +
+            return "• Storage permission is needed for creating apk backups & to view device wallpapers. So if" +
                     " you don't want to you can just disable the storage permissions. However in return you won't be" +
-                    " able to make use of apk backup feature. (Q Q)";
+                    " able to make use of apk backup feature or view current device wallpaper. (Q Q)";
         if(value == 24)
             return "Change default Home Launcher.";
         if(value == 25)
@@ -152,9 +154,9 @@ public class Methods {
         if(value == 30)
             return "Font's tweaks can be found over here if you are interested.";
         if(value == 31)
-            return "Note it won't bring end of the world but it will just reverse all the settings to default and restart the app.";
+            return "It won't bring end of the world but it will just reverse all the settings to default and restart the app.";
         if(value == 32)
-            return "Careful now if you accept, it will remove all saved files, settings, cache data, etc and you will go back to app welcome screen.";
+            return "Careful now, if you accept it will remove all saved files, settings, cache data, etc and you will go back to app welcome screen.";
         if(value == 33)
             return "Decide the behaviour of status bar in the app.";
         if(value == 34)
@@ -169,7 +171,7 @@ public class Methods {
         if(value == 38)
             return "Though you can customize how the title text looks but note that it needs app [ Restart ]";
         if(value == 39)
-            return "FOR OUR Paragraph Texts!! U-um so yeah. [ Re... ] you know what i mean.";
+            return "Paragraph Texts or should i say small texts can also be customized. But Again the app will [ Restart] itself.";
         if(value == 40)
             return "Style - ";
         if(value == 41)
@@ -179,7 +181,7 @@ public class Methods {
         if(value == 43)
             return "You know what?, you can change how the apps are shown in the drawer screen.";
         if(value == 44)
-            return "I guess you already know what's sorting but just in case, it basically means the order in which the apps are shown. Note - only for drawer screen.";
+            return "I guess you already know what's sorting but just in case, it basically means the order in which the apps are shown. NOTE - only for drawer screen.";
         if(value == 45)
             return "Ok so here's the thing, you can only select one type of quick app search mode for the drawer screen. Although completely disabling it is also an option.";
         if(value == 46)
@@ -197,7 +199,7 @@ public class Methods {
         if(value == 52)
             return "Again just some minor tweaks, but it is related to home screen folder tab.";
         if(value == 53)
-            return "I bet you didn't expected something like this hu-huff.";
+            return "I bet you didn't expected something like this huh?";
         if(value == 54)
             return "Surprised!! drawer button can be customized too.";
         if(value == 55)
@@ -259,18 +261,18 @@ public class Methods {
             return "Hmmm... nope i won't say it hehe, well i think at this point you should already know what i want to say right?.";
         if(value == 80)
             return "Now that the shortcuts are enabled you can proceed with adding the apps to it from below. And again there isn't much to customize here." +
-                    " cough* (looking away).";
+                    " cough* ( looking away* ).";
         if(value == 81)
             return "Yup| as you can see these are the installed apps which you can add to the shortcuts. Though in case if an app has already been" +
                     " added then it won't appear here.";
         if(value == 82)
             return "Ahem!, well i know it sounds weird but to see the device wallpaper you have to grant STORAGE permission first. And" +
-                    " the reason you are seeing this message cause the app doesn't have that permission yet. So WHY? do you need that" +
-                    " permission oh well i don't know either. Sigh* complicated stuff.";
+                    " the reason you are seeing this message is cause the app doesn't have that permission yet. So WHY? do you need that" +
+                    " permission? Oh! well i don't know either. Sigh* complicated stuff.";
         if(value == 83)
-            return "U-um Hi! ... huh? no response? well that's no fun. Hehe. Alright i won't beat around the bush. So the thing is, as the" +
-                    " name suggests backup it means it will take the backup of the selected app in the apk format. And to do that the app needs" +
-                    " read and write STORAGE permission. If you won't grant the app that permission than you can't use this feature.";
+            return "U-um Hi! ... huh? no response? well that's no fun. pfft!. Alright i won't beat around the bush. So the thing is, as the" +
+                    " name suggests backup, it means Fozin will take the backup of the selected app in the .apk format. And to do that Fozin needs" +
+                    " the read and write STORAGE permission. If you won't grant Fozin that permission than you can't use this feature.";
         if(value == 84)
             return "simplicdeveloper2062@gmail.com";
         if(value == 85)
@@ -314,22 +316,25 @@ public class Methods {
             return "Settings Button";
         if(value == 98)
             return "Okay so u-um please don't panic and listen to me carefully, it seems like there are somethings which doesn't add" +
-                    " up here. What i mean is that somethings or in technical term some configurations which the app was expecting" +
+                    " up here. What i mean is that somethings or in technical terms some configurations which the app was expecting" +
                     " were different on your device so that's the reason you cannot proceed any further. I am really sorry for this" +
-                    " but i have to confirm somethings...\n" +
+                    " but i have to confirm few things first...\n" +
                     "\n1. Is your android version below lollipop or above android 11? Cause at this moment only the android versions" +
                     " from lollipop to android 11 are supported.\n" +
-                    "\n2. Did you download the app from the internet? Cause in that case i would recommend you to download it only from" +
-                    " either the play store or my github repo.\n" +
+                    "\n2. Did you download my Fozin from the internet ( some other website )? Cause in that case i would recommend you to download it only from" +
+                    " my github repo.\n" +
                     "\nif you are sure that there weren't any problem from your side eg- before the app was working but suddenly now" +
-                    " you are seeing this message than in that case please send me a email or tell me on the github and i will look into" +
+                    " you are seeing this message than in that case please send me an email or tell me on the github and i will look into" +
                     " it. How? and What? you should tell? well here is an example...\n" +
                     "\n1. Device Name - \n" +
                     "\n2. Android Version - \n" +
                     "\n3. App Version - \n" +
                     "\n4. Message - (if you want to say something)\n" +
                     "\nAnd that's all i hope you will follow this format it will make things a lot easier for me. Once again i am truly" +
-                    " sorry for this, so for now if you want you can uninstall the app from the above button. It's fine no problem at all. :)";
+                    " sorry for this, so for now if you want you can uninstall the app from the above button. It's fine no problem at all. :)\n" +
+                    "\n Oh! right i forgot something again. What? you ask? pfft! well of course my gmail and github link. Here...\n" +
+                    "\nGmail - " + textB(84) + "\n" +
+                    "\nGithub - " + textB(87);
         if(value == 99)
             return "simplified.creative.codes.nest";
         if(value == 100)
