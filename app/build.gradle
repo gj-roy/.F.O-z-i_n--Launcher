@@ -17,10 +17,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file("/home/user/Files/Android/APP Development/Keystore/GHOST.keystore")
-            keyAlias "GHOST"
-            storePassword "universe"
-            keyPassword "universe"
+            storeFile file("/home/user/Files/Android/APP Development/Keystore/∆×••⟨[]⟩.keystore")
+            keyAlias "∆×••⟨[]⟩"
+            storePassword "simplic----------developer"
+            keyPassword "simplic----------developer"
         }
     }
 

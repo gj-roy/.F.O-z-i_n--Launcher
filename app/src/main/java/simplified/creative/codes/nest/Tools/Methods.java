@@ -290,7 +290,7 @@ public class Methods {
         if(value == 92)
             return "Simplified Creative Codes";
         if(value == 93)
-            return "Version ------------------------- 1.0";
+            return "Version ------------------- " + textB(101);
         if(value == 94)
             return "Hi there! (^o^)/ it's me the developer of this app. Now i know this isn't the right place to say this but first" +
                     " of all i am really happy that you decided to give this app a shot. And i am thankful for that. I know that you" +
@@ -333,7 +333,7 @@ public class Methods {
         if(value == 99)
             return "simplified.creative.codes.nest";
         if(value == 100)
-            return "AF6E5CAEA1A45DF388E2D5B3E80AF1F76D5108D7";
+            return "14CCD7F213309C3923F76476847B04C8BEA3B7B7";
         if(value == 101)
             return "0.0.F.S";
         return "";
