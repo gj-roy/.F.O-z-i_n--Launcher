@@ -11,4 +11,5 @@ assignees: SimpliC-Developer
 
 - Device Name - model name + brand name
 - Android version - current android version
+- Bug encountered - how you encountered the bug eg - drawer crashed when I clicked on refresh button
 - Message - if you want to say something please say it here
